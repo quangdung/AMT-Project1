@@ -1,0 +1,12 @@
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\api\ApplicationConfig.java
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\api\SensorResource.java
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\api\UserResource.java
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\model\User.java
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\sensor\SensorManager.java
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\model\Sensor.java
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\sensor\SensorManagerLocal.java
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\sensor\ISensorDao.java
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\sensor\SensorJpaDao.java
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\user\UserManagerLocal.java
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\dto\SensorDTO.java
+E:\HEIG\AMT\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\api\OrganizationResource.java

@@ -1,0 +1,287 @@
+#%RAML 0.8
+---
+title: SNSR API
+baseUri: https://snsr/api/{version}
+version: v1
+protocols: [HTTPS]
+mediaType: application/json
+
+schemas:
+  - user: |
+      {
+        "firstName": {
+          "type": "string",
+          "required": true
+        },
+        "lastName": {
+          "type": "string",
+          "required": true
+        },
+        "email": {
+          "type": "string",
+          "required": true
+        },
+        "password": {
+          "type": "string",
+          "required": true
+        }
+      }
+  - sensor: |
+      {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "required": false
+        },
+        "type": {
+          "type": "string",
+          "required": true
+        },
+        "isPublic": {
+          "type": "boolean",
+          "required": true
+        }
+      }
+  - measure: |
+      {
+        "value": {
+          "type": "number",
+          "required": true
+        },
+        "timestamp": {
+          "type": "integer",
+          "required": true
+        }
+      }
+  - fact: |
+      {
+        "type": {
+          "type": "string",
+          "required": true
+        }
+      }
+
+/users:
+  get:
+    description: Get a list of all users.
+    queryParameters:
+      organizationId:
+        description: Filter by organization id.
+        required: false
+        type: integer
+      mainContact:
+        description: Filter by users that are main contacts.
+        required: false
+        type: boolean
+  /{userId}:
+    get:
+      description: Get a user `userId = {userId}`.
+      responses: 
+        200:
+            body:
+                application/json:
+                  example: |
+                    {
+                      "id": 1337,
+                      "firstName": "John",
+                      "lastName": "Lennon",
+                      "email": "john.lennon@beatles.co.uk",
+                      "organization": "The Beatles",
+                      "mainContact": true
+                    }
+
+/sensors:
+  get:
+    description: Get a list of all sensors.
+    responses:
+      200:
+        body:
+          application/json:
+            example: | 
+              "sensors": [
+              {
+                "id": 1,
+                "organization": "The Beatles",
+                "name": "dB-level-JL",
+                "description": "Sound levels, John's microphone",
+                "type": "sound_meter",
+                "public": true
+              },
+              {
+                "id": 2,
+                "organization": "The Beatles",
+                "name": "dB-level-PM",
+                "description": "Sound levels, Paul's microphone",
+                "type": "sound_meter",
+                "public": true
+              },
+              {
+                "id": 3,
+                "organization": "The Beatles",
+                "name": "dB-level-RS",
+                "description": "Sound levels, Ringo's microphone",
+                "type": "sound_meter",
+                "public": true
+              },
+              {
+                "id": 4,
+                "organization": "The Beatles",
+                "name": "dB-level-GH",
+                "description": "Sound levels, Georges' microphone",
+                "type": "sound_meter",
+                "public": true
+              }
+              ]
+    queryParameters:
+      organizationId:
+        description: Filter by organization id.
+        required: false
+        type: integer
+      type:
+        description: Filter by sensor type.
+        required: false
+        type: string
+        
+
+  /{sensorId}:
+    get:
+      description: Get a single sensor by id.
+      responses:
+        200:
+          body:
+            application/json:
+              example: | 
+                {
+                  "id": 1,
+                  "organization": "The Beatles",
+                  "name": "dB-level-JL",
+                  "description": "Sound levels, John's microphone",
+                  "type": "sound_meter",
+                  "public": true
+                }
+    /measures:
+      get:
+        description: Get a list of all measures taken by the sensor.
+        queryParameters:
+          before:
+            description: Only get measures before given timestamp (timestamp must be higher than `after`)
+            required: false
+            type: integer
+          after:
+            description: Only get measures after given timestamp (timestamp must be lower than `before`)
+            required: false
+            type: integer
+      /{measureId}:
+        get:
+          description: Get a single measure by id.
+
+
+/organizations:
+  get:
+    description: Get a list of all organizations.
+    responses: 
+        200: 
+            body:
+                application/json:
+                  example: |
+                    "organizations": [
+                    {
+                      "name": "The Beatles",
+                      "contact": "/api/users/1337"
+                    },
+                    {
+                      "name": "The Others",
+                      "contact": "/api/users/42"
+                    }
+                    ]
+
+  /{organizationId}:
+    get:
+      description: Get a single organization.
+    /users:
+      get:
+        description: Get a list of the organization's users.
+      post:
+        description: Add a user to the organization.
+        body:
+          application/json:
+            schema: user
+            example: |
+              {
+                "firstName": "John",
+                "lastName": "Lennon",
+                "email": "john.lennon@beatles.co.uk",
+                "password": "4b1212a9f7b77463cf42544c013dacd7a2c127dc"
+              }
+      /{userId}:
+        put:
+          description: |
+            Update a user's informations.
+
+            Uses the same schema as `POST`, but only the specified field will be updated, not all fields are required.
+          body:
+            application/json:
+              example: |
+                {
+                  "firstName": "John"
+                }
+        delete:
+    /sensors:
+      get:
+        queryParameters:
+          type:
+      post:
+        body:
+          application/json:
+            schema: sensor
+            example: |
+              {
+                "name": "dB-level-JL",
+                "description": "Sound levels, John's microphone",
+                "type": "sound_meter",
+                "public": true
+              }
+      /{sensorId}:
+        get:
+        put:
+          body:
+            application/json:
+              example: |
+                {
+                  "public": false
+                }
+        delete:
+        /measures:
+          get:
+            queryParameters:
+              before:
+              after:
+              from:
+              to:
+          post:
+            body:
+              application/json:
+                schema: measure
+                example: |
+                  {
+                    "value": 90.3,
+                    "timestamp": 167083200
+                  }
+          /{measureId}:
+            get:
+    /facts:
+      get:
+      post:
+        body:
+          application/json:
+            schema: fact
+            example: |
+              {
+                "type": "obsCount"
+              }
+      /{factId}:
+        get:
+        delete:
