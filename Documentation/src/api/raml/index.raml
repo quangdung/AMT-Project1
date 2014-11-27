@@ -1,0 +1,318 @@
+#%RAML 0.8
+---
+title: API Resource
+baseUri: https://localhost/restapi/{version}
+version: v1
+protocols: [HTTPS]
+mediaType: application/json
+
+/sensors:
+  description: The sensors delivered a lot of type of measures
+  get:
+    description: Retrieve a collection of sensors
+    responses:
+      200:
+        body:
+           application/json:      
+    queryParameters:
+      organization:
+        displayName: Organization
+        type: string
+        description: An organization's name
+        example: AAA
+        required: false
+      place:
+        displayName: Place
+        type: string
+        description: The sensor's place
+        required: false
+      day:
+        displayName: Day
+        type: string
+        description: The day of creation of the sensor
+        required: false
+      month:
+        displayName: Month
+        type: string
+        description: The month of creation of the sensor
+        required: false
+      year:
+        displayName: Year
+        type: string
+        description: The year of creation of the sensor
+        required: false
+      type_measure:
+        displayName: Type of measure
+        type: string
+        description: The type of the measure delivered by the sensor
+        required: false
+  post:
+    description: Create a collection of sensors
+    body:
+      application/json:
+        example: |
+          { "name" : "mySensors" }
+    responses:
+      201:
+        body:
+          application/json:
+    headers:
+      Authorization:
+        description: |
+          A description
+          <private>
+          Private information
+          </private>
+  /{sensorsId}:
+    description: The sensor with its ID
+    get:
+      description: Retrieve a sensor
+      responses:
+        200:
+          body:
+            application/json:
+        404:
+          description: The sensor was not found.
+    put:
+      description: Update the sensor's informations
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type:  string
+          description: Token giving permission to update sensor's informations
+          required: true
+    delete:
+      description: Delete a sensor
+
+
+/organizations:
+  description: The organization which create sensors
+  get:
+    description: Retrieve a collection of organizations
+    responses:
+      200:
+        body:
+           application/json:      
+    queryParameters:
+      place:
+        displayName: Place
+        type: string
+        description: The organization's place
+        required: false
+  post:
+    description: Create a collection of observations
+    body:
+      application/json:
+        example: |
+          { "name" : "myObservations" }
+    responses:
+      201:
+        body:
+          application/json:
+    headers:
+      Authorization:
+        description: |
+          A description
+          <private>
+          Private information
+          </private>
+  /{organizationsId}:
+    description: An organization with its ID
+    get:
+      description: Retrieve an organization
+      responses:
+        200:
+          body:
+            application/json:
+        404:
+          description: The organization was not found.
+    put:
+      description: Update the organization's informations
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type:  string
+          description: Token giving permission to update organization's informations
+          required: true
+    delete:
+      description: Delete an organization
+
+
+/users:
+  description: |
+    The users who interact with the sensors via different interfaces: 
+    REST APIs and WEB UIs. Every user belongs to a single observation.
+  get:
+    description: Retrieve a collection of users
+    responses:
+      200:
+        body:
+           application/json:      
+    queryParameters:
+      organization:
+        displayName: Organization
+        type: string
+        description: The organization whom belongs the user
+        required: false
+  post:
+    description: Create a collection of users
+    body:
+      application/json:
+        example: |
+          { "name" : "myUsers" }
+    responses:
+      201:
+        body:
+          application/json:
+    headers:
+      Authorization:
+        description: |
+          A description
+          <private>
+          Private information
+          </private>
+  /{usersId}:
+    description: An user with its ID
+    get:
+      description: Retrieve an user
+      responses:
+        200:
+          body:
+            application/json:
+        404:
+          description: The user was not found.
+    put:
+      description: Update the user's informations
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type:  string
+          description: Token giving permission to update user's informations
+          required: true
+    delete:
+      description: Delete an user
+
+
+/observations:
+  description: The observation pushed by the sensor, using a (write-only) REST API. An observation reports a sensor value at a given time.
+  get:
+    description: Retrieve a collection of observations
+    responses:
+      200:
+        body:
+           application/json:      
+    queryParameters:
+      place:
+        displayName: Place
+        type: string
+        description: The observation's place
+        required: false
+      day:
+        displayName: Day
+        type: string
+        description: The day of creation of the observation
+        required: false
+      month:
+        displayName: Month
+        type: string
+        description: The month of creation of the observation
+        required: false
+      year:
+        displayName: Year
+        type: string
+        description: The year of creation of the observation
+        required: false
+      type_measure:
+        displayName: Type of measure
+        type: string
+        description: The type of the measure reported by the observation
+        required: false
+  post:
+    description: Create a collection of observations
+    body:
+      application/json:
+        example: |
+          { "name" : "myObservations" }
+    responses:
+      201:
+        body:
+          application/json:
+    headers:
+      Authorization:
+        description: |
+          A description
+          <private>
+          Private information
+          </private>
+  /{observationId}:
+    description: An observation with its ID
+    get:
+      description: Retrieve an observation
+      responses:
+        200:
+          body:
+            application/json:
+        404:
+          description: The observation was not found.
+    put:
+      description: Update the observation's informations
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type:  string
+          description: Token giving you permission to update observation's informations
+          required: true
+    delete:
+      description: Delete an observation
+
+/facts:
+  description: The fact
+  get:
+    description: Retrieve a collection of facts
+    responses:
+      200:
+        body:
+           application/json:      
+    queryParameters:
+      place:
+        displayName: Place
+        type: string
+        description: The fact's place
+        required: false
+  post:
+    description: Create a collection of facts
+    body:
+      application/json:
+        example: |
+          { "name" : "myFacts" }
+    responses:
+      201:
+        body:
+          application/json:
+    headers:
+      Authorization:
+        description: |
+          A description
+          <private>
+          Private information
+          </private>
+  /{factsId}:
+    description: A fact with its ID
+    get:
+      description: Retrieve a fact
+      responses:
+        200:
+          body:
+            application/json:
+        404:
+          description: The fact was not found.
+    put:
+      description: Update the fact's informations
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type:  string
+          description: Token giving permission to update fact's informations
+          required: true
+    delete:
+      description: Delete a fact
