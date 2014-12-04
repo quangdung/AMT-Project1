@@ -18,46 +18,74 @@ import javax.persistence.Table;
  *
  * @author
  */
-
 @NamedQueries({
     @NamedQuery(
-        name="findById",
-        query="SELECT s FROM Sensor s WHERE s.id = :id"
+            name = "findById",
+            query = "SELECT s FROM Sensor s WHERE s.id = :id"
     ),
     @NamedQuery(
-        name="findByOrganizationId",
-        query="SELECT s FROM Sensor s WHERE s.organizationId = :organizationId"
+            name = "findByName",
+            query = "SELELCT s FROM Sensor s WHERE s.name = :name"
     ),
     @NamedQuery(
-        name="findByType",
-        query="SELECT s FROM Sensor s WHERE s.type = :type"
+            name = "findByType",
+            query = "SELECT s FROM Sensor s WHERE s.type = :type"
     ),
     @NamedQuery(
-        name="findAll",
-        query="SELECT s FROM Sensor s"
+            name = "findByOrganizationId",
+            query = "SELECT s FROM Sensor s WHERE s.organizationId = :organizationId"
     ),
+    @NamedQuery(
+            name = "findByPublicSensor",
+            query = "SELECT s FROM Sensor s WHERE s.publicSensor = :publicSensor"
+    ),
+    @NamedQuery(
+            name = "findAll",
+            query = "SELECT s FROM Sensor s"
+    )
 })
 
 @Entity
-@Table(name="sensors")
+@Table(name = "sensors")
 public class Sensor implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private String name;
     private String description;
     private String type;
     private long organizationId;
-    
-    public Sensor() { 
+    private boolean publicSensor;
+
+    public Sensor() {
     }
-    
-    public Sensor(String description, String type, long organizationId) {
+
+    public Sensor(String name, String description, String type, long organizationId, boolean publicSensor) {
+        this.name = name;
         this.description = description;
         this.type = type;
         this.organizationId = organizationId;
+        this.publicSensor = publicSensor;
     }
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isPublicSensor() {
+        return publicSensor;
+    }
+
+    public void setPublicSensor(boolean publicSensor) {
+        this.publicSensor = publicSensor;
+    }
+
     public long getId() {
         return id;
     }
@@ -89,9 +117,10 @@ public class Sensor implements Serializable {
     public void setOrganizationId(long organizationId) {
         this.organizationId = organizationId;
     }
-    
+
     @Override
     public String toString() {
-        return "Sensor #" + id + ", " + description + ": " + type;
+        return "Sensor #" + id + ", " + name + ", " + description + ", " + type 
+                + (publicSensor ? ", public" : "");
     }
 }

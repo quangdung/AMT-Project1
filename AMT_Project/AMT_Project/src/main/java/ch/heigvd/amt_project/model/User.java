@@ -10,19 +10,49 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
  *
  * @author
  */
+@NamedQueries({
+    @NamedQuery(
+            name = "findById",
+            query = "SELECT u FROM User u WHERE u.id = :id"
+    ),
+    @NamedQuery(
+            name = "findByFirstName",
+            query = "SELECT u FROM User u WHERE u.fisrtName = :firstName"
+    ),
+    @NamedQuery(
+            name = "findByLastName",
+            query = "SELECT u FROM User u WHERE u.lastName = :lastName"
+    ),
+    @NamedQuery(
+            name = "findByEmail",
+            query = "SELECT s FROM User u WHERE u.email = :email"
+    ),
+    @NamedQuery(
+            name = "findByOrganizationId",
+            query = "SELECT s FROM User u WHERE u.organizationId = :organizationId"
+    ),
+    @NamedQuery(
+            name = "findByIsMainContact",
+            query = "SELECT s FROM User u WHERE u.isMainContact = :isMainContact"
+    )
+})
+
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
+
     private String firstName;
     private String lastName;
     private String email;
@@ -32,7 +62,7 @@ public class User implements Serializable {
 
     public User() {
     }
-    
+
     public User(String firstName, String lastName, String email, String password, long organizationId, boolean isMainContact) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -96,5 +126,12 @@ public class User implements Serializable {
 
     public void setOrganizationId(long organizationId) {
         this.organizationId = organizationId;
+    }
+
+    @Override
+    public String toString() {
+        return "User : " + id + ", " + firstName + " " + lastName
+                + " (" + email + ") "
+                + (isMainContact ? ", Main contact" : "");
     }
 }
