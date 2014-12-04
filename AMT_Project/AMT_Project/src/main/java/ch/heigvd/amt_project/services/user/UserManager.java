@@ -5,8 +5,7 @@
  */
 package ch.heigvd.amt_project.services.user;
 
-import ch.heigvd.amt_project.services.sensor.*;
-import ch.heigvd.amt_project.model.Sensor;
+import ch.heigvd.amt_project.model.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,64 +19,141 @@ import javax.ejb.Singleton;
  * @author
  */
 @Singleton
-public class UserManager implements SensorManagerLocal {
+public class UserManager implements UserManagerLocal {
 
-    private Map<Long, Sensor> sensors = new HashMap<>();
+    private Map<Long, User> users = new HashMap<>();
 
-    public UserManager() {
+    public UserManager()
+    {
+        // ici on peut mettre des users en dur
+    }
+    
+    @Override
+    public List<User> findAllUsers()
+    {
+        return new ArrayList(users.values());
     }
 
     @Override
-    public Sensor findSensorById(long id) {
-        Sensor sensor = sensors.get(id);
-        return sensor;
+    public User findUserById(long id)
+    {
+        User user = users.get(id);
+        return user;
     }
-
+    
     @Override
-    public List<Sensor> findSensorByParameters(long id, String type) {
-        List<Sensor> sensorsByParam = new LinkedList<>();
-        Iterator it = sensors.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
-            Sensor current = (Sensor) pairs.getValue();
-            if ((id != 0) && !type.equals("null")) {
-                if(current.getOrganizationId() == id && current.getType().equals(type)) {
-                    sensorsByParam.add(current);
-                }
-            } else if((id != 0) && type.equals("null")) {
-                if(current.getOrganizationId() == id) {
-                    sensorsByParam.add(current);
-                }
-            } else if((id == 0) && !type.equals("null")) {
-                if(current.getType().equals(type)) {
-                    sensorsByParam.add(current);
-                }
+    public List<User> findUserByFirstName(String firstName)
+    {
+        List<User> uList = new ArrayList<>();        
+        Iterator it = users.entrySet().iterator();
+        
+        while (it.hasNext())
+        {
+            User currentU = (User) it.next();
+            
+            if(currentU.getFirstName().equals(firstName))
+            {
+                uList.add(currentU);
             }
         }
-        return sensorsByParam;
-    }
-
-    @Override
-    public List<Sensor> findAllSensors() {
-        return new ArrayList(sensors.values());
-    }
-
-    @Override
-    public long addSensor(Sensor sensor) {
-        sensor.setId(sensors.size() + 1);
-        sensors.put(sensor.getId(), sensor);
         
-        return sensor.getId();
+        return uList;
+    }
+    
+    @Override
+    public List<User> findUserByLastName(String LastName)
+    {
+        List<User> uList = new ArrayList<>();        
+        Iterator it = users.entrySet().iterator();
+        
+        while (it.hasNext())
+        {
+            User currentU = (User) it.next();
+            
+            if(currentU.getLastName().equals(LastName))
+            {
+                uList.add(currentU);
+            }
+        }
+        
+        return uList;
     }
 
     @Override
-    public void updateSensor(Sensor sensor) {
-        sensors.put(sensor.getId(), sensor);
+    public List<User> findUserByEmail(String email)
+    {
+        List<User> uList = new ArrayList<>();        
+        Iterator it = users.entrySet().iterator();
+        
+        while (it.hasNext())
+        {
+            User currentU = (User) it.next();
+            
+            if(currentU.getEmail().equals(email))
+            {
+                uList.add(currentU);
+            }
+        }
+        
+        return uList;
     }
 
     @Override
-    public void deleteSensor(long id) {
-        sensors.remove(id);
+    public List<User> findUserByOrganizationId(long orgaId)
+    {
+        List<User> uList = new ArrayList<>();        
+        Iterator it = users.entrySet().iterator();
+        
+        while (it.hasNext())
+        {
+            User currentU = (User) it.next();
+            
+            if(currentU.getOrganizationId() == orgaId)
+            {
+                uList.add(currentU);
+            }
+        }
+        
+        return uList;
     }
 
+    @Override
+    public List<User> findContactByOrganizationId(long orgaId)
+    {
+        List<User> uList = new ArrayList<>();        
+        Iterator it = users.entrySet().iterator();
+        
+        while (it.hasNext())
+        {
+            User currentU = (User) it.next();
+            
+            if(currentU.isIsMainContact() && currentU.getOrganizationId() == orgaId)
+            {
+                uList.add(currentU);
+            }
+        }
+        
+        return uList;
+    }
+    
+    @Override
+    public long addUser(User user)
+    {
+        user.setId(users.size()+1);
+        users.put(user.getId(), user);
+        
+        return user.getId();
+    }
+
+    @Override
+    public void updateUser(User user)
+    {
+        users.put(user.getId(), user);
+    }
+
+    @Override
+    public void deleteUser(long id)
+    {
+        users.remove(id);
+    }
 }

@@ -13,12 +13,15 @@ import java.util.List;
  * @author
  */
 public interface UserManagerLocal {
-    
-    public User findUserById(long id);
-    
-    public List<User> findUserByParameters(long organizationId, boolean isMainContact);
-    
+        
     public List<User> findAllUsers();
+
+    public User findUserById(long id);
+    public List<User> findUserByFirstName(String firstName);
+    public List<User> findUserByLastName(String LastName);
+    public List<User> findUserByEmail(String email);
+    public List<User> findUserByOrganizationId(long orgaId);
+    public List<User> findContactByOrganizationId(long orgaId);
     
     public long addUser(User user);
     

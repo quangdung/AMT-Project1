@@ -34,7 +34,7 @@ public class SensorManager implements SensorManagerLocal {
 
     @Override
     public List<Sensor> findSensorByParameters(long id, String type) {
-        List<Sensor> sensorsByParam = new LinkedList<>();
+        List<Sensor> sensorsByParam = new ArrayList<>();
         Iterator it = sensors.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
