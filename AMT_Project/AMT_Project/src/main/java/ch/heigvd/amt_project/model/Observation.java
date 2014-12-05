@@ -6,6 +6,7 @@
 package ch.heigvd.amt_project.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,46 +19,78 @@ import javax.persistence.Table;
  *
  * @author
  */
-
 @NamedQueries({
     @NamedQuery(
-        name="findById",
-        query="SELECT s FROM Sensor s WHERE s.id = :id"
+            name = "findById",
+            query = "SELECT o FROM Observation o WHERE o.id = :id"
     ),
     @NamedQuery(
-        name="findByOrganizationId",
-        query="SELECT s FROM Sensor s WHERE s.organizationId = :organizationId"
+            name = "findByName",
+            query = "SELECT o FROM Observation o WHERE o.name = :name"
     ),
     @NamedQuery(
-        name="findByType",
-        query="SELECT s FROM Sensor s WHERE s.type = :type"
-    ),
-    @NamedQuery(
-        name="findAll",
-        query="SELECT s FROM Sensor s"
-    ),
+            name = "findBySensorId",
+            query = "SELECT o FROM Observation o WHERE o.sensorId = :sensorId"
+    )
 })
 
 @Entity
-@Table(name="sensors")
+@Table(name = "observations")
 public class Observation implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String description;
-    private String type;
-    private long organizationId;
-    
-    public Observation() { 
+    private String name;
+    private int value;
+    private Date time;
+    private long sensorId;
+
+    public Observation() {
     }
-    
-    public Observation(String description, String type, long organizationId) {
-        this.description = description;
-        this.type = type;
-        this.organizationId = organizationId;
+
+    public Observation(long id, String name, int value, Date time, long sensorId) {
+        this.id = id;
+        this.name = name;
+        this.value = value;
+        this.time = time;
+        this.sensorId = sensorId;
     }
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public long getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(long sensorId) {
+        this.sensorId = sensorId;
+    }
+
     public long getId() {
         return id;
     }
@@ -66,32 +99,8 @@ public class Observation implements Serializable {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(long organizationId) {
-        this.organizationId = organizationId;
-    }
-    
     @Override
     public String toString() {
-        return "Sensor #" + id + ", " + description + ": " + type;
+        return "";
     }
 }

@@ -20,44 +20,73 @@ import javax.persistence.Table;
  */
 
 @NamedQueries({
-    @NamedQuery(
+     @NamedQuery(
         name="findById",
-        query="SELECT s FROM Sensor s WHERE s.id = :id"
+        query="SELECT f FROM Fact f WHERE f.id = :id"
     ),
     @NamedQuery(
-        name="findByOrganizationId",
-        query="SELECT s FROM Sensor s WHERE s.organizationId = :organizationId"
+        name="findByName",
+        query="SELECT f FROM Fact f WHERE f.name = :name"
     ),
     @NamedQuery(
         name="findByType",
-        query="SELECT s FROM Sensor s WHERE s.type = :type"
+        query="SELECT f FROM Fact f WHERE f.type = :type"
+    ),
+    @NamedQuery(
+        name="findByIsPublic",
+        query="SELECT f FROM Fact f WHERE f.isPublic = :isPublic"
+    ),
+    @NamedQuery(
+        name="findByOrganizationId",
+        query="SELECT f FROM Fact f WHERE f.organizationId = :organizationId"
     ),
     @NamedQuery(
         name="findAll",
-        query="SELECT s FROM Sensor s"
-    ),
+        query="SELECT o FROM Organization o"
+    )
 })
 
 @Entity
-@Table(name="sensors")
+@Table(name="facts")
 public class Fact implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String description;
+    private String name;
     private String type;
+    private String description;
+    private boolean isPublic;
     private long organizationId;
     
     public Fact() { 
     }
-    
-    public Fact(String description, String type, long organizationId) {
-        this.description = description;
+
+    public Fact(long id, String name, String type, String description, boolean isPublic, long organizationId) {
+        this.id = id;
+        this.name = name;
         this.type = type;
+        this.description = description;
+        this.isPublic = isPublic;
         this.organizationId = organizationId;
     }
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
     public long getId() {
         return id;
     }

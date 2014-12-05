@@ -33,15 +33,19 @@ import javax.persistence.Table;
     ),
     @NamedQuery(
             name = "findByEmail",
-            query = "SELECT s FROM User u WHERE u.email = :email"
+            query = "SELECT u FROM User u WHERE u.email = :email"
     ),
     @NamedQuery(
             name = "findByOrganizationId",
-            query = "SELECT s FROM User u WHERE u.organizationId = :organizationId"
+            query = "SELECT u FROM User u WHERE u.organizationId = :organizationId"
     ),
     @NamedQuery(
             name = "findByIsMainContact",
-            query = "SELECT s FROM User u WHERE u.isMainContact = :isMainContact"
+            query = "SELECT u FROM User u WHERE u.isMainContact = true AND u.organizationId = :organizationId"
+    ),
+    @NamedQuery(
+            name = "findAll",
+            query = "SELECT u FROM User u"
     )
 })
 
@@ -63,7 +67,8 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, long organizationId, boolean isMainContact) {
+    public User(long id, String firstName, String lastName, String email, String password, long organizationId, boolean isMainContact) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -71,6 +76,7 @@ public class User implements Serializable {
         this.organizationId = organizationId;
         this.isMainContact = isMainContact;
     }
+
 
     public long getId() {
         return id;

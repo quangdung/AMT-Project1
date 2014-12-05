@@ -6,6 +6,8 @@
 package ch.heigvd.amt_project.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,8 +38,8 @@ import javax.persistence.Table;
             query = "SELECT s FROM Sensor s WHERE s.organizationId = :organizationId"
     ),
     @NamedQuery(
-            name = "findByPublicSensor",
-            query = "SELECT s FROM Sensor s WHERE s.publicSensor = :publicSensor"
+            name = "findByIsPublic",
+            query = "SELECT s FROM Sensor s WHERE s.isPublic = :isPublic"
     ),
     @NamedQuery(
             name = "findAll",
@@ -57,18 +59,20 @@ public class Sensor implements Serializable {
     private String description;
     private String type;
     private long organizationId;
-    private boolean publicSensor;
+    private boolean isPublic;
 
     public Sensor() {
     }
 
-    public Sensor(String name, String description, String type, long organizationId, boolean publicSensor) {
+    public Sensor(long id, String name, String description, String type, long organizationId, boolean isPublic) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;
         this.organizationId = organizationId;
-        this.publicSensor = publicSensor;
+        this.isPublic = isPublic;
     }
+
 
     public String getName() {
         return name;
@@ -78,12 +82,12 @@ public class Sensor implements Serializable {
         this.name = name;
     }
 
-    public boolean isPublicSensor() {
-        return publicSensor;
+    public boolean isIsPublic() {
+        return isPublic;
     }
 
-    public void setPublicSensor(boolean publicSensor) {
-        this.publicSensor = publicSensor;
+    public void setIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     public long getId() {
@@ -121,6 +125,6 @@ public class Sensor implements Serializable {
     @Override
     public String toString() {
         return "Sensor #" + id + ", " + name + ", " + description + ", " + type 
-                + (publicSensor ? ", public" : "");
+                + (isPublic ? ", public" : "");
     }
 }

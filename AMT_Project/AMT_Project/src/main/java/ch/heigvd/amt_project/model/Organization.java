@@ -22,40 +22,68 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
         name="findById",
-        query="SELECT s FROM Sensor s WHERE s.id = :id"
+        query="SELECT o FROM Organization o WHERE o.id = :id"
     ),
     @NamedQuery(
-        name="findByOrganizationId",
-        query="SELECT s FROM Sensor s WHERE s.organizationId = :organizationId"
+        name="findBySensorId",
+        query="SELECT o FROM Organization o WHERE o.sensorId = :sensorId"
     ),
     @NamedQuery(
-        name="findByType",
-        query="SELECT s FROM Sensor s WHERE s.type = :type"
+        name="findByFactId",
+        query="SELECT o FROM Organization o WHERE o.factId = :factId"
     ),
     @NamedQuery(
         name="findAll",
-        query="SELECT s FROM Sensor s"
-    ),
+        query="SELECT o FROM Organization o"
+    )
 })
 
 @Entity
-@Table(name="sensors")
+@Table(name="organizations")
 public class Organization implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private String name;
     private String description;
-    private String type;
-    private long organizationId;
+    private long sensorId;
+    private long factId;
+    
     
     public Organization() { 
     }
-    
-    public Organization(String description, String type, long organizationId) {
+
+    public Organization(long id, String name, String description, long sensorId, long factId) {
+        this.id = id;
+        this.name = name;
         this.description = description;
-        this.type = type;
-        this.organizationId = organizationId;
+        this.sensorId = sensorId;
+        this.factId = factId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(long sensorId) {
+        this.sensorId = sensorId;
+    }
+
+    public long getFactId() {
+        return factId;
+    }
+
+    public void setFactId(long factId) {
+        this.factId = factId;
     }
     
     public long getId() {
@@ -73,25 +101,9 @@ public class Organization implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(long organizationId) {
-        this.organizationId = organizationId;
-    }
     
     @Override
     public String toString() {
-        return "Sensor #" + id + ", " + description + ": " + type;
+        return "";
     }
 }
