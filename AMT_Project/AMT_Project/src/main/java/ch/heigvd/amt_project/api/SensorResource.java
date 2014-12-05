@@ -45,11 +45,11 @@ public class SensorResource {
         
         List<Sensor> sensors = new ArrayList<>();
         
-        if(organizationId != 0 || !type.equals("null")) {
-            sensors = sensorsManager.findSensorByParameters(organizationId, type);
-        } else {
+//        if(organizationId != 0 || !type.equals("null")) {
+//            sensors = sensorsManager.findSensorByParameters(organizationId, type);
+//        } else {
             sensors = sensorsManager.findAllSensors();
-        }
+//        }
         
         List<SensorDTO> result = new ArrayList<>();
         

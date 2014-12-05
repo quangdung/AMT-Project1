@@ -27,7 +27,7 @@ import javax.persistence.Table;
     ),
     @NamedQuery(
             name = "findByName",
-            query = "SELELCT s FROM Sensor s WHERE s.name = :name"
+            query = "SELECT s FROM Sensor s WHERE s.name = :name"
     ),
     @NamedQuery(
             name = "findByType",

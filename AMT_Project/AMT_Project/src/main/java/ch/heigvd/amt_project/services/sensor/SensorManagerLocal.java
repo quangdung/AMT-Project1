@@ -16,13 +16,13 @@ public interface SensorManagerLocal {
     
     public Sensor findSensorById(long id);
     
-    public List<Sensor> findSensorByParameters(long id, String type);
+//    public List<Sensor> findSensorByParameters(long id, String type);
     
     public List<Sensor> findAllSensors();
     
-    public long addSensor(Sensor sensor);
-    
-    public void updateSensor(Sensor sensor);
-    
-    public void deleteSensor(long id);
+//    public long addSensor(Sensor sensor);
+//    
+//    public void updateSensor(Sensor sensor);
+//    
+//    public void deleteSensor(long id);
 }
