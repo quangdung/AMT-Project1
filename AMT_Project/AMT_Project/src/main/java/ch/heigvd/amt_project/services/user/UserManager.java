@@ -40,7 +40,7 @@ public class UserManager implements UserManagerLocal {
 
     @Override
     public List<User> readUserByFirstName(String firstName) {
-         return em.createNamedQuery("findUsersByFisrtName")
+         return em.createNamedQuery("findUsersByFirstName")
                 .setParameter("firstName", firstName)
                 .getResultList();
     }

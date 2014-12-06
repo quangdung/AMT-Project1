@@ -18,7 +18,7 @@ import javax.persistence.*;
     ),
     @NamedQuery(
             name = "findUsersByFirstName",
-            query = "SELECT u FROM User u WHERE u.fisrtName LIKE :firstName"
+            query = "SELECT u FROM User u WHERE u.firstName LIKE :firstName"
     ),
     @NamedQuery(
             name = "findUsersByLastName",
