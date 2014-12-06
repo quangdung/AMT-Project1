@@ -6,15 +6,8 @@
 package ch.heigvd.amt_project.model;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import java.util.*;
+import javax.persistence.*;
 
 /**
  *
@@ -26,24 +19,24 @@ import javax.persistence.Table;
             query = "SELECT s FROM Sensor s WHERE s.id = :id"
     ),
     @NamedQuery(
+            name = "findAll",
+            query = "SELECT s FROM Sensor s"
+    ),
+    @NamedQuery(
             name = "findByName",
-            query = "SELECT s FROM Sensor s WHERE s.name = :name"
+            query = "SELECT s FROM Sensor s WHERE s.name LIKE :name"
     ),
     @NamedQuery(
             name = "findByType",
-            query = "SELECT s FROM Sensor s WHERE s.type = :type"
+            query = "SELECT s FROM Sensor s WHERE s.type LIKE :type"
     ),
     @NamedQuery(
             name = "findByOrganizationId",
             query = "SELECT s FROM Sensor s WHERE s.organizationId = :organizationId"
     ),
     @NamedQuery(
-            name = "findByIsPublic",
-            query = "SELECT s FROM Sensor s WHERE s.isPublic = :isPublic"
-    ),
-    @NamedQuery(
-            name = "findAll",
-            query = "SELECT s FROM Sensor s"
+            name = "findByPublicSensor",
+            query = "SELECT s FROM Sensor s WHERE s.publicSensor = true"
     )
 })
 
@@ -55,12 +48,21 @@ public class Sensor implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "name")
     private String name;
-    private String description;
-    private String type;
-    private long organizationId;
-    private boolean isPublic;
 
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "type")
+    private String type;
+
+    @Column(name = "organization_id")
+    private long organizationId;
+
+    @Column(name = "public_sensor")
+    private boolean publicSensor;
+    
     public Sensor() {
     }
 
@@ -70,10 +72,9 @@ public class Sensor implements Serializable {
         this.description = description;
         this.type = type;
         this.organizationId = organizationId;
-        this.isPublic = isPublic;
+        this.publicSensor = isPublic;
     }
-
-
+ 
     public String getName() {
         return name;
     }
@@ -82,12 +83,12 @@ public class Sensor implements Serializable {
         this.name = name;
     }
 
-    public boolean isIsPublic() {
-        return isPublic;
+    public boolean isPublicSensor() {
+        return publicSensor;
     }
 
-    public void setIsPublic(boolean isPublic) {
-        this.isPublic = isPublic;
+    public void setPublicSensor(boolean publicSensor) {
+        this.publicSensor = publicSensor;
     }
 
     public long getId() {
@@ -124,7 +125,7 @@ public class Sensor implements Serializable {
 
     @Override
     public String toString() {
-        return "Sensor #" + id + ", " + name + ", " + description + ", " + type 
-                + (isPublic ? ", public" : "");
+        return "Sensor #" + id + ", " + name + ", " + description + ", " + type
+                + (publicSensor ? ", public" : "");
     }
 }
