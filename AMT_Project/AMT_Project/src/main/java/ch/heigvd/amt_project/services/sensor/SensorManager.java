@@ -4,8 +4,7 @@ package ch.heigvd.amt_project.services.sensor;
 import ch.heigvd.amt_project.model.Sensor;
 import java.util.List;
 import javax.ejb.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 
 /**
  *
@@ -75,15 +74,17 @@ public class SensorManager implements SensorManagerLocal {
     }
 
     @Override
-    public List<Sensor> readIsPublic() {
+    public List<Sensor> readPublicSensor() {
         return em.createNamedQuery("findByPublicSensor")
-                .setParameter("publicSensor", true)
                 .getResultList();
     }
 
     @Override
     public Sensor update(Sensor sensor) {
-        return em.merge(sensor);
+        Sensor s = em.merge(sensor);
+        em.flush();
+        
+        return s;
     }
 
     @Override

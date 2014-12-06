@@ -1,82 +1,81 @@
-///*
-// * To change this license header, choose License Headers in Project Properties.
-// * To change this template file, choose Tools | Templates
-// * and open the template in the editor.
-// */
-//package ch.heigvd.amt_project.services.fact;
-//
-//import ch.heigvd.amt_project.model.Sensor;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.Iterator;
-//import java.util.LinkedList;
-//import java.util.List;
-//import java.util.Map;
-//import javax.ejb.Singleton;
-//
-///**
-// *
-// * @author
-// */
-//@Singleton
-//public class FactManager implements FactManagerLocal {
-//
-//    private Map<Long, Sensor> sensors = new HashMap<>();
-//
-//    public FactManager() {
-//    }
-//
-//    @Override
-//    public Sensor findSensorById(long id) {
-//        Sensor sensor = sensors.get(id);
-//        return sensor;
-//    }
-//
-//    @Override
-//    public List<Sensor> findSensorByParameters(long id, String type) {
-//        List<Sensor> sensorsByParam = new LinkedList<>();
-//        Iterator it = sensors.entrySet().iterator();
-//        while (it.hasNext()) {
-//            Map.Entry pairs = (Map.Entry) it.next();
-//            Sensor current = (Sensor) pairs.getValue();
-//            if ((id != 0) && !type.equals("null")) {
-//                if(current.getOrganizationId() == id && current.getType().equals(type)) {
-//                    sensorsByParam.add(current);
-//                }
-//            } else if((id != 0) && type.equals("null")) {
-//                if(current.getOrganizationId() == id) {
-//                    sensorsByParam.add(current);
-//                }
-//            } else if((id == 0) && !type.equals("null")) {
-//                if(current.getType().equals(type)) {
-//                    sensorsByParam.add(current);
-//                }
-//            }
-//        }
-//        return sensorsByParam;
-//    }
-//
-//    @Override
-//    public List<Sensor> findAllSensors() {
-//        return new ArrayList(sensors.values());
-//    }
-//
-//    @Override
-//    public long addSensor(Sensor sensor) {
-//        sensor.setId(sensors.size() + 1);
-//        sensors.put(sensor.getId(), sensor);
-//        
-//        return sensor.getId();
-//    }
-//
-//    @Override
-//    public void updateSensor(Sensor sensor) {
-//        sensors.put(sensor.getId(), sensor);
-//    }
-//
-//    @Override
-//    public void deleteSensor(long id) {
-//        sensors.remove(id);
-//    }
-//
-//}
+package ch.heigvd.amt_project.services.fact;
+
+import ch.heigvd.amt_project.model.Fact;
+import java.util.*;
+import javax.ejb.Singleton;
+import javax.persistence.*;
+
+/**
+ *
+ * @author
+ */
+@Singleton
+public class FactManager implements FactManagerLocal {
+    @PersistenceContext
+    public EntityManager em;
+    
+    public FactManager() {
+    }
+
+    @Override
+    public long create(Fact fact) {
+        em.persist(fact);
+        em.flush();
+        
+        return fact.getId();
+    }
+    
+    @Override
+    public List<Fact> read() {
+        return em.createNamedQuery("findAll")
+                .getResultList();
+    }
+    
+    @Override
+    public Fact read(long factId) {
+        return (Fact) em.createNamedQuery("findById")
+                .setParameter("id", factId)
+                .getSingleResult();
+    }
+    
+    @Override
+    public List<Fact> readByName(String factName) {
+        return em.createNamedQuery("findByName")
+                .setParameter("name", factName)
+                .getResultList();
+    }
+
+    @Override
+    public List<Fact> readByType(String type) {
+        return em.createNamedQuery("findByType")
+                .setParameter("type", type)
+                .getResultList();
+    }
+
+    @Override
+    public List<Fact> readByOrgId(long orgId) {
+        return em.createNamedQuery("findByOrganizationId")
+                .setParameter("organizationId", orgId)
+                .getResultList();
+    }
+
+    @Override
+    public List<Fact> readPublicFact() {
+        return em.createNamedQuery("findByPublicFact")
+                .getResultList();
+    }
+
+    @Override
+    public Fact update(Fact fact) {
+        Fact s = em.merge(fact);
+        em.flush();
+        
+        return s;
+    }
+
+    @Override
+    public void delete(Fact fact) {
+        em.remove(fact);
+        em.flush();
+    }
+}

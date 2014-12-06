@@ -15,8 +15,8 @@ public interface UserManagerLocal {
     public List<User> readUserByFirstName(String firstName);
     public List<User> readUserByLastName(String lastName);
     public List<User> readUserByEmail(String email);
-    public List<User> readUserByOrganizationId(long orgId);
-    public List<User> readContactByOrganizationId(long orgId);
+    public List<User> readUserByOrgId(long orgId);
+    public List<User> readContactByOrgId(long orgId);
     
     public User update(User user);
 

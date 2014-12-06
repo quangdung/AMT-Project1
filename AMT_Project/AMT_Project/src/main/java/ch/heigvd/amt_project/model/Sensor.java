@@ -32,11 +32,7 @@ import javax.persistence.*;
     ),
     @NamedQuery(
             name = "findByOrganizationId",
-            query = "SELECT s FROM Sensor s WHERE s.organizationId = :organizationId"
-    ),
-    @NamedQuery(
-            name = "findByPublicSensor",
-            query = "SELECT s FROM Sensor s WHERE s.publicSensor = true"
+            query = "SELECT s FROM Sensor s WHERE s.organizationId = :orgId"
     ),
     @NamedQuery(
             name = "findByPublicSensor",
@@ -66,7 +62,7 @@ public class Sensor implements Serializable {
 
     @Column(name = "public_sensor")
     private boolean publicSensor;
-    
+
     public Sensor() {
     }
 
@@ -78,7 +74,7 @@ public class Sensor implements Serializable {
         this.organizationId = organizationId;
         this.publicSensor = isPublic;
     }
- 
+
     public String getName() {
         return name;
     }
@@ -129,7 +125,8 @@ public class Sensor implements Serializable {
 
     @Override
     public String toString() {
-        return "Sensor #" + id + ", " + name + ", " + description + ", " + type
+        return "Sensor #" + id + ", " + name + ", " + description + ", " + type + ", "
+                + ", " + organizationId
                 + (publicSensor ? ", public" : "");
     }
 }

@@ -17,7 +17,7 @@ public interface SensorManagerLocal {
     public List<Sensor> readByName(String name);
     public List<Sensor> readByType(String type);
     public List<Sensor> readByOrgId(long id);
-    public List<Sensor> readIsPublic();
+    public List<Sensor> readPublicSensor();
     
     public Sensor update(Sensor sensor);
 

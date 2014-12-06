@@ -1,31 +1,96 @@
-///*
-// * To change this license header, choose License Headers in Project Properties.
-// * To change this template file, choose Tools | Templates
-// * and open the template in the editor.
-// */
-//package ch.heigvd.amt_project.services.user;
-//
-//import ch.heigvd.amt_project.model.User;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.Iterator;
-//import java.util.LinkedList;
-//import java.util.List;
-//import java.util.Map;
-//import javax.ejb.Singleton;
-//
-///**
-// *
-// * @author
-// */
-//@Singleton
-//public class UserManager implements UserManagerLocal {
-//
-//    private Map<Long, User> users = new HashMap<>();
+package ch.heigvd.amt_project.services.user;
+
+import ch.heigvd.amt_project.model.User;
+import java.util.*;
+import javax.ejb.Singleton;
+import javax.persistence.*;
+
+/**
+ *
+ * @author
+ */
+@Singleton
+public class UserManager implements UserManagerLocal {
+
+    @PersistenceContext
+    public EntityManager em;
+    
+    public UserManager() {}
+
+    @Override
+    public long create(User user) {
+        em.persist(user);
+        em.flush();
+        
+        return user.getId();
+    }
+
+    @Override
+    public List<User> read() {
+        return em.createNamedQuery("findAll")
+                .getResultList();
+    }
+
+    @Override
+    public User read(long id) {
+        return (User) em.createNamedQuery("findById")
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
+    @Override
+    public List<User> readUserByFirstName(String firstName) {
+         return em.createNamedQuery("findByFisrtName")
+                .setParameter("firstName", firstName)
+                .getResultList();
+    }
+
+    @Override
+    public List<User> readUserByLastName(String lastName) {
+         return em.createNamedQuery("findByLastName")
+                .setParameter("lastName", lastName)
+                .getResultList();
+    }
+
+    @Override
+    public List<User> readUserByEmail(String email) {
+        return em.createNamedQuery("findByEmail")
+                .setParameter("email", email)
+                .getResultList();
+    }
+
+    @Override
+    public List<User> readUserByOrgId(long orgId) {
+        return em.createNamedQuery("findByOrgId")
+                .setParameter("orgId", orgId)
+                .getResultList();
+    }
+
+    @Override
+    public List<User> readContactByOrgId(long orgId) {
+        return em.createNamedQuery("findContactByOrgId")
+                .setParameter("orgId", orgId)
+                .getResultList();
+    }
+
+    @Override
+    public User update(User user) {
+        User u = em.merge(user);
+        em.flush();
+        
+        return u;
+    }
+
+    @Override
+    public void delete(User user) {
+        em.remove(user);
+        em.flush();
+    }
+
+}
 //
 //    public UserManager()
 //    {
-//        // ici on peut mettre des users en dur
 //    }
 //    
 //    @Override
