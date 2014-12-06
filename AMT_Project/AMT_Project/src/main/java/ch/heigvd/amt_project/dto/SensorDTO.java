@@ -31,8 +31,8 @@ public class SensorDTO {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String desc) {
+        this.description = desc;
     }
 
     public String getType() {
@@ -47,7 +47,7 @@ public class SensorDTO {
         return organizationId;
     }
 
-    public void setOrganizationId(long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganizationId(long orgId) {
+        this.organizationId = orgId;
     }
 }

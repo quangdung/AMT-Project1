@@ -45,11 +45,7 @@ public class SensorResource {
         
         List<Sensor> sensors = new ArrayList<>();
         
-//        if(organizationId != 0 || !type.equals("null")) {
-//            sensors = sensorsManager.findSensorByParameters(organizationId, type);
-//        } else {
-            sensors = sensorsManager.findAll();
-//        }
+        sensors = sensorsManager.read();
         
         List<SensorDTO> result = new ArrayList<>();
         
@@ -64,7 +60,7 @@ public class SensorResource {
     @GET
     @Produces("application/json")
     public SensorDTO getSensorDetails(@PathParam("id") long id) {
-        Sensor sensor = sensorsManager.findById(id);
+        Sensor sensor = sensorsManager.read(id);
         return toDTO(sensor);
     }
 
