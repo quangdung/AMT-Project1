@@ -27,50 +27,50 @@ public class UserManager implements UserManagerLocal {
 
     @Override
     public List<User> read() {
-        return em.createNamedQuery("findAll")
+        return em.createNamedQuery("findAllUsers")
                 .getResultList();
     }
 
     @Override
     public User read(long id) {
-        return (User) em.createNamedQuery("findById")
+        return (User) em.createNamedQuery("findUserById")
                 .setParameter("id", id)
                 .getSingleResult();
     }
 
     @Override
     public List<User> readUserByFirstName(String firstName) {
-         return em.createNamedQuery("findByFisrtName")
+         return em.createNamedQuery("findUsersByFisrtName")
                 .setParameter("firstName", firstName)
                 .getResultList();
     }
 
     @Override
     public List<User> readUserByLastName(String lastName) {
-         return em.createNamedQuery("findByLastName")
+         return em.createNamedQuery("findUsersByLastName")
                 .setParameter("lastName", lastName)
                 .getResultList();
     }
 
     @Override
     public List<User> readUserByEmail(String email) {
-        return em.createNamedQuery("findByEmail")
+        return em.createNamedQuery("findUsersByEmail")
                 .setParameter("email", email)
                 .getResultList();
     }
 
     @Override
     public List<User> readUserByOrgId(long orgId) {
-        return em.createNamedQuery("findByOrgId")
+        return em.createNamedQuery("findUsersByOrgId")
                 .setParameter("orgId", orgId)
                 .getResultList();
     }
 
     @Override
-    public List<User> readContactByOrgId(long orgId) {
-        return em.createNamedQuery("findContactByOrgId")
+    public User readContactByOrgId(long orgId) {
+        return (User) em.createNamedQuery("findContactByOrgId")
                 .setParameter("orgId", orgId)
-                .getResultList();
+                .getSingleResult();
     }
 
     @Override

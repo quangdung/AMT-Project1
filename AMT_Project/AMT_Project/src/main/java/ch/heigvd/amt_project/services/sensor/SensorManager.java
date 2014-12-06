@@ -41,41 +41,41 @@ public class SensorManager implements SensorManagerLocal {
     
     @Override
     public List<Sensor> read() {
-        return em.createNamedQuery("findAll")
+        return em.createNamedQuery("findAllSensors")
                 .getResultList();
     }
     
     @Override
     public Sensor read(long sensorId) {
-        return (Sensor) em.createNamedQuery("findById")
+        return (Sensor) em.createNamedQuery("findSensorById")
                 .setParameter("id", sensorId)
                 .getSingleResult();
     }
     
     @Override
     public List<Sensor> readByName(String sensorName) {
-        return em.createNamedQuery("findByName")
+        return em.createNamedQuery("findSensorsByName")
                 .setParameter("name", sensorName)
                 .getResultList();
     }
 
     @Override
     public List<Sensor> readByType(String type) {
-        return em.createNamedQuery("findByType")
+        return em.createNamedQuery("findSensorsByType")
                 .setParameter("type", type)
                 .getResultList();
     }
 
     @Override
     public List<Sensor> readByOrgId(long orgId) {
-        return em.createNamedQuery("findByOrganizationId")
+        return em.createNamedQuery("findSensorsByOrganizationId")
                 .setParameter("organizationId", orgId)
                 .getResultList();
     }
 
     @Override
     public List<Sensor> readPublicSensor() {
-        return em.createNamedQuery("findByPublicSensor")
+        return em.createNamedQuery("findSensorsByPublicSensor")
                 .getResultList();
     }
 

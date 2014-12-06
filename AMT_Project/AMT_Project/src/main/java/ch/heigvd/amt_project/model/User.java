@@ -9,27 +9,27 @@ import javax.persistence.*;
  */
 @NamedQueries({
     @NamedQuery(
-            name = "findAll",
+            name = "findAllUsers",
             query = "SELECT u FROM User u"
     ),
     @NamedQuery(
-            name = "findById",
+            name = "findUserById",
             query = "SELECT u FROM User u WHERE u.id = :id"
     ),
     @NamedQuery(
-            name = "findByFirstName",
+            name = "findUsersByFirstName",
             query = "SELECT u FROM User u WHERE u.fisrtName LIKE :firstName"
     ),
     @NamedQuery(
-            name = "findByLastName",
+            name = "findUsersByLastName",
             query = "SELECT u FROM User u WHERE u.lastName LIKE :lastName"
     ),
     @NamedQuery(
-            name = "findByEmail",
+            name = "findUsersByEmail",
             query = "SELECT u FROM User u WHERE u.email LIKE :email"
     ),
     @NamedQuery(
-            name = "findByOrgId",
+            name = "findUsersByOrgId",
             query = "SELECT u FROM User u WHERE u.organizationId = :orgId"
     ),
     @NamedQuery(

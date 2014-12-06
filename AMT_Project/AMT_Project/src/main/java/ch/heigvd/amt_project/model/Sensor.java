@@ -15,27 +15,27 @@ import javax.persistence.*;
  */
 @NamedQueries({
     @NamedQuery(
-            name = "findById",
+            name = "findSensorById",
             query = "SELECT s FROM Sensor s WHERE s.id = :id"
     ),
     @NamedQuery(
-            name = "findAll",
+            name = "findAllSensors",
             query = "SELECT s FROM Sensor s"
     ),
     @NamedQuery(
-            name = "findByName",
+            name = "findSensorsByName",
             query = "SELECT s FROM Sensor s WHERE s.name LIKE :name"
     ),
     @NamedQuery(
-            name = "findByType",
+            name = "findSensorsByType",
             query = "SELECT s FROM Sensor s WHERE s.type LIKE :type"
     ),
     @NamedQuery(
-            name = "findByOrganizationId",
+            name = "findSensorsByOrganizationId",
             query = "SELECT s FROM Sensor s WHERE s.organizationId = :orgId"
     ),
     @NamedQuery(
-            name = "findByPublicSensor",
+            name = "findSensorsByPublicSensor",
             query = "SELECT s FROM Sensor s WHERE s.publicSensor = true"
     )
 })

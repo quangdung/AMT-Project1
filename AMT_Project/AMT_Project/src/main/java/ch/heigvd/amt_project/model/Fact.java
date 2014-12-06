@@ -10,27 +10,27 @@ import javax.persistence.*;
 
 @NamedQueries({
     @NamedQuery(
-            name = "findById",
+            name = "findFactById",
             query = "SELECT f FROM Fact f WHERE f.id = :id"
     ),
     @NamedQuery(
-            name = "findAll",
+            name = "findAllFacts",
             query = "SELECT f FROM Fact f"
     ),
     @NamedQuery(
-            name = "findByName",
+            name = "findFactsByName",
             query = "SELECT f FROM Fact f WHERE f.name LIKE :name"
     ),
     @NamedQuery(
-            name = "findByType",
+            name = "findFactsByType",
             query = "SELECT f FROM Fact f WHERE f.type LIKE :type"
     ),
     @NamedQuery(
-            name = "findByOrganizationId",
+            name = "findFactsByOrganizationId",
             query = "SELECT f FROM Fact f WHERE f.organizationId = :orgId"
     ),
     @NamedQuery(
-            name = "findByPublicSensor",
+            name = "findFactsByPublicFact",
             query = "SELECT f FROM Fact f WHERE f.publicFact = true"
     )
 })

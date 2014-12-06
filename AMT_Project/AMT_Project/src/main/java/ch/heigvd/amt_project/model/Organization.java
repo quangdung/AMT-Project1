@@ -8,16 +8,16 @@ import javax.persistence.*;
  */
 @NamedQueries({
     @NamedQuery(
-        name="findAll",
+        name="findAllOrganizations",
         query="SELECT o FROM Organization o"
     ),
     @NamedQuery(
-        name="findById",
+        name="findOrganizationById",
         query="SELECT o FROM Organization o WHERE o.id = :id"
     ),
     @NamedQuery(
-        name="findBySensorId",
-        query="SELECT o FROM Organization o WHERE o.sensorId = :sensorId"
+        name="findOrganizationsByName",
+        query="SELECT o FROM Organization o WHERE o.name = :name"
     )
 })
 

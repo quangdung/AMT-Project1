@@ -27,20 +27,20 @@ public class OrganizationManager implements OrganizationManagerLocal {
 
     @Override
     public List<Organization> read() {
-        return em.createNamedQuery("findAll")
+        return em.createNamedQuery("findAllOrganizations")
                 .getResultList();
     }
 
     @Override
     public Organization read(long id) {
-        return (Organization) em.createNamedQuery("findById")
+        return (Organization) em.createNamedQuery("findOrganizationById")
                 .setParameter("id", id)
                 .getSingleResult();
     }
 
     @Override
     public List<Organization> readOrgByName(String name) {
-         return em.createNamedQuery("findByName")
+         return em.createNamedQuery("findOrganizationsByName")
                 .setParameter("name", name)
                 .getResultList();
     }
