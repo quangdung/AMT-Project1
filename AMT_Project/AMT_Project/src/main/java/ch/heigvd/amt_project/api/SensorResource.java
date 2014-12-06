@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ch.heigvd.amt_project.api;
 
 import ch.heigvd.amt_project.dto.SensorDTO;
@@ -12,19 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.ws.rs.DefaultValue;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
-/**
- *
- * @author
- */
+
 @Path("sensors")
 @Stateless
 public class SensorResource {
@@ -40,13 +35,9 @@ public class SensorResource {
 
     @GET
     @Produces("application/json")
-    public List<SensorDTO> getAllSensors(@DefaultValue("0") @QueryParam("organizationId") long organizationId,
-                                         @DefaultValue("null") @QueryParam("type") String type) {
-        
-        List<Sensor> sensors = new ArrayList<>();
-        
-        sensors = sensorsManager.read();
-        
+    public List<SensorDTO> getAllSensors()
+    {
+        List<Sensor> sensors = sensorsManager.read();
         List<SensorDTO> result = new ArrayList<>();
         
         for(Sensor sensor : sensors) {
@@ -59,11 +50,51 @@ public class SensorResource {
     @Path("/{id}")
     @GET
     @Produces("application/json")
-    public SensorDTO getSensorDetails(@PathParam("id") long id) {
+    public SensorDTO getSensorDetails(@PathParam("id") long id)
+    {
         Sensor sensor = sensorsManager.read(id);
         return toDTO(sensor);
     }
+    
+    @POST
+    @Consumes("application/json")
+    public long createSensor(SensorDTO dto)
+    {
+        Sensor newSensor = new Sensor();
+        long idSensor = sensorsManager.create(toSensor(dto, newSensor));
+        
+        return idSensor;
+    }
+    
+    @Path("/{id}")
+    @PUT
+    @Consumes("application/json")
+    public void updateSensor(@PathParam("id") long id, SensorDTO dto)
+    {
+        Sensor existing = sensorsManager.read(id);
+        sensorsManager.update(toSensor(dto, existing));
+    }
 
+    @Path("/{id}")
+    @DELETE
+    public void deleteSensor(@PathParam("id") long id)
+    {
+        sensorsManager.read(id);
+        sensorsManager.delete(sensorsManager.read(id));
+    }    
+    
+    private Sensor toSensor(SensorDTO sensorDto, Sensor sensor)
+    {
+        sensor.setId(sensorDto.getId());
+        sensor.setName(sensorDto.getName());
+        sensor.setDescription(sensorDto.getDescription());
+        sensor.setType(sensorDto.getType());
+        sensor.setOrganizationId(sensorDto.getOrganizationId());
+        sensor.setPublicSensor(sensorDto.isPublicSensor());
+        
+        return sensor;
+    }
+    
     private SensorDTO toDTO(Sensor sensor) {
         SensorDTO dto = new SensorDTO();
         dto.setId(sensor.getId());

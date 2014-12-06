@@ -37,6 +37,10 @@ import javax.persistence.*;
     @NamedQuery(
             name = "findByPublicSensor",
             query = "SELECT s FROM Sensor s WHERE s.publicSensor = true"
+    ),
+    @NamedQuery(
+            name = "findByPublicSensor",
+            query = "SELECT s FROM Sensor s WHERE s.publicSensor = true"
     )
 })
 

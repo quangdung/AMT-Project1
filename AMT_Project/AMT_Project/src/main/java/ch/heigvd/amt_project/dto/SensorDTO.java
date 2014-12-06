@@ -1,21 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ch.heigvd.amt_project.dto;
 
-/**
- *
- * @author
- */
 public class SensorDTO {
 
     private long id;
     private String name;
     private String description;
     private String type;
-    public boolean visibility;
+    private boolean publicSensor;
     private long organizationId;
     
    
@@ -25,6 +17,14 @@ public class SensorDTO {
 
     public void setId(long id) {
         this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -41,6 +41,14 @@ public class SensorDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public boolean isPublicSensor() {
+        return publicSensor;
+    }
+
+    public void setPublicSensor(boolean visibility) {
+        this.publicSensor = visibility;
     }
 
     public long getOrganizationId() {
