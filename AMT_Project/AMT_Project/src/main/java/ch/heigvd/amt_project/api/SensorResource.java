@@ -58,9 +58,11 @@ public class SensorResource {
     
     @POST
     @Consumes("application/json")
+    @Produces("application/json")
     public long createSensor(SensorDTO dto)
     {
         Sensor newSensor = new Sensor();
+        
         long idSensor = sensorsManager.create(toSensor(dto, newSensor));
         
         return idSensor;
@@ -85,7 +87,7 @@ public class SensorResource {
     
     private Sensor toSensor(SensorDTO sensorDto, Sensor sensor)
     {
-        sensor.setId(sensorDto.getId());
+//        sensor.setId(sensorDto.getId());
         sensor.setName(sensorDto.getName());
         sensor.setDescription(sensorDto.getDescription());
         sensor.setType(sensorDto.getType());
@@ -98,9 +100,11 @@ public class SensorResource {
     private SensorDTO toDTO(Sensor sensor) {
         SensorDTO dto = new SensorDTO();
         dto.setId(sensor.getId());
+        dto.setName(sensor.getName());
         dto.setDescription(sensor.getDescription());
         dto.setType(sensor.getType());
         dto.setOrganizationId(sensor.getOrganizationId());
+        dto.setPublicSensor(sensor.isPublicSensor());
         return dto;
     }
 }

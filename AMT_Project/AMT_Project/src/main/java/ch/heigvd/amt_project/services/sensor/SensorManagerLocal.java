@@ -10,7 +10,7 @@ public interface SensorManagerLocal {
 
     public long create(Sensor sensor);
 
-    public long create(String description, String type);
+    public long create(long id, String name, String description, String type, long orgId, boolean visible);
 
     public List<Sensor> read();
     public Sensor read(long id);

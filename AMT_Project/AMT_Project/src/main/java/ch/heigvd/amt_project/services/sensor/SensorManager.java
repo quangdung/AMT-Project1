@@ -28,11 +28,15 @@ public class SensorManager implements SensorManagerLocal {
     }
     
     @Override
-    public long create(String description, String type) {
+    public long create(long id, String name, String description, String type, long orgId, boolean visible) {
         Sensor sensor = new Sensor();
+        sensor.setId(id);
+        sensor.setName(name);
         sensor.setDescription(description);
         sensor.setType(type);
-
+        sensor.setOrganizationId(orgId);
+        sensor.setPublicSensor(visible);
+        
         em.persist(sensor);
         em.flush();
 
