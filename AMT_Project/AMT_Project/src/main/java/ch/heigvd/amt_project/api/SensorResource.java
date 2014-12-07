@@ -87,7 +87,7 @@ public class SensorResource {
     
     private Sensor toSensor(SensorDTO sensorDto, Sensor sensor)
     {
-//        sensor.setId(sensorDto.getId());
+        sensor.setId(sensorDto.getId());
         sensor.setName(sensorDto.getName());
         sensor.setDescription(sensorDto.getDescription());
         sensor.setType(sensorDto.getType());
