@@ -20,11 +20,12 @@ public class SensorManager implements SensorManagerLocal {
     public SensorManager() {}
 
     @Override
-    public Sensor create(Sensor sensor) {
+    public long create(Sensor sensor) {
         em.persist(sensor);
         em.flush();
         
-        return sensor;
+//        return sensor;
+        return sensor.getId();
     }
     
     @Override

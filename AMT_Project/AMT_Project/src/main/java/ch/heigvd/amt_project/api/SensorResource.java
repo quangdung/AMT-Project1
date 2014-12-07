@@ -58,14 +58,16 @@ public class SensorResource {
     
     @POST
     @Consumes("application/json")
-    @Produces("application/json")
-    public Sensor createSensor(SensorDTO dto)
+//    @Produces("application/json")
+    public long createSensor(SensorDTO dto)
     {
         Sensor newSensor = new Sensor();
+  
+        long idSensor = sensorsManager.create(toSensor(dto, newSensor));
+//        Sensor sensor = sensorsManager.create(toSensor(dto, newSensor));
         
-        Sensor sensor = sensorsManager.create(toSensor(dto, newSensor));
-        
-        return sensor;
+//        return sensor;
+        return idSensor;
     }
     
     @Path("/{id}")
