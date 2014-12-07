@@ -2,11 +2,13 @@ package ch.heigvd.amt_project.services.observation;
 import ch.heigvd.amt_project.model.Observation;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  *
  * @author
  */
+@Local
 public interface ObservationManagerLocal {
     
     public long create(Observation observation);

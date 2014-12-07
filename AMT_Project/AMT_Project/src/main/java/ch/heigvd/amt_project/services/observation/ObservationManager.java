@@ -60,7 +60,6 @@ public class ObservationManager implements ObservationManagerLocal {
                 .getResultList();
     }
 
-
     @Override
     public Observation update(Observation observation) {
         Observation o = em.merge(observation);

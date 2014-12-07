@@ -5,20 +5,21 @@
  */
 package ch.heigvd.amt_project.dto;
 
+import java.util.Date;
+
 /**
  *
  * @author
  */
+
 public class ObservationDTO {
 
     private long id;
     private String name;
-    private String description;
-    private String type;
-    public boolean visibility;
-    private long organizationId;
-    
-   
+    private int obsValue;
+    private Date creationDate;
+    private long sensorId;
+
     public long getId() {
         return id;
     }
@@ -27,27 +28,37 @@ public class ObservationDTO {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public int getObsValue() {
+        return obsValue;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setObsValue(int obsValue) {
+        this.obsValue = obsValue;
     }
 
-    public long getOrganizationId() {
-        return organizationId;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setOrganizationId(long organizationId) {
-        this.organizationId = organizationId;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
+
+    public long getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(long sensorId) {
+        this.sensorId = sensorId;
+    }
+
+    
 }

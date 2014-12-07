@@ -101,6 +101,16 @@ public class Observation implements Serializable {
 
     public void setObservationId(long sensorId) {
         this.sensorId = sensorId;
+        
+        
+    }
+
+    public long getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(long sensorId) {
+        this.sensorId = sensorId;
     }
 
     

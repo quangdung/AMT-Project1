@@ -5,10 +5,98 @@
  */
 package ch.heigvd.amt_project.api;
 
+import ch.heigvd.amt_project.dto.ObservationDTO;
+import ch.heigvd.amt_project.model.Observation;
+import ch.heigvd.amt_project.services.observation.ObservationManagerLocal;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.*;
+import javax.ws.rs.*;
+
 /**
  *
  * @author
  */
+@Path("observations")
+@Stateless
 public class ObservationResource {
+@EJB
+    ObservationManagerLocal obsManager;
+
+    public ObservationResource() {
+    }
+
+    @GET
+    @Produces("application/json")
+    public List<ObservationDTO> getAllObservations()
+    {
+        List<Observation> obss = obsManager.read();
+        List<ObservationDTO> result = new ArrayList<>();
+        
+        for(Observation obs : obss) {
+            result.add(toDTO(obs));
+        }
+        
+        return result;
+    }
+    
+    @Path("/{id}")
+    @GET
+    @Produces("application/json")
+    public ObservationDTO getObservationDetails(@PathParam("id") long id)
+    {
+        Observation obs = obsManager.read(id);
+        return toDTO(obs);
+    }
+    
+    @POST
+    @Consumes("application/json")
+    public long createObservation(ObservationDTO dto)
+    {
+        Observation newObservation = new Observation();
+  
+        long idObservation = obsManager.create(toObservation(dto, newObservation));
+        
+        return idObservation;
+    }
+    
+    @Path("/{id}")
+    @PUT
+    @Consumes("application/json")
+    public void updateObservation(@PathParam("id") long id, ObservationDTO dto)
+    {
+        Observation existing = obsManager.read(id);
+        obsManager.update(toObservation(dto, existing));
+    }
+
+    @Path("/{id}")
+    @DELETE
+    public void deleteObservation(@PathParam("id") long id)
+    {
+        obsManager.read(id);
+        obsManager.delete(obsManager.read(id));
+    }    
+    
+    private Observation toObservation(ObservationDTO obsDto, Observation obs)
+    {
+        obs.setId(obsDto.getId());
+        obs.setName(obsDto.getName());
+        obs.setObsValue(obsDto.getObsValue());
+        obs.setCreationDate(obsDto.getCreationDate());
+        obs.setSensorId(obsDto.getSensorId());
+        
+        return obs;
+    }
+    
+    private ObservationDTO toDTO(Observation obs) {
+        ObservationDTO dto = new ObservationDTO();
+        dto.setId(obs.getId());
+        dto.setName(obs.getName());
+        dto.setObsValue(obs.getObsValue());
+        dto.setCreationDate(obs.getCreationDate());
+        dto.setSensorId(obs.getSensorId());
+        
+        return dto;
+    }    
     
 }

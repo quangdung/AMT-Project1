@@ -12,13 +12,13 @@ package ch.heigvd.amt_project.dto;
 public class UserDTO {
 
     private long id;
-    private String name;
-    private String description;
-    private String type;
-    public boolean visibility;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
     private long organizationId;
-    
-   
+    private boolean mainContact;
+
     public long getId() {
         return id;
     }
@@ -27,27 +27,53 @@ public class UserDTO {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setDescription(String desc) {
-        this.description = desc;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getType() {
-        return type;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public long getOrganizationId() {
         return organizationId;
     }
 
-    public void setOrganizationId(long orgId) {
-        this.organizationId = orgId;
+    public void setOrganizationId(long organizationId) {
+        this.organizationId = organizationId;
     }
+
+    public boolean isMainContact() {
+        return mainContact;
+    }
+
+    public void setMainContact(boolean mainContact) {
+        this.mainContact = mainContact;
+    }
+
+    
 }

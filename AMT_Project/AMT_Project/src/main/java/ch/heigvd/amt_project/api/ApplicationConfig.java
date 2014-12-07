@@ -23,6 +23,10 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(ch.heigvd.amt_project.api.FactResource.class);
+        resources.add(ch.heigvd.amt_project.api.ObservationResource.class);
+        resources.add(ch.heigvd.amt_project.api.OrganizationResource.class);
         resources.add(ch.heigvd.amt_project.api.SensorResource.class);
+        resources.add(ch.heigvd.amt_project.api.UserResource.class);
     }
 }

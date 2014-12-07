@@ -12,13 +12,13 @@ package ch.heigvd.amt_project.dto;
 public class FactDTO {
 
     private long id;
+
     private String name;
-    private String description;
     private String type;
-    public boolean visibility;
+    private String description;
     private long organizationId;
-    
-   
+    private boolean publicFact;
+
     public long getId() {
         return id;
     }
@@ -27,12 +27,12 @@ public class FactDTO {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getType() {
@@ -43,6 +43,14 @@ public class FactDTO {
         this.type = type;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public long getOrganizationId() {
         return organizationId;
     }
@@ -50,4 +58,14 @@ public class FactDTO {
     public void setOrganizationId(long organizationId) {
         this.organizationId = organizationId;
     }
+
+    public boolean isPublicFact() {
+        return publicFact;
+    }
+
+    public void setPublicFact(boolean publicFact) {
+        this.publicFact = publicFact;
+    }
+    
+    
 }

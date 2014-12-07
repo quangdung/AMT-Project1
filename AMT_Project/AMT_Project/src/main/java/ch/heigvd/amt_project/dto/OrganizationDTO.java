@@ -13,12 +13,7 @@ public class OrganizationDTO {
 
     private long id;
     private String name;
-    private String description;
-    private String type;
-    public boolean visibility;
-    private long organizationId;
-    
-   
+
     public long getId() {
         return id;
     }
@@ -27,27 +22,12 @@ public class OrganizationDTO {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(long organizationId) {
-        this.organizationId = organizationId;
-    }
 }
