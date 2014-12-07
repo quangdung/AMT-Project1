@@ -75,8 +75,9 @@ public class SensorResource {
     @Consumes("application/json")
     public void updateSensor(@PathParam("id") long id, SensorDTO dto)
     {
-        Sensor existing = sensorsManager.read(id);
-        sensorsManager.update(toSensor(dto, existing));
+        Sensor s = new Sensor();
+        s.setId(id);
+        sensorsManager.update(toSensor(dto, s));
     }
 
     @Path("/{id}")
@@ -89,7 +90,7 @@ public class SensorResource {
     
     private Sensor toSensor(SensorDTO sensorDto, Sensor sensor)
     {
-        sensor.setId(sensorDto.getId());
+//        sensor.setId(sensorDto.getId());
         sensor.setName(sensorDto.getName());
         sensor.setDescription(sensorDto.getDescription());
         sensor.setType(sensorDto.getType());
