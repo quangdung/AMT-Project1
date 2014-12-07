@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -86,7 +87,12 @@ public class SensorResource {
     @DELETE
     public void deleteSensor(@PathParam("id") long id)
     {
-        sensorsManager.delete(sensorsManager.read(id));
+        Sensor toDelete = sensorsManager.read(id);
+        
+        if (toDelete != null)
+        {
+            sensorsManager.delete(toDelete);
+        }
     }
     
     private Sensor toSensorUpdate(SensorDTO sensorDto, Sensor sensor)

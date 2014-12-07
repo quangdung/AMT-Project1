@@ -52,9 +52,17 @@ public class SensorManager implements SensorManagerLocal {
     
     @Override
     public Sensor read(long sensorId) {
-        return (Sensor) em.createNamedQuery("findSensorById")
-                .setParameter("id", sensorId)
-                .getSingleResult();
+        
+        try
+        {
+            return (Sensor) em.createNamedQuery("findSensorById")
+                    .setParameter("id", sensorId)
+                    .getSingleResult();
+        }
+        catch (NoResultException ex)
+        {
+            return null;
+        }
     }
     
     @Override
