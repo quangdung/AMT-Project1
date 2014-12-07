@@ -46,6 +46,7 @@ public class Sensor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private long id;
 
     @Column(name = "name")

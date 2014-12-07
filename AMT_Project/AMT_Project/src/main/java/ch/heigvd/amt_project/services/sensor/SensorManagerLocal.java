@@ -8,7 +8,7 @@ import javax.ejb.Local;
 @Local
 public interface SensorManagerLocal {
 
-    public long create(Sensor sensor);
+    public Sensor create(Sensor sensor);
 
     public long create(long id, String name, String description, String type, long orgId, boolean visible);
 
