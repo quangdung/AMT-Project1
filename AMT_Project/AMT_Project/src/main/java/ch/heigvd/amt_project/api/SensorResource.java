@@ -86,7 +86,6 @@ public class SensorResource {
     @DELETE
     public void deleteSensor(@PathParam("id") long id)
     {
-        sensorsManager.read(id);
         sensorsManager.delete(sensorsManager.read(id));
     }
     
