@@ -66,6 +66,16 @@ public class Sensor implements Serializable {
 
     public Sensor() {
     }
+    
+    public Sensor(Sensor s)
+    {
+        this.id = s.id;
+        this.name = s.name;
+        this.description = s.description;
+        this.type = s.type;
+        this.organizationId = s.organizationId;
+        this.publicSensor = s.publicSensor;
+    }
 
     public Sensor(long id, String name, String description, String type, long organizationId, boolean isPublic) {
         this.id = id;

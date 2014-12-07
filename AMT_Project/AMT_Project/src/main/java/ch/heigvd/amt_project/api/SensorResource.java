@@ -73,11 +73,13 @@ public class SensorResource {
     @Path("/{id}")
     @PUT
     @Consumes("application/json")
-    public void updateSensor(@PathParam("id") long id, SensorDTO dto)
+    public Sensor updateSensor(@PathParam("id") long id, SensorDTO dto)
     {
-        Sensor s = new Sensor();
+        Sensor s = new Sensor(sensorsManager.read(id));
         s.setId(id);
-        sensorsManager.update(toSensor(dto, s));
+        sensorsManager.update(toSensorUpdate(dto, s));
+        
+        return s;
     }
 
     @Path("/{id}")
@@ -86,11 +88,33 @@ public class SensorResource {
     {
         sensorsManager.read(id);
         sensorsManager.delete(sensorsManager.read(id));
-    }    
+    }
+    
+    private Sensor toSensorUpdate(SensorDTO sensorDto, Sensor sensor)
+    {
+        if (sensorDto.getName() != null)
+        {
+            sensor.setName(sensorDto.getName());
+        }
+        if (sensorDto.getDescription() != null)
+        {
+            sensor.setDescription(sensorDto.getDescription());
+        }
+        if (sensorDto.getType() != null)
+        {
+            sensor.setType(sensorDto.getType());
+        }
+        if (sensorDto.getOrganizationId() != 0)
+        {
+            sensor.setOrganizationId(sensorDto.getOrganizationId());
+        }
+        sensor.setPublicSensor(sensorDto.isPublicSensor());
+        
+        return sensor;
+    }
     
     private Sensor toSensor(SensorDTO sensorDto, Sensor sensor)
     {
-//        sensor.setId(sensorDto.getId());
         sensor.setName(sensorDto.getName());
         sensor.setDescription(sensorDto.getDescription());
         sensor.setType(sensorDto.getType());
