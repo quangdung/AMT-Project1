@@ -52,17 +52,24 @@ public class Fact implements Serializable {
     @Column(name = "public_fact")
     private boolean publicFact;
     
+    @Column(name = "nb_obs")
+    private long nbObs;
+    
+    @Column(name = "sensor_id")
+    private long sensorId;
+    
     
     public Fact() { 
     }
 
-    public Fact(long id, String name, String type, String description, long organizationId, boolean publicFact) {
-        this.id = id;
+    public Fact(String name, String type, String description, long organizationId, boolean publicFact, long nbObs, long sensorId) {
         this.name = name;
         this.type = type;
         this.description = description;
         this.organizationId = organizationId;
         this.publicFact = publicFact;
+        this.nbObs = nbObs;
+        this.sensorId = sensorId;
     }
 
     public long getId() {
@@ -119,4 +126,22 @@ public class Fact implements Serializable {
                 + name + ", " + type + ", " + description + ", " + organizationId
                 + (publicFact ? ", public" : "");
     }
+
+    public long getNbObs() {
+        return nbObs;
+    }
+
+    public void setNbObs(long nbObs) {
+        this.nbObs = nbObs;
+    }
+
+    public long getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(long sensorId) {
+        this.sensorId = sensorId;
+    }
+    
+    
 }

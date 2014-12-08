@@ -18,6 +18,8 @@ public class FactDTO {
     private String description;
     private long organizationId;
     private boolean publicFact;
+    private long nbObs;
+    private long sensorId;
 
     public long getId() {
         return id;
@@ -66,6 +68,22 @@ public class FactDTO {
     public void setPublicFact(boolean publicFact) {
         this.publicFact = publicFact;
     }
-    
+
+    public long getNbObs() {
+        return nbObs;
+    }
+
+    public void setNbObs(long nbObs) {
+        this.nbObs = nbObs;
+    }
+
+    public long getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(long sensorId) {
+        this.sensorId = sensorId;
+    }
+
     
 }

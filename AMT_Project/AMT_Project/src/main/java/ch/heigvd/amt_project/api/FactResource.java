@@ -21,7 +21,7 @@ import javax.ws.rs.*;
 @Stateless
 public class FactResource {
     @EJB
-    FactManagerLocal orgsManager;
+    FactManagerLocal factsManager;
 
 //    @Context
 //    private UriInfo context;
@@ -33,10 +33,10 @@ public class FactResource {
     @Produces("application/json")
     public List<FactDTO> getAllFacts()
     {
-        List<Fact> orgs = orgsManager.read();
+        List<Fact> facts = factsManager.read();
         List<FactDTO> result = new ArrayList<>();
         
-        for(Fact fact : orgs) {
+        for(Fact fact : facts) {
             result.add(toDTO(fact));
         }
         
@@ -48,7 +48,7 @@ public class FactResource {
     @Produces("application/json")
     public FactDTO getFactDetails(@PathParam("id") long id)
     {
-        Fact fact = orgsManager.read(id);
+        Fact fact = factsManager.read(id);
         return toDTO(fact);
     }
     
@@ -58,7 +58,7 @@ public class FactResource {
     {
         Fact newFact = new Fact();
   
-        long idFact = orgsManager.create(toFact(dto, newFact));
+        long idFact = factsManager.create(toFact(dto, newFact));
 
         return idFact;
     }
@@ -68,16 +68,16 @@ public class FactResource {
     @Consumes("application/json")
     public void updateFact(@PathParam("id") long id, FactDTO dto)
     {
-        Fact existing = orgsManager.read(id);
-        orgsManager.update(toFact(dto, existing));
+        Fact existing = factsManager.read(id);
+        factsManager.update(toFact(dto, existing));
     }
 
     @Path("/{id}")
     @DELETE
     public void deleteFact(@PathParam("id") long id)
     {
-        orgsManager.read(id);
-        orgsManager.delete(orgsManager.read(id));
+        factsManager.read(id);
+        factsManager.delete(factsManager.read(id));
     }    
     
     private Fact toFact(FactDTO factDto, Fact fact)
@@ -88,6 +88,8 @@ public class FactResource {
         fact.setType(factDto.getType());
         fact.setOrganizationId(factDto.getOrganizationId());
         fact.setPublicFact(factDto.isPublicFact());
+        fact.setNbObs(factDto.getNbObs());
+        fact.setSensorId(factDto.getSensorId());
         
         return fact;
     }
@@ -100,6 +102,9 @@ public class FactResource {
         dto.setType(fact.getType());
         dto.setOrganizationId(fact.getOrganizationId());
         dto.setPublicFact(fact.isPublicFact());
+        dto.setNbObs(fact.getNbObs());
+        dto.setSensorId(fact.getSensorId());
+        
         return dto;
     }
 }
