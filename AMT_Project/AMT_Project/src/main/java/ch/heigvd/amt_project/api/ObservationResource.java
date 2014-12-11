@@ -71,7 +71,7 @@ public class ObservationResource {
 
         List<Fact> facts = factsManager.read();
 //        Fact newFact = null;
-        long factId = 0;
+        long factId = 0L;
 
         for (Fact f : facts) {
             if (f.getSensorId() == sensorId) {
