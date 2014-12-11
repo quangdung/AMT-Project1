@@ -1,6 +1,7 @@
 package ch.heigvd.amt_project.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 
 /**
@@ -42,7 +43,7 @@ public class DailyFact extends Fact implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private Date date
+    private Date date;
     private String name;
     private String type;
     private String description;
