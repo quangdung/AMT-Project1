@@ -12,9 +12,15 @@ import ch.heigvd.amt_project.model.Sensor;
 import ch.heigvd.amt_project.services.fact.FactManagerLocal;
 import ch.heigvd.amt_project.services.observation.ObservationManagerLocal;
 import ch.heigvd.amt_project.services.sensor.SensorManagerLocal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.*;
 import javax.ws.rs.*;
 
@@ -37,15 +43,44 @@ public class ObservationResource {
 
     public ObservationResource() {
     }
+    
+    DateFormat df = new SimpleDateFormat("yyyy-MM-d");
 
     @GET
     @Produces("application/json")
-    public List<ObservationDTO> getAllObservations() {
-        List<Observation> obss = obsManager.read();
+    public List<ObservationDTO> getAllObservations(
+            @QueryParam("date") String dateString,
+            @QueryParam("id") Long id) {
         List<ObservationDTO> result = new ArrayList<>();
 
-        for (Observation obs : obss) {
-            result.add(toDTO(obs));
+        if (dateString == null && id == null) {
+            List<Observation> obss = obsManager.read();
+
+            for (Observation obs : obss) {
+                result.add(toDTO(obs));
+            }
+        }
+        else if (dateString != null)
+        {
+            Date date = null;
+            
+            try {
+                date = df.parse(dateString);
+            }
+            catch (ParseException ex) {
+                Logger.getLogger(ObservationResource.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            List<Observation> obsDate = obsManager.readByCreationDate(date);
+            System.out.println(df.format(date));
+            
+            for (Observation obs : obsDate) {
+                System.out.println(df.format(obs.getCreationDate()) + " - " + obs.getId());
+
+                if (df.format(obs.getCreationDate()).equals(df.format(date))) {
+                    result.add(toDTO(obs));
+                }
+            }
         }
 
         return result;
@@ -59,6 +94,7 @@ public class ObservationResource {
         return toDTO(obs);
     }
 
+
     @POST
     @Consumes("application/json")
     public long createObservation(ObservationDTO dto) {
@@ -71,7 +107,7 @@ public class ObservationResource {
 
         List<Fact> facts = factsManager.read();
 //        Fact newFact = null;
-        long factId = 0;
+        long factId = 0L;
 
         for (Fact f : facts) {
             if (f.getSensorId() == sensorId) {
@@ -86,7 +122,7 @@ public class ObservationResource {
                                     sensor.getDescription(),
                                     sensor.getOrganizationId(),
                                     true, 1, sensorId);
-            
+
             factId = factsManager.create(newFact);
         }
 
