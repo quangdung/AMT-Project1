@@ -16,7 +16,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -72,11 +71,8 @@ public class ObservationResource {
             }
             
             List<Observation> obsDate = obsManager.readByCreationDate(date);
-            System.out.println(df.format(date));
             
             for (Observation obs : obsDate) {
-                System.out.println(df.format(obs.getCreationDate()) + " - " + obs.getId());
-
                 if (df.format(obs.getCreationDate()).equals(df.format(date))) {
                     result.add(toDTO(obs));
                 }
