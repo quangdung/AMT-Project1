@@ -23,7 +23,7 @@ import javax.persistence.*;
 })
 
 @Entity
-@Table(name="Facts")
+@Table(name="facts")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
   name="typeOfFact", 

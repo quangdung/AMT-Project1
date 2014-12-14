@@ -21,6 +21,7 @@ import java.util.List;
 import javax.ejb.*;
 import javax.ws.rs.*;
 import java.sql.Date;
+import static java.sql.Types.NULL;
 
 /**
  *
@@ -99,13 +100,11 @@ public class ObservationResource {
         List<FactTiedToSensor> facts = factsTiedToSensorManager.readAllTiedToSensor();
         
         long factId = 0L;
-        long totNbObs = 1;
 
         for (FactTiedToSensor f : facts) {
             if (f.getSensor().getId() == sensor.getId()) {
                 f.setNbObs(f.getNbObs() + 1);
                 factId = f.getId();
-                totNbObs = f.getNbObs();
             }
         }
 
@@ -121,14 +120,17 @@ public class ObservationResource {
         }
         
         // update or create fact tied to date
-        java.util.Calendar cal = java.util.Calendar.getInstance();
-        java.util.Date utilDate = cal.getTime();
-        java.sql.Date date = new Date(utilDate.getTime());
+        java.util.Date today = new java.util.Date();
+        java.sql.Date date = new java.sql.Date(today.getTime());
         
         List<FactTiedToDate> factsDate = factsTiedToDateManager.readAllTiedToDate();
         
+        boolean found = false;
+        
         for (FactTiedToDate f : factsDate) {
-            if (f.getDate().compareTo(date) == 0) {
+            System.out.println(f.getDate());
+            System.out.println(date);
+            if (f.getDate().toString().equals(date.toString())) {
                 if (dto.getObsValue() > f.getMaxVal()) {
                     f.setMaxVal(dto.getObsValue());
                 }
@@ -138,20 +140,22 @@ public class ObservationResource {
                 
                 f.setSumVal(f.getSumVal() + dto.getObsValue());
                 
+                f.setNbVal(f.getNbVal() + 1);
+                
                 f.setAvVal((float) (f.getSumVal() / f.getNbVal()));
                 
-                f.setNbVal(f.getNbVal() + 1);
-            }
-            else
-            {
-                FactTiedToDate newFactDate = new FactTiedToDate(sensor.getOrganization(),
-                        true, sensor, totNbObs, date, 1, dto.getObsValue(),
-                        dto.getObsValue(), dto.getObsValue(), dto.getObsValue());
-                
-                factsTiedToDateManager.create(newFactDate);
+                found = true;
             }
         }
         
+        if (!found)
+        {
+            FactTiedToDate newFactDate = new FactTiedToDate(sensor.getOrganization(),
+                    true, sensor, NULL, date, 1, dto.getObsValue(),
+                    dto.getObsValue(), dto.getObsValue(), dto.getObsValue());
+
+            factsTiedToDateManager.create(newFactDate);
+        }
 
         return idObservation;
     }
