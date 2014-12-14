@@ -43,6 +43,7 @@ import javax.persistence.*;
 public class User implements Serializable {
 
     @Id
+    @SequenceGenerator(name="user_seq", allocationSize=10)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
