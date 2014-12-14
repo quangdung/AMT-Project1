@@ -1,6 +1,7 @@
 
 package ch.heigvd.amt_project.services.sensor;
 
+import ch.heigvd.amt_project.model.Organization;
 import ch.heigvd.amt_project.model.Sensor;
 import java.util.List;
 import javax.ejb.Singleton;
@@ -29,14 +30,14 @@ public class SensorManager implements SensorManagerLocal {
     }
     
     @Override
-    public long create(long id, String name, String description, String type, long orgId, boolean visible) {
+    public long create(long id, String name, String description, String type, Organization organization, boolean visible) {
         Sensor sensor = new Sensor();
         sensor.setId(id);
         sensor.setName(name);
         sensor.setDescription(description);
         sensor.setType(type);
-        sensor.setOrganizationId(orgId);
-        sensor.setPublicSensor(visible);
+        sensor.setOrganization(organization);
+        sensor.setVisible(visible);
         
         em.persist(sensor);
         em.flush();

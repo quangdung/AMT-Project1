@@ -1,6 +1,8 @@
 
 package ch.heigvd.amt_project.dto;
 
+import ch.heigvd.amt_project.model.Organization;
+
 public class SensorDTO {
 
     private long id;
@@ -8,7 +10,7 @@ public class SensorDTO {
     private String description;
     private String type;
     private boolean publicSensor;
-    private long organizationId;
+    private Organization organization;
     
    
     public long getId() {
@@ -51,11 +53,11 @@ public class SensorDTO {
         this.publicSensor = visibility;
     }
 
-    public long getOrganizationId() {
-        return organizationId;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(long orgId) {
-        this.organizationId = orgId;
+    public void setOrganizationId(Organization organization) {
+        this.organization = organization;
     }
 }

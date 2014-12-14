@@ -32,11 +32,11 @@ import javax.persistence.*;
     ),
     @NamedQuery(
             name = "findSensorsByOrganizationId",
-            query = "SELECT s FROM Sensor s WHERE s.organizationId = :orgId"
+            query = "SELECT s FROM Sensor s WHERE s.organization.id = :orgId"
     ),
     @NamedQuery(
             name = "findSensorsByPublicSensor",
-            query = "SELECT s FROM Sensor s WHERE s.publicSensor = true"
+            query = "SELECT s FROM Sensor s WHERE s.visible = true"
     )
 })
 
@@ -46,7 +46,6 @@ public class Sensor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
     private long id;
 
     @Column(name = "name")
@@ -58,11 +57,12 @@ public class Sensor implements Serializable {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "organization_id")
-    private long organizationId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "orgId")
+    private Organization organization;
 
-    @Column(name = "public_sensor")
-    private boolean publicSensor;
+    @Column(name = "visible")
+    private boolean visible;
 
     public Sensor() {
     }
@@ -73,17 +73,17 @@ public class Sensor implements Serializable {
         this.name = s.name;
         this.description = s.description;
         this.type = s.type;
-        this.organizationId = s.organizationId;
-        this.publicSensor = s.publicSensor;
+        this.organization = s.organization;
+        this.visible = s.visible;
     }
 
-    public Sensor(long id, String name, String description, String type, long organizationId, boolean isPublic) {
+    public Sensor(long id, String name, String description, String type, Organization organization, boolean isPublic) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;
-        this.organizationId = organizationId;
-        this.publicSensor = isPublic;
+        this.organization = organization;
+        this.visible = isPublic;
     }
 
     public String getName() {
@@ -94,12 +94,12 @@ public class Sensor implements Serializable {
         this.name = name;
     }
 
-    public boolean isPublicSensor() {
-        return publicSensor;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public void setPublicSensor(boolean publicSensor) {
-        this.publicSensor = publicSensor;
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public long getId() {
@@ -126,18 +126,18 @@ public class Sensor implements Serializable {
         this.type = type;
     }
 
-    public long getOrganizationId() {
-        return organizationId;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     @Override
     public String toString() {
         return "Sensor #" + id + ", " + name + ", " + description + ", " + type + ", "
-                + ", " + organizationId
-                + (publicSensor ? ", public" : "");
+                + ", " + organization.getName()
+                + (visible ? ", public" : "");
     }
 }

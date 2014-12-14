@@ -37,31 +37,18 @@ public class FactManager implements FactManagerLocal {
                 .setParameter("id", factId)
                 .getSingleResult();
     }
-    
-    @Override
-    public List<Fact> readByName(String factName) {
-        return em.createNamedQuery("findFactsByName")
-                .setParameter("name", factName)
-                .getResultList();
-    }
-
-    @Override
-    public List<Fact> readByType(String type) {
-        return em.createNamedQuery("findFactsByType")
-                .setParameter("type", type)
-                .getResultList();
-    }
 
     @Override
     public List<Fact> readByOrgId(long orgId) {
         return em.createNamedQuery("findFactsByOrganizationId")
-                .setParameter("organizationId", orgId)
+                .setParameter("orgId", orgId)
                 .getResultList();
     }
 
     @Override
-    public List<Fact> readPublicFact() {
-        return em.createNamedQuery("findFactsByPublicFact")
+    public List<Fact> readByVisibility(boolean visible) {
+        return em.createNamedQuery("findFactsByVisibility")
+                .setParameter("visible", visible)
                 .getResultList();
     }
 
@@ -74,8 +61,12 @@ public class FactManager implements FactManagerLocal {
     }
 
     @Override
-    public void delete(Fact fact) {
-        em.remove(fact);
-        em.flush();
+    public void delete(long factId) {
+        Fact f = read(factId);
+        if (f != null)
+        {
+            em.remove(f);
+            em.flush();
+        }
     }
 }

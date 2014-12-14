@@ -47,9 +47,9 @@ public class ObservationManager implements ObservationManagerLocal {
     }
 
     @Override
-    public List<Observation> readByCreationDate(Date date) {
+    public List<Observation> readByCreationDate(java.sql.Date date) {
         return em.createNamedQuery("findObservationsByCreationDate")
-                .setParameter("date", date, TemporalType.DATE)
+                .setParameter("date", date)
                 .getResultList();
     }
 

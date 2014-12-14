@@ -52,17 +52,6 @@ public class FactResource {
         return toDTO(fact);
     }
     
-    @POST
-    @Consumes("application/json")
-    public long createFact(FactDTO dto)
-    {
-        Fact newFact = new Fact();
-  
-        long idFact = factsManager.create(toFact(dto, newFact));
-
-        return idFact;
-    }
-    
     @Path("/{id}")
     @PUT
     @Consumes("application/json")
@@ -76,20 +65,14 @@ public class FactResource {
     @DELETE
     public void deleteFact(@PathParam("id") long id)
     {
-        factsManager.read(id);
-        factsManager.delete(factsManager.read(id));
+        factsManager.delete(id);
     }    
     
     private Fact toFact(FactDTO factDto, Fact fact)
     {
         fact.setId(factDto.getId());
-        fact.setName(factDto.getName());
-        fact.setDescription(factDto.getDescription());
-        fact.setType(factDto.getType());
-        fact.setOrganizationId(factDto.getOrganizationId());
-        fact.setPublicFact(factDto.isPublicFact());
-        fact.setNbObs(factDto.getNbObs());
-        fact.setSensorId(factDto.getSensorId());
+        fact.setOrganization(factDto.getOrganization());
+        fact.setVisible(factDto.isVisible());
         
         return fact;
     }
@@ -97,13 +80,8 @@ public class FactResource {
     private FactDTO toDTO(Fact fact) {
         FactDTO dto = new FactDTO();
         dto.setId(fact.getId());
-        dto.setName(fact.getName());
-        dto.setDescription(fact.getDescription());
-        dto.setType(fact.getType());
-        dto.setOrganizationId(fact.getOrganizationId());
-        dto.setPublicFact(fact.isPublicFact());
-        dto.setNbObs(fact.getNbObs());
-        dto.setSensorId(fact.getSensorId());
+        dto.setOrganizationId(fact.getOrganization());
+        dto.setVisible(fact.isVisible());
         
         return dto;
     }
