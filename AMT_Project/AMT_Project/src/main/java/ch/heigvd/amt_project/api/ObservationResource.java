@@ -48,11 +48,10 @@ public class ObservationResource {
     @GET
     @Produces("application/json")
     public List<ObservationDTO> getAllObservations(
-            @QueryParam("date") String dateString,
-            @QueryParam("id") Long id) {
+            @QueryParam("date") String dateString) {
         List<ObservationDTO> result = new ArrayList<>();
 
-        if (dateString == null && id == null) {
+        if (dateString == null) {
             List<Observation> obss = obsManager.read();
 
             for (Observation obs : obss) {
