@@ -26,6 +26,7 @@ import javax.persistence.*;
 public class Organization implements Serializable {
 
     @Id
+    @SequenceGenerator(name="org_seq", allocationSize=10)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 

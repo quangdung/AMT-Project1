@@ -120,8 +120,10 @@ public class ObservationResource {
         }
         
         // update or create fact tied to date
-        java.util.Date today = new java.util.Date();
-        java.sql.Date date = new java.sql.Date(today.getTime());
+//        java.util.Date today = new java.util.Date();
+//        java.sql.Date date = new java.sql.Date(today.getTime());
+        
+        java.sql.Date date = dto.getCreationDate();
         
         List<FactTiedToDate> factsDate = factsTiedToDateManager.readAllTiedToDate();
         

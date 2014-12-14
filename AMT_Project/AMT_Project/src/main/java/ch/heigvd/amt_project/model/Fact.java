@@ -32,6 +32,7 @@ import javax.persistence.*;
 public abstract class Fact implements Serializable {
     
     @Id
+    @SequenceGenerator(name="fact_seq", allocationSize=10)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
         

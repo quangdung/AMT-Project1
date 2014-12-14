@@ -45,6 +45,7 @@ import javax.persistence.*;
 public class Sensor implements Serializable {
 
     @Id
+    @SequenceGenerator(name="sens_seq", allocationSize=10)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
