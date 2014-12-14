@@ -84,7 +84,7 @@ public class UserResource {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
-        user.setOrganizationId(userDto.getOrganizationId());
+        user.setOrganization(userDto.getOrganization());
         user.setMainContact(userDto.isMainContact());
         
         return user;
@@ -98,7 +98,7 @@ public class UserResource {
         dto.setLastName(user.getLastName());
         dto.setEmail(user.getEmail());
         dto.setPassword(user.getPassword());
-        dto.setOrganizationId(user.getOrganizationId());
+        dto.setOrganization(user.getOrganization());
         dto.setMainContact(user.isMainContact());
         
         return dto;

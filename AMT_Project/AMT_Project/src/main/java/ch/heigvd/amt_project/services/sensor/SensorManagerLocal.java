@@ -1,6 +1,7 @@
 
 package ch.heigvd.amt_project.services.sensor;
 
+import ch.heigvd.amt_project.model.Organization;
 import ch.heigvd.amt_project.model.Sensor;
 import java.util.List;
 import javax.ejb.Local;
@@ -10,7 +11,7 @@ public interface SensorManagerLocal {
 
     public long create(Sensor sensor);
 
-    public long create(long id, String name, String description, String type, long orgId, boolean visible);
+    public long create(long id, String name, String description, String type, Organization organization, boolean visible);
 
     public List<Sensor> read();
     public Sensor read(long id);

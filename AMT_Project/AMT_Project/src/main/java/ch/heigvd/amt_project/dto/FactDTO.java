@@ -5,6 +5,9 @@
  */
 package ch.heigvd.amt_project.dto;
 
+import ch.heigvd.amt_project.model.Organization;
+import ch.heigvd.amt_project.model.Sensor;
+
 /**
  *
  * @author
@@ -13,13 +16,10 @@ public class FactDTO {
 
     private long id;
 
-    private String name;
-    private String type;
-    private String description;
-    private long organizationId;
-    private boolean publicFact;
+    private Organization organization;
+    private boolean visible;
     private long nbObs;
-    private long sensorId;
+    private Sensor sensor;
 
     public long getId() {
         return id;
@@ -29,44 +29,20 @@ public class FactDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setOrganizationId(Organization organization) {
+        this.organization = organization;
     }
 
-    public String getType() {
-        return type;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(long organizationId) {
-        this.organizationId = organizationId;
-    }
-
-    public boolean isPublicFact() {
-        return publicFact;
-    }
-
-    public void setPublicFact(boolean publicFact) {
-        this.publicFact = publicFact;
+    public void setVisible(boolean publicFact) {
+        this.visible = publicFact;
     }
 
     public long getNbObs() {
@@ -77,13 +53,11 @@ public class FactDTO {
         this.nbObs = nbObs;
     }
 
-    public long getSensorId() {
-        return sensorId;
+    public Sensor getSensor() {
+        return sensor;
     }
 
-    public void setSensorId(long sensorId) {
-        this.sensorId = sensorId;
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
     }
-
-    
 }

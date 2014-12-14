@@ -109,11 +109,11 @@ public class SensorResource {
         {
             sensor.setType(sensorDto.getType());
         }
-        if (sensorDto.getOrganizationId() != 0)
+        if (sensorDto.getOrganization() != null)
         {
-            sensor.setOrganizationId(sensorDto.getOrganizationId());
+            sensor.setOrganization(sensorDto.getOrganization());
         }
-        sensor.setPublicSensor(sensorDto.isPublicSensor());
+        sensor.setVisible(sensorDto.isPublicSensor());
         
         return sensor;
     }
@@ -123,8 +123,8 @@ public class SensorResource {
         sensor.setName(sensorDto.getName());
         sensor.setDescription(sensorDto.getDescription());
         sensor.setType(sensorDto.getType());
-        sensor.setOrganizationId(sensorDto.getOrganizationId());
-        sensor.setPublicSensor(sensorDto.isPublicSensor());
+        sensor.setOrganization(sensorDto.getOrganization());
+        sensor.setVisible(sensorDto.isPublicSensor());
         
         return sensor;
     }
@@ -135,8 +135,8 @@ public class SensorResource {
         dto.setName(sensor.getName());
         dto.setDescription(sensor.getDescription());
         dto.setType(sensor.getType());
-        dto.setOrganizationId(sensor.getOrganizationId());
-        dto.setPublicSensor(sensor.isPublicSensor());
+        dto.setOrganizationId(sensor.getOrganization());
+        dto.setPublicSensor(sensor.isVisible());
         return dto;
     }
 }

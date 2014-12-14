@@ -1,7 +1,7 @@
 package ch.heigvd.amt_project.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import javax.persistence.*;
 
 /**
@@ -27,7 +27,7 @@ import javax.persistence.*;
     ),
     @NamedQuery(
             name = "findObservationsBySensorId",
-            query = "SELECT o FROM Observation o WHERE o.sensorId = :sensorId"
+            query = "SELECT o FROM Observation o WHERE o.sensor.id = :sensorId"
     )
 })
 
@@ -42,25 +42,25 @@ public class Observation implements Serializable {
     private String name;
     
     @Column(name = "obs_value")
-    private int obsValue;
+    private float obsValue;
     
-    @Temporal(TemporalType.DATE)
     @Column(name = "creation_date")
     private Date creationDate;
     
-    @Column(name = "sensor_id")
-    private long sensorId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "sensorId")
+    private Sensor sensor;
     
 
     public Observation() {
     }
 
-    public Observation(long id, String name, int value, Date creationDate, long sensorId) {
+    public Observation(long id, String name, float value, Date creationDate, Sensor sensor) {
         this.id = id;
         this.name = name;
         this.obsValue = value;
         this.creationDate = creationDate;
-        this.sensorId = sensorId;
+        this.sensor = sensor;
     }
 
     public long getId() {
@@ -79,11 +79,11 @@ public class Observation implements Serializable {
         this.name = name;
     }
 
-    public int getObsValue() {
+    public float getObsValue() {
         return obsValue;
     }
 
-    public void setObsValue(int obsValue) {
+    public void setObsValue(float obsValue) {
         this.obsValue = obsValue;
     }
 
@@ -95,22 +95,12 @@ public class Observation implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public long getObservationId() {
-        return sensorId;
+    public Sensor getSensor() {
+        return sensor;
     }
 
-    public void setObservationId(long sensorId) {
-        this.sensorId = sensorId;
-        
-        
-    }
-
-    public long getSensorId() {
-        return sensorId;
-    }
-
-    public void setSensorId(long sensorId) {
-        this.sensorId = sensorId;
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
     }
 
     

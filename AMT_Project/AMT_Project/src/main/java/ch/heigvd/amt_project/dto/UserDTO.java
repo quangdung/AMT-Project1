@@ -5,6 +5,8 @@
  */
 package ch.heigvd.amt_project.dto;
 
+import ch.heigvd.amt_project.model.Organization;
+
 /**
  *
  * @author
@@ -16,7 +18,7 @@ public class UserDTO {
     private String lastName;
     private String email;
     private String password;
-    private long organizationId;
+    private Organization organization;
     private boolean mainContact;
 
     public long getId() {
@@ -59,12 +61,12 @@ public class UserDTO {
         this.password = password;
     }
 
-    public long getOrganizationId() {
-        return organizationId;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     public boolean isMainContact() {

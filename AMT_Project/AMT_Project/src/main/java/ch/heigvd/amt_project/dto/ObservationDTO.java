@@ -5,7 +5,8 @@
  */
 package ch.heigvd.amt_project.dto;
 
-import java.util.Date;
+import ch.heigvd.amt_project.model.Sensor;
+import java.sql.Date;
 
 /**
  *
@@ -16,9 +17,9 @@ public class ObservationDTO {
 
     private long id;
     private String name;
-    private int obsValue;
+    private float obsValue;
     private Date creationDate;
-    private long sensorId;
+    private Sensor sensor;
 
     public long getId() {
         return id;
@@ -36,11 +37,11 @@ public class ObservationDTO {
         this.name = name;
     }
 
-    public int getObsValue() {
+    public float getObsValue() {
         return obsValue;
     }
 
-    public void setObsValue(int obsValue) {
+    public void setObsValue(float obsValue) {
         this.obsValue = obsValue;
     }
 
@@ -52,12 +53,12 @@ public class ObservationDTO {
         this.creationDate = creationDate;
     }
 
-    public long getSensorId() {
-        return sensorId;
+    public Sensor getSensor() {
+        return sensor;
     }
 
-    public void setSensorId(long sensorId) {
-        this.sensorId = sensorId;
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
     }
 
     

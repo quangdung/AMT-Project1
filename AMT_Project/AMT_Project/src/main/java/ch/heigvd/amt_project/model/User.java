@@ -30,11 +30,11 @@ import javax.persistence.*;
     ),
     @NamedQuery(
             name = "findUsersByOrgId",
-            query = "SELECT u FROM User u WHERE u.organizationId = :orgId"
+            query = "SELECT u FROM User u WHERE u.organization.id = :orgId"
     ),
     @NamedQuery(
             name = "findContactByOrgId",
-            query = "SELECT u FROM User u WHERE u.organizationId = :orgId "
+            query = "SELECT u FROM User u WHERE u.organization.id = :orgId "
             + "AND u.mainContact = true"
     ),})
 
@@ -55,9 +55,11 @@ public class User implements Serializable {
     private String email;
 
     private String password;
-
-    @Column(name = "organization_id")
-    private long organizationId;
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "orgId")
+    private Organization organization;
+    
 
     @Column(name = "main_contact")
     private boolean mainContact;
@@ -65,13 +67,13 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(long id, String firstName, String lastName, String email, String password, long organizationId, boolean mainContact) {
+    public User(long id, String firstName, String lastName, String email, String password, Organization organization, boolean mainContact) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.organizationId = organizationId;
+        this.organization = organization;
         this.mainContact = mainContact;
     }
 
@@ -115,12 +117,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public long getOrganizationId() {
-        return organizationId;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(long organizationId) {
-        this.organizationId = organizationId;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     public boolean isMainContact() {

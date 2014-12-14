@@ -15,12 +15,10 @@ public interface FactManagerLocal {
 
     public List<Fact> read();
     public Fact read(long id);
-    public List<Fact> readByName(String name);
-    public List<Fact> readByType(String type);
     public List<Fact> readByOrgId(long id);
-    public List<Fact> readPublicFact();
+    public List<Fact> readByVisibility(boolean visible);
     
     public Fact update(Fact fact);
 
-    public void delete(Fact fact);
+    public void delete(long factId);
 }

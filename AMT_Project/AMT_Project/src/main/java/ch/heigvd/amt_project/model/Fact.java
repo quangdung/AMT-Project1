@@ -3,73 +3,55 @@ package ch.heigvd.amt_project.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
-/**
- *
- * @author
- */
-
 @NamedQueries({
-    @NamedQuery(
-            name = "findFactById",
-            query = "SELECT f FROM Fact f WHERE f.id = :id"
-    ),
     @NamedQuery(
             name = "findAllFacts",
             query = "SELECT f FROM Fact f"
     ),
     @NamedQuery(
-            name = "findFactsByName",
-            query = "SELECT f FROM Fact f WHERE f.name LIKE :name"
-    ),
-    @NamedQuery(
-            name = "findFactsByType",
-            query = "SELECT f FROM Fact f WHERE f.type LIKE :type"
+            name = "findFactById",
+            query = "SELECT f FROM Fact f WHERE f.id = :id"
     ),
     @NamedQuery(
             name = "findFactsByOrganizationId",
-            query = "SELECT f FROM Fact f WHERE f.organizationId = :orgId"
+            query = "SELECT f FROM Fact f WHERE f.organization.id = :orgId"
     ),
     @NamedQuery(
-            name = "findFactsByPublicFact",
-            query = "SELECT f FROM Fact f WHERE f.publicFact = true"
+            name = "findFactsByVisibility",
+            query = "SELECT f FROM Fact f WHERE f.visible = :visible"
     )
 })
 
 @Entity
-@Table(name="facts")
-public class Fact implements Serializable {
+@Table(name="Facts")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(
+  name="typeOfFact", 
+  discriminatorType=DiscriminatorType.STRING
+  )
+public abstract class Fact implements Serializable {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
-    private String name;
+        
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "orgId")
+    private Organization organization;
+    
+    @Column(name = "type")
     private String type;
-    private String description;
     
-    @Column(name = "organization_id")
-    private long organizationId;
+    @Column(name = "visible")
+    private boolean visible;
     
-    @Column(name = "public_fact")
-    private boolean publicFact;
-    
-    @Column(name = "nb_obs")
-    private long nbObs;
-    
-    @Column(name = "sensor_id")
-    private long sensorId;
-    
-    
-    public Fact() { 
+    public Fact() {
     }
 
-    public Fact(String name, String type, String description, long organizationId, boolean publicFact, long nbObs, long sensorId) {
-        this.name = name;
+    public Fact(Organization organization, String type, boolean visible) {
+        this.organization = organization;
         this.type = type;
-        this.description = description;
-        this.organizationId = organizationId;
-        this.publicFact = publicFact;
-        this.nbObs = nbObs;
-        this.sensorId = sensorId;
+        this.visible = visible;
     }
 
     public long getId() {
@@ -80,68 +62,27 @@ public class Fact implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     public String getType() {
         return type;
     }
-
+    
     public void setType(String type) {
         this.type = type;
     }
 
-    public String getDescription() {
-        return description;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
-
-    public long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(long organizationId) {
-        this.organizationId = organizationId;
-    }
-
-    public boolean isPublicFact() {
-        return publicFact;
-    }
-
-    public void setPublicFact(boolean publicFact) {
-        this.publicFact = publicFact;
-    }
-    
-    @Override
-    public String toString() {
-        return "Fact " + id + ": " 
-                + name + ", " + type + ", " + description + ", " + organizationId
-                + (publicFact ? ", public" : "");
-    }
-
-    public long getNbObs() {
-        return nbObs;
-    }
-
-    public void setNbObs(long nbObs) {
-        this.nbObs = nbObs;
-    }
-
-    public long getSensorId() {
-        return sensorId;
-    }
-
-    public void setSensorId(long sensorId) {
-        this.sensorId = sensorId;
-    }
-    
-    
 }

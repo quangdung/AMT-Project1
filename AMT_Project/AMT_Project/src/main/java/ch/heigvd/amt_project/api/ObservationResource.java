@@ -6,22 +6,21 @@
 package ch.heigvd.amt_project.api;
 
 import ch.heigvd.amt_project.dto.ObservationDTO;
-import ch.heigvd.amt_project.model.Fact;
+import ch.heigvd.amt_project.model.FactTiedToDate;
+import ch.heigvd.amt_project.model.FactTiedToSensor;
 import ch.heigvd.amt_project.model.Observation;
 import ch.heigvd.amt_project.model.Sensor;
-import ch.heigvd.amt_project.services.fact.FactManagerLocal;
+import ch.heigvd.amt_project.services.fact.FactTiedToDateManagerLocal;
+import ch.heigvd.amt_project.services.fact.FactTiedToSensorManagerLocal;
 import ch.heigvd.amt_project.services.observation.ObservationManagerLocal;
 import ch.heigvd.amt_project.services.sensor.SensorManagerLocal;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.*;
 import javax.ws.rs.*;
+import java.sql.Date;
 
 /**
  *
@@ -33,9 +32,12 @@ public class ObservationResource {
 
     @EJB
     ObservationManagerLocal obsManager;
+    
+    @EJB
+    FactTiedToSensorManagerLocal factsTiedToSensorManager;
 
     @EJB
-    FactManagerLocal factsManager;
+    FactTiedToDateManagerLocal factsTiedToDateManager;
 
     @EJB
     SensorManagerLocal sensorsManager;
@@ -43,7 +45,7 @@ public class ObservationResource {
     public ObservationResource() {
     }
     
-    DateFormat df = new SimpleDateFormat("yyyy-MM-d");
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @GET
     @Produces("application/json")
@@ -51,23 +53,18 @@ public class ObservationResource {
             @QueryParam("date") String dateString) {
         List<ObservationDTO> result = new ArrayList<>();
 
-        if (dateString == null) {
+        if (dateString == null || dateString.equals("")) {
             List<Observation> obss = obsManager.read();
 
             for (Observation obs : obss) {
                 result.add(toDTO(obs));
             }
         }
-        else if (dateString != null)
+        else
         {
             Date date = null;
             
-            try {
-                date = df.parse(dateString);
-            }
-            catch (ParseException ex) {
-                Logger.getLogger(ObservationResource.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            java.sql.Date.valueOf(dateString);
             
             List<Observation> obsDate = obsManager.readByCreationDate(date);
             
@@ -97,29 +94,64 @@ public class ObservationResource {
 
         long idObservation = obsManager.create(toObservation(dto, newObservation));
 
-        long sensorId = dto.getSensorId();
-        Sensor sensor = sensorsManager.read(sensorId);
-
-        List<Fact> facts = factsManager.read();
-//        Fact newFact = null;
+        // update or create fact tied to sensor
+        Sensor sensor = dto.getSensor();
+        List<FactTiedToSensor> facts = factsTiedToSensorManager.readAllTiedToSensor();
+        
         long factId = 0L;
+        long totNbObs = 1;
 
-        for (Fact f : facts) {
-            if (f.getSensorId() == sensorId) {
+        for (FactTiedToSensor f : facts) {
+            if (f.getSensor().getId() == sensor.getId()) {
                 f.setNbObs(f.getNbObs() + 1);
                 factId = f.getId();
+                totNbObs = f.getNbObs();
             }
         }
 
         if (factId == 0L) {
-            Fact newFact = new Fact("fact_" + sensor.getName(),
-                                    sensor.getType(),
-                                    sensor.getDescription(),
-                                    sensor.getOrganizationId(),
-                                    true, 1, sensorId);
+            FactTiedToSensor newFact = new FactTiedToSensor(
+                    sensor.getOrganization(),
+                    "sensor",
+                    true,
+                    sensor,
+                    1);
 
-            factId = factsManager.create(newFact);
+            factsTiedToSensorManager.create(newFact);
         }
+        
+        // update or create fact tied to date
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        java.util.Date utilDate = cal.getTime();
+        java.sql.Date date = new Date(utilDate.getTime());
+        
+        List<FactTiedToDate> factsDate = factsTiedToDateManager.readAllTiedToDate();
+        
+        for (FactTiedToDate f : factsDate) {
+            if (f.getDate().compareTo(date) == 0) {
+                if (dto.getObsValue() > f.getMaxVal()) {
+                    f.setMaxVal(dto.getObsValue());
+                }
+                if (dto.getObsValue() < f.getMinVal()) {
+                    f.setMinVal(dto.getObsValue());
+                }
+                
+                f.setSumVal(f.getSumVal() + dto.getObsValue());
+                
+                f.setAvVal((float) (f.getSumVal() / f.getNbVal()));
+                
+                f.setNbVal(f.getNbVal() + 1);
+            }
+            else
+            {
+                FactTiedToDate newFactDate = new FactTiedToDate(sensor.getOrganization(),
+                        true, sensor, totNbObs, date, 1, dto.getObsValue(),
+                        dto.getObsValue(), dto.getObsValue(), dto.getObsValue());
+                
+                factsTiedToDateManager.create(newFactDate);
+            }
+        }
+        
 
         return idObservation;
     }
@@ -140,11 +172,10 @@ public class ObservationResource {
     }
 
     private Observation toObservation(ObservationDTO obsDto, Observation obs) {
-        obs.setId(obsDto.getId());
         obs.setName(obsDto.getName());
         obs.setObsValue(obsDto.getObsValue());
         obs.setCreationDate(obsDto.getCreationDate());
-        obs.setSensorId(obsDto.getSensorId());
+        obs.setSensor(obsDto.getSensor());
 
         return obs;
     }
@@ -155,7 +186,7 @@ public class ObservationResource {
         dto.setName(obs.getName());
         dto.setObsValue(obs.getObsValue());
         dto.setCreationDate(obs.getCreationDate());
-        dto.setSensorId(obs.getSensorId());
+        dto.setSensor(obs.getSensor());
 
         return dto;
     }
