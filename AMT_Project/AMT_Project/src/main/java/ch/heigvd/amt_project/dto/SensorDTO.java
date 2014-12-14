@@ -9,7 +9,7 @@ public class SensorDTO {
     private String name;
     private String description;
     private String type;
-    private boolean publicSensor;
+    private boolean visible;
     private Organization organization;
     
    
@@ -45,12 +45,12 @@ public class SensorDTO {
         this.type = type;
     }
     
-    public boolean isPublicSensor() {
-        return publicSensor;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public void setPublicSensor(boolean visibility) {
-        this.publicSensor = visibility;
+    public void setVisible(boolean visibility) {
+        this.visible = visibility;
     }
 
     public Organization getOrganization() {

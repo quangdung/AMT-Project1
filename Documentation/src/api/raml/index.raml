@@ -13,7 +13,26 @@ mediaType: application/json
     responses:
       200:
         body:
-           application/json:      
+           application/json:
+             example: |
+              [
+                { 
+                  "id" : 1,
+                  "name": "Sensor1", 
+                  "description": "measure indoor", 
+                  "type": "temperature", 
+                  "publicSensor" : true, 
+                  "organization" : 3
+                },
+                { 
+                  "id" : 2,
+                  "name": "Sensor2", 
+                  "description": "measure outdoor", 
+                  "type": "temperature", 
+                  "publicSensor" : true, 
+                  "organization" : 5
+                }              
+              ]
     queryParameters:
       organization:
         displayName: Organization

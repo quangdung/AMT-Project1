@@ -5,8 +5,7 @@ template: api.jade
 menuIndex: 5
 ---
 
-This pages contains general documentation about the REST API. Use the links on the
-right to navigate to specific resources.
+This pages contains general documentation about the REST API. Use the links on the right to navigate to specific resources.
 
 
 ### Content-type
@@ -26,19 +25,13 @@ Find below a quick summary of how HTTP verbs are used in the API:
 | Verb     | Description |
 |----------|--------
 | `GET`    | Used for retrieving a resource or a collection of resources.
-| `HEAD`   | Has the same behaviour as the `GET` verb but does not return the response body (only the headers). Notice that this verb is only available for some resources.
-| `POST`   | Used for creating a new resource or performing a non-CRUD operation on a resource.
+| `POST`   | Used for creating a new resource .
 | `PUT`    | Used to perform a full update of a resource (replacing the resource by the JSON data provided in the request).
-| `PATCH`  | Used to perform a partial update of a resource (only updating the fields of the resource specified in the JSON data provided in the request).
 | `DELETE` | Used for deleting resources.
 
+### Filtering
 
-### Authentication
-
-To interact with the API, your client will need to be authenticated. This is done by using the **Authorization** header with the username and password of the client and gives something that looks like:
-
-	Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
-
+In GET methods, you may provide filter information. **flat approach** (`/{id}`) or the **query string approach** (`?date=2014-12-15`) are used.
 
 ### Errors
 
@@ -47,6 +40,7 @@ Each error has a human-readable message and a code. The code identifies the
 error type and can be used to handle specific errors differently or for 
 translation purposes.
 
+For example :
 
 ```
 HTTP/1.1 400 Bad Request
@@ -64,4 +58,18 @@ HTTP/1.1 400 Bad Request
 ### Dates
 
 All dates returned by the API are in UTC and use the `ISO-8601` format (ex: 
-`2015-02-15T05:21:07Z`).
+`2015-02-15`). When a date represents a day, it’s set at 0 hour, 0 minute and 0 second.
+
+### Future features 
+
+#### Authentication
+
+To interact with the API, your client will need to be authenticated. This is done by using the **Authorization** header with the username and password of the client and gives something that looks like:
+
+	Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+
+A user who is part of a organization can read data from the same organization and public data from other organizations, but can only **write data** from the same organization. In this case, request will require an authentication (*user login*).
+
+#### Pagination
+
+The GET methods on the resources return the first page and a number of items per page. 

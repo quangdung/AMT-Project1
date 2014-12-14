@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.NoResultException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -59,15 +58,11 @@ public class SensorResource {
     
     @POST
     @Consumes("application/json")
-//    @Produces("application/json")
     public long createSensor(SensorDTO dto)
     {
         Sensor newSensor = new Sensor();
   
         long idSensor = sensorsManager.create(toSensor(dto, newSensor));
-//        Sensor sensor = sensorsManager.create(toSensor(dto, newSensor));
-        
-//        return sensor;
         return idSensor;
     }
     
@@ -113,7 +108,7 @@ public class SensorResource {
         {
             sensor.setOrganization(sensorDto.getOrganization());
         }
-        sensor.setVisible(sensorDto.isPublicSensor());
+        sensor.setVisible(sensorDto.isVisible());
         
         return sensor;
     }
@@ -124,7 +119,7 @@ public class SensorResource {
         sensor.setDescription(sensorDto.getDescription());
         sensor.setType(sensorDto.getType());
         sensor.setOrganization(sensorDto.getOrganization());
-        sensor.setVisible(sensorDto.isPublicSensor());
+        sensor.setVisible(sensorDto.isVisible());
         
         return sensor;
     }
@@ -136,7 +131,7 @@ public class SensorResource {
         dto.setDescription(sensor.getDescription());
         dto.setType(sensor.getType());
         dto.setOrganizationId(sensor.getOrganization());
-        dto.setPublicSensor(sensor.isVisible());
+        dto.setVisible(sensor.isVisible());
         return dto;
     }
 }
