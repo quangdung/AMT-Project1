@@ -12,8 +12,14 @@ import ch.heigvd.amt_project.services.observation.ObservationManagerLocal;
 import ch.heigvd.amt_project.services.organization.OrganizationManagerLocal;
 import ch.heigvd.amt_project.services.sensor.SensorManagerLocal;
 import ch.heigvd.amt_project.services.user.UserManagerLocal;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,18 +33,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "TestDataServlet", urlPatterns = {"/TestDataServlet"})
 public class TestDataServlet extends HttpServlet {
-
-    @EJB
-    OrganizationManagerLocal orgMan;
-    
-    @EJB
-    SensorManagerLocal senMan;
-    
-    @EJB
-    ObservationManagerLocal obsMan;
-    
-    @EJB
-    UserManagerLocal usrMan;
+//    @EJB
+//    OrganizationManagerLocal orgMan;
+//    
+//    @EJB
+//    SensorManagerLocal senMan;
+//    
+//    @EJB
+//    ObservationManagerLocal obsMan;
+//    
+//    @EJB
+//    UserManagerLocal usrMan;
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,43 +57,81 @@ public class TestDataServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Organization org = new Organization();
-        org.setName("organization 1");
+        URL url = new URL(request.getRequestURL().toString());
         
-        orgMan.create(org);
+        String baseUrl = url.getProtocol() + "://" + url.getAuthority() + "/AMT_Project/api";
+        String orgURL = "/organizations";
+        String senURL = "/sensors";
+        String obsURL = "/observations";
+        String usrURL = "/users";
         
-        Sensor sen = new Sensor();
-        sen.setName("sensor 1");
-        sen.setDescription("description sensor 1");
-        sen.setOrganization(org);
-        sen.setType("type sensor 1");
-        sen.setVisible(true);
-        
-        senMan.create(sen);
-        
-        Observation obs = new Observation();
-        java.util.Date today = new java.util.Date();
-        java.sql.Date dateToday = new java.sql.Date(today.getTime());
-        obs.setCreationDate(dateToday);
-        obs.setName("observation 1");
-        obs.setSensor(sen);
-        obs.setObsValue(666);
-        
-        obsMan.create(obs);
-        
-        
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet TestDataServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet TestDataServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+//        Organization org = new Organization();
+//        org.setName("organization 1");
+//        
+//        orgMan.create(org);
+//        
+//        Sensor sen = new Sensor();
+//        sen.setName("sensor 1");
+//        sen.setDescription("description sensor 1");
+//        sen.setOrganization(org);
+//        sen.setType("type sensor 1");
+//        sen.setVisible(true);
+//        
+//        senMan.create(sen);
+//        
+//        Observation obs = new Observation();
+//        java.util.Date today = new java.util.Date();
+//        java.sql.Date dateToday = new java.sql.Date(today.getTime());
+//        obs.setCreationDate(dateToday);
+//        obs.setName("observation 1");
+//        obs.setSensor(sen);
+//        obs.setObsValue(666);
+//        
+//        obsMan.create(obs);
+
+        // create organizations
+        try {
+            
+            URL organizationUrl = new URL(baseUrl + orgURL);
+            
+            response.setContentType("text/html;charset=UTF-8");
+            try (PrintWriter out = response.getWriter()) {
+                
+                String input;
+                
+                for (int i = 1; i <= 10; ++i)
+                {
+                    HttpURLConnection con = (HttpURLConnection) organizationUrl.openConnection();
+                    con.setDoOutput(true);
+                    con.setRequestMethod("POST");
+                    con.setRequestProperty("Content-Type", "application/json");
+                    OutputStream outputStream = con.getOutputStream();
+                    
+                    input = "{\"name\":\"testGeneratedOrg" + i + "\"}";
+                    outputStream.write(input.getBytes());
+                    outputStream.flush();
+
+                    if (con.getResponseCode() != 200) {
+                            throw new RuntimeException("Failed : HTTP error code : "
+                                    + con.getResponseCode());
+                    }
+
+                    BufferedReader buffRep = new BufferedReader(new InputStreamReader(
+                            (con.getInputStream())));
+                    String output;
+                    out.println("Organisation created with id : ");
+                    while ((output = buffRep.readLine()) != null) {
+                            out.println(output);
+                    }
+                    out.println("<br />");
+                    
+                    con.disconnect();
+                }
+            }
+        }
+        catch (MalformedURLException e) {
+        }
+        catch (IOException e) {
         }
     }
 
