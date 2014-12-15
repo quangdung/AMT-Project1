@@ -20,6 +20,8 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -88,6 +90,8 @@ public class TestDataServlet extends HttpServlet {
 //        obs.setObsValue(666);
 //        
 //        obsMan.create(obs);
+        
+        List<Organization> orgStored = new ArrayList<>();
 
         // create organizations
         try {
@@ -98,6 +102,8 @@ public class TestDataServlet extends HttpServlet {
             try (PrintWriter out = response.getWriter()) {
                 
                 String input;
+                
+                int idOrg;
                 
                 for (int i = 1; i <= 10; ++i)
                 {
@@ -118,14 +124,18 @@ public class TestDataServlet extends HttpServlet {
 
                     BufferedReader buffRep = new BufferedReader(new InputStreamReader(
                             (con.getInputStream())));
-                    String output;
-                    out.println("Organisation created with id : ");
-                    while ((output = buffRep.readLine()) != null) {
-                            out.println(output);
-                    }
-                    out.println("<br />");
+
+                    idOrg = Integer.parseInt(buffRep.readLine());
+                    
+                    orgStored.add(new Organization(idOrg, "testGeneratedOrg" + i));
                     
                     con.disconnect();
+                }
+                
+                for (Organization o : orgStored)
+                {
+                    out.println("Organisation " + o.getName() + " stored with id : " + o.getId());
+                    out.println("<br />");                    
                 }
             }
         }
