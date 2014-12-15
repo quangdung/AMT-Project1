@@ -8,6 +8,7 @@ package ch.heigvd.amt_project.testdata;
 import ch.heigvd.amt_project.model.Observation;
 import ch.heigvd.amt_project.model.Organization;
 import ch.heigvd.amt_project.model.Sensor;
+import ch.heigvd.amt_project.model.User;
 import ch.heigvd.amt_project.services.observation.ObservationManagerLocal;
 import ch.heigvd.amt_project.services.organization.OrganizationManagerLocal;
 import ch.heigvd.amt_project.services.sensor.SensorManagerLocal;
@@ -92,56 +93,126 @@ public class TestDataServlet extends HttpServlet {
 //        obsMan.create(obs);
         
         List<Organization> orgStored = new ArrayList<>();
+        List<Sensor> senStored = new ArrayList<>();
+        List<User> usrStored = new ArrayList<>();
+        
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
 
-        // create organizations
-        try {
-            
-            URL organizationUrl = new URL(baseUrl + orgURL);
-            
-            response.setContentType("text/html;charset=UTF-8");
-            try (PrintWriter out = response.getWriter()) {
-                
-                String input;
-                
-                int idOrg;
-                
-                for (int i = 1; i <= 10; ++i)
-                {
-                    HttpURLConnection con = (HttpURLConnection) organizationUrl.openConnection();
-                    con.setDoOutput(true);
-                    con.setRequestMethod("POST");
-                    con.setRequestProperty("Content-Type", "application/json");
-                    OutputStream outputStream = con.getOutputStream();
-                    
-                    input = "{\"name\":\"testGeneratedOrg" + i + "\"}";
-                    outputStream.write(input.getBytes());
-                    outputStream.flush();
+            // create Organizations
+            try {
 
-                    if (con.getResponseCode() != 200) {
-                            throw new RuntimeException("Failed : HTTP error code : "
-                                    + con.getResponseCode());
+                URL organizationUrl = new URL(baseUrl + orgURL);
+
+    //            response.setContentType("text/html;charset=UTF-8");
+    //            try (PrintWriter out = response.getWriter()) {
+
+                    String input;
+
+                    int orgId;
+
+                    for (int i = 1; i <= 10; ++i)
+                    {
+                        HttpURLConnection con = (HttpURLConnection) organizationUrl.openConnection();
+                        con.setDoOutput(true);
+                        con.setRequestMethod("POST");
+                        con.setRequestProperty("Content-Type", "application/json");
+                        OutputStream outputStream = con.getOutputStream();
+
+                        input = "{\"name\":\"testGeneratedOrg" + i + "\"}";
+                        outputStream.write(input.getBytes());
+                        outputStream.flush();
+
+                        if (con.getResponseCode() != 200) {
+                                throw new RuntimeException("Failed : HTTP error code : "
+                                        + con.getResponseCode());
+                        }
+
+                        BufferedReader buffRep = new BufferedReader(new InputStreamReader(
+                                (con.getInputStream())));
+
+                        orgId = Integer.parseInt(buffRep.readLine());
+
+                        orgStored.add(new Organization(orgId, "testGeneratedOrg" + i));
+
+                        con.disconnect();
                     }
 
-                    BufferedReader buffRep = new BufferedReader(new InputStreamReader(
-                            (con.getInputStream())));
-
-                    idOrg = Integer.parseInt(buffRep.readLine());
-                    
-                    orgStored.add(new Organization(idOrg, "testGeneratedOrg" + i));
-                    
-                    con.disconnect();
-                }
-                
-                for (Organization o : orgStored)
-                {
-                    out.println("Organisation " + o.getName() + " stored with id : " + o.getId());
-                    out.println("<br />");                    
-                }
+                    for (Organization o : orgStored)
+                    {
+                        out.println("Organisation " + o.getName() + " stored with id : " + o.getId());
+                        out.println("<br />");                    
+                    }
+    //            }
             }
-        }
-        catch (MalformedURLException e) {
-        }
-        catch (IOException e) {
+            catch (MalformedURLException e) {
+                throw new RuntimeException("Error : Malformed url");
+            }
+            catch (IOException e) {
+                throw new RuntimeException("Error : IOException");
+            }
+
+            // create Sensors
+            try {
+
+                URL sensorUrl = new URL(baseUrl + senURL);
+
+    //            response.setContentType("text/html;charset=UTF-8");
+    //            try (PrintWriter out = response.getWriter()) {
+
+                    String input;
+
+                    int senId;
+
+                    for (Organization o : orgStored)
+                    {
+                        for (int i = 1; i <= 10; ++i)
+                        {
+                            HttpURLConnection con = (HttpURLConnection) sensorUrl.openConnection();
+                            con.setDoOutput(true);
+                            con.setRequestMethod("POST");
+                            con.setRequestProperty("Content-Type", "application/json");
+                            OutputStream outputStream = con.getOutputStream();
+
+                            input = "{\"name\":\"testGeneratedSen" + i + "org" + o.getId() + "\","
+                                    + "\"description\":\"Sensor nb " + i + " associated with the organization " + o.getName() + "\","
+                                    + "\"organization\":{\"id\":" + o.getId() + ",\"name\":\"" + o.getName() + "\"},"
+                                    + "\"type\":\"sensorType\",\"visible\":true}";
+
+                            outputStream.write(input.getBytes());
+                            outputStream.flush();
+
+                            if (con.getResponseCode() != 200) {
+                                    throw new RuntimeException("Failed : HTTP error code : "
+                                            + con.getResponseCode());
+                            }
+
+                            BufferedReader buffRep = new BufferedReader(new InputStreamReader(
+                                    (con.getInputStream())));
+
+                            senId = Integer.parseInt(buffRep.readLine());
+
+                            senStored.add(new Sensor(senId, ("testGeneratedSen" + i + "org" + o.getId()),
+                                    ("Sensor nb " + i + " associated with the organization " + o.getName()),
+                                    "sensorType", o, true));
+
+                            con.disconnect();
+                        }
+
+                        for (Sensor s : senStored)
+                        {
+                            out.println(s.getDescription() + " stored with id : " + s.getId());
+                            out.println("<br />");                    
+                        }
+                    }
+    //            }
+            }
+            catch (MalformedURLException e) {
+                throw new RuntimeException("Error : Malformed url");
+            }
+            catch (IOException e) {
+                throw new RuntimeException("Error : IOException");
+            }
         }
     }
 
