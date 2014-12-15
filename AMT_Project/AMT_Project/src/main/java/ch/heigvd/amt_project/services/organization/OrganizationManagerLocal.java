@@ -12,7 +12,6 @@ public interface OrganizationManagerLocal {
 
     public List<Organization> read();
     public Organization read(long id);
-    public List<Organization> readOrgByName(String name);
     
     public Organization update(Organization org);
 

@@ -87,12 +87,6 @@ public class SensorManager implements SensorManagerLocal {
     }
 
     @Override
-    public List<Sensor> readPublicSensor() {
-        return em.createNamedQuery("findSensorsByPublicSensor")
-                .getResultList();
-    }
-
-    @Override
     public Sensor update(Sensor sensor) {
         Sensor s = em.merge(sensor);
         em.flush();

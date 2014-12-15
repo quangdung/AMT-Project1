@@ -39,13 +39,6 @@ public class OrganizationManager implements OrganizationManagerLocal {
     }
 
     @Override
-    public List<Organization> readOrgByName(String name) {
-         return em.createNamedQuery("findOrganizationsByName")
-                .setParameter("name", name)
-                .getResultList();
-    }
-
-    @Override
     public Organization update(Organization org) {
         Organization o = em.merge(org);
         em.flush();

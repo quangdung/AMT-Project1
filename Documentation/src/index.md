@@ -9,14 +9,7 @@ menuIndex: 1
 
 Authors : Nguyen-Phuong Le, Quang-Dung Ngo
 
-Feel free to consult our latest version of the REST API reference
-
----
-
-Here is the description of our platform :
-
-- ...
-- ...
+Please feel free to consult our latest version of the [REST API reference](/api) and the description of our application. 
 
 
 

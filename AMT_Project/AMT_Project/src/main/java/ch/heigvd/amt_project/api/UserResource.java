@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.*;
 import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 
 /**
  *
@@ -22,19 +23,34 @@ import javax.ws.rs.*;
 public class UserResource {
     @EJB
     UserManagerLocal usersManager;
+    
+    @Context
+    private UriInfo context;
 
     public UserResource() {
     }
 
     @GET
     @Produces("application/json")
-    public List<UserDTO> getAllUsers()
+    public List<UserDTO> getAllUsers(@QueryParam("orgId") long orgId)
     {
+        MultivaluedMap<String, String> mapAllParam = context.getQueryParameters();
+        
         List<User> users = usersManager.read();
         List<UserDTO> result = new ArrayList<>();
         
-        for(User user : users) {
-            result.add(toDTO(user));
+        if (mapAllParam.isEmpty()) 
+        {
+            for(User user : users) {
+                result.add(toDTO(user));
+            }
+        }
+        else if (mapAllParam.containsKey("orgId")) {
+            List<User> usersByOrgId = usersManager.readUserByOrgId(orgId);
+            
+           for (User sensor : usersByOrgId) {
+               result.add(toDTO(sensor));
+           } 
         }
         
         return result;

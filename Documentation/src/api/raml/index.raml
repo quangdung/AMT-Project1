@@ -17,71 +17,61 @@ mediaType: application/json
              example: |
               [
                 { 
+                  "description": "measure indoor", 
                   "id" : 1,
                   "name": "Sensor1", 
-                  "description": "measure indoor", 
+                  "organization" : 
+                  {
+                    "id":104,
+                    "name":"org1"
+                  },
                   "type": "temperature", 
-                  "publicSensor" : true, 
-                  "organization" : 3
+                  "visible" : true,                   
                 },
                 { 
+                  "description": "measure outdoor", 
                   "id" : 2,
                   "name": "Sensor2", 
-                  "description": "measure outdoor", 
+                  "organization" : 
+                  {
+                    "id":112,
+                    "name":"firstorg"
+                  },
                   "type": "temperature", 
-                  "publicSensor" : true, 
-                  "organization" : 5
+                  "visible" : true,                   
                 }              
               ]
     queryParameters:
-      organization:
-        displayName: Organization
-        type: string
-        description: An organization's name
-        example: AAA
-        required: false
-      place:
-        displayName: Place
-        type: string
-        description: The sensor's place
-        required: false
-      day:
-        displayName: Day
-        type: string
-        description: The day of creation of the sensor
-        required: false
-      month:
-        displayName: Month
-        type: string
-        description: The month of creation of the sensor
-        required: false
-      year:
-        displayName: Year
-        type: string
-        description: The year of creation of the sensor
-        required: false
-      type_measure:
-        displayName: Type of measure
-        type: string
-        description: The type of the measure delivered by the sensor
-        required: false
+      organizationId:
+        displayName: orgId
+        type: integer
+        description: An organization's id
+        example: 109
+        required: false      
   post:
-    description: Create a collection of sensors
+    description: Create a sensor
     body:
       application/json:
         example: |
-          { "name" : "mySensors" }
+          {
+            "description": "Measure indoor",
+            "name": "Sensor 3",
+            "organization":
+            {
+              "id": 104,
+              "name": "organization 1"
+            }
+            "type": "temperature",
+            "visible": true,
+          }
     responses:
       201:
         body:
           application/json:
-    headers:
-      Authorization:
-        description: |
-          A description
-          <private>
-          Private information
-          </private>
+            example: |
+              5
+              (the id of the new sensor)
+
   /{sensorsId}:
     description: The sensor with its ID
     get:
@@ -90,16 +80,37 @@ mediaType: application/json
         200:
           body:
             application/json:
+              example: |
+                { 
+                  "description": "measure outdoor", 
+                  "id" : 2,
+                  "name": "Sensor2", 
+                  "organization" : 
+                  {
+                    "id":112,
+                    "name":"first organization"
+                  },
+                  "type": "temperature", 
+                  "visible" : true,                   
+                }            
         404:
           description: The sensor was not found.
     put:
       description: Update the sensor's informations
-      queryParameters:
-        access_token:
-          displayName: Access Token
-          type:  string
-          description: Token giving permission to update sensor's informations
-          required: true
+      body:
+        application/json:
+          example: |
+            { 
+              "description": "measure outdoor", 
+              "name": "Sensor2", 
+              "organization" : 
+              {
+                "id":115,
+                "name":"second organization"
+              },
+              "type": "temperature", 
+              "visible" : false,                   
+            }           
     delete:
       description: Delete a sensor
 
@@ -111,30 +122,31 @@ mediaType: application/json
     responses:
       200:
         body:
-           application/json:      
-    queryParameters:
-      place:
-        displayName: Place
-        type: string
-        description: The organization's place
-        required: false
+          application/json:
+            example: |
+              [
+                {
+                  "id": 103,
+                  "name":"Organization 5"
+                },
+                {
+                  "id": 104,
+                  "name":"Organization 2"
+                }
+              ]
   post:
-    description: Create a collection of observations
+    description: Create an organization
     body:
       application/json:
         example: |
-          { "name" : "myObservations" }
+          { "name" : "An organization" }
     responses:
       201:
         body:
           application/json:
-    headers:
-      Authorization:
-        description: |
-          A description
-          <private>
-          Private information
-          </private>
+            example: |
+              119
+              (the id of the new organization)
   /{organizationsId}:
     description: An organization with its ID
     get:
@@ -142,17 +154,20 @@ mediaType: application/json
       responses:
         200:
           body:
-            application/json:
+            application/json:     
+              example: |
+                {
+                  "id": 112,
+                  "name":"first organization"
+                }                       
         404:
           description: The organization was not found.
     put:
       description: Update the organization's informations
-      queryParameters:
-        access_token:
-          displayName: Access Token
-          type:  string
-          description: Token giving permission to update organization's informations
-          required: true
+      body:
+        application/json:
+          example: |
+            { "name":"new name"}
     delete:
       description: Delete an organization
 
@@ -166,11 +181,40 @@ mediaType: application/json
     responses:
       200:
         body:
-           application/json:      
+          application/json:      
+            example: |
+              [
+                {                  
+                  "id":201,
+                  "email":"jw@email.com",
+                  "firstName":"John",
+                  "lastName":"White",
+                  "mainContact":true,
+                  "organization":
+                  {
+                    "id":108,
+                    "name":"org5"
+                  },
+                  "password":"pass1"
+                },
+                {                  
+                  "id":202,
+                  "email":"sb@email.com",
+                  "firstName":"Smith",
+                  "lastName":"Brown",
+                  "mainContact":false,
+                  "organization":
+                  {
+                    "id":108,
+                    "name":"org5"
+                  },
+                  "password":"pass1"
+                  }
+                ]
     queryParameters:
-      organization:
-        displayName: Organization
-        type: string
+      organizationId:
+        displayName: ordId
+        type: integer
         description: The organization whom belongs the user
         required: false
   post:
@@ -178,18 +222,25 @@ mediaType: application/json
     body:
       application/json:
         example: |
-          { "name" : "myUsers" }
+            {
+              "firstName": "Smith",
+              "lastName": "Brown",
+              "email": "sb@email.com",
+              "password": "pass1",
+              "organization": 
+              {
+                "id": 108,
+                "name": "org5"
+              },
+              "mainContact": false
+            }
     responses:
       201:
         body:
           application/json:
-    headers:
-      Authorization:
-        description: |
-          A description
-          <private>
-          Private information
-          </private>
+            example: |
+              203
+              (the id of the new user)
   /{usersId}:
     description: An user with its ID
     get:
@@ -198,16 +249,38 @@ mediaType: application/json
         200:
           body:
             application/json:
+              example: |
+                {
+                  "firstName": "Smith",
+                  "lastName": "Brown",
+                  "email": "sb@email.com",
+                  "password": "pass1",
+                  "organization": 
+                  {
+                    "id": 108,
+                    "name": "org5"
+                  },
+                  "mainContact": false
+                }
         404:
           description: The user was not found.
     put:
       description: Update the user's informations
-      queryParameters:
-        access_token:
-          displayName: Access Token
-          type:  string
-          description: Token giving permission to update user's informations
-          required: true
+      body:
+        application/json:
+          example: |
+            {
+              "firstName": "new firstName",
+              "lastName": "new lastName",
+              "email": "sb@email.com",
+              "password": "pass1",
+              "organization": 
+              {
+                "id": 108,
+                "name": "org5"
+              },
+              "mainContact": false
+            }
     delete:
       description: Delete an user
 
@@ -219,43 +292,87 @@ mediaType: application/json
     responses:
       200:
         body:
-           application/json:      
+          application/json:
+            example: |
+              [
+                {
+                  "creationDate":"2014-12-16",
+                  "id":251,
+                  "name":"Observation 1",
+                  "obsValue":25.4,
+                  "sensor :
+                  {
+                    "description":"firstsensor",
+                    "id":118,
+                    "name":"firstsensor",
+                    "organization":
+                    {
+                      "id":112,
+                      "name":"firstorg
+                    },
+                      "type":"firstsensor",
+                      "visible":true
+                  }
+                },
+                {
+                  "creationDate":"2014-12-18",
+                  "id":254,
+                  "name":"Observation 2",
+                  "obsValue":23.6,
+                  "sensor":
+                  {
+                    "description":"d1",
+                    "id":151,
+                    "name":"n1",
+                    "organization":
+                    {
+                      "id":104,
+                      "name":"org1"
+                    },
+                    "type":"t1",
+                    "visible":true
+                  }
+                }
+              ]
     queryParameters:
-      place:
-        displayName: Place
-        type: string
+      sensorId:
+        displayName: sensorId
+        type: integer
         description: The observation's place
         required: false
-      day:
-        displayName: Day
-        type: string
+      date:
+        displayName: date
+        type: date
         description: The day of creation of the observation
         required: false
-      month:
-        displayName: Month
-        type: string
-        description: The month of creation of the observation
-        required: false
-      year:
-        displayName: Year
-        type: string
-        description: The year of creation of the observation
-        required: false
-      type_measure:
-        displayName: Type of measure
-        type: string
-        description: The type of the measure reported by the observation
-        required: false
   post:
-    description: Create a collection of observations
+    description: Create an observation
     body:
       application/json:
         example: |
-          { "name" : "myObservations" }
+          {
+            "name":"Observation 1",
+            "obsValue":25.4,
+            "sensor":
+            {
+              "description":"firstsensor",
+              "id":118,
+              "name":"firstsensor",
+              "organization":
+                {
+                "id":112,
+                "name":"firstorg"
+                },
+              "type":"firstsensor",
+              "visible":true
+            },
+            "creationDate": "2014-12-16"
+          }
     responses:
       201:
         body:
           application/json:
+
     headers:
       Authorization:
         description: |
@@ -291,30 +408,26 @@ mediaType: application/json
     responses:
       200:
         body:
-           application/json:      
+          application/json:  
+            example: |
+              [
+                {
+                  "id":252,
+                  "nbObs":3,
+                  "visible":true
+                },
+                {
+                  "id":253,
+                  "nbObs":5,
+                  "visible":true
+                }
+              ]
     queryParameters:
-      place:
-        displayName: Place
-        type: string
-        description: The fact's place
+      organizationId:
+        displayName: orgId
+        type: integer
+        description: The organizations's id of the fact
         required: false
-  post:
-    description: Create a collection of facts
-    body:
-      application/json:
-        example: |
-          { "name" : "myFacts" }
-    responses:
-      201:
-        body:
-          application/json:
-    headers:
-      Authorization:
-        description: |
-          A description
-          <private>
-          Private information
-          </private>
   /{factsId}:
     description: A fact with its ID
     get:
@@ -323,15 +436,13 @@ mediaType: application/json
         200:
           body:
             application/json:
+              example: |
+                {
+                  "id":256,
+                  "nbObs":4,
+                  "visible":true
+                }
         404:
           description: The fact was not found.
-    put:
-      description: Update the fact's informations
-      queryParameters:
-        access_token:
-          displayName: Access Token
-          type:  string
-          description: Token giving permission to update fact's informations
-          required: true
     delete:
       description: Delete a fact

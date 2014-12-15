@@ -33,10 +33,6 @@ import javax.persistence.*;
     @NamedQuery(
             name = "findSensorsByOrganizationId",
             query = "SELECT s FROM Sensor s WHERE s.organization.id = :orgId"
-    ),
-    @NamedQuery(
-            name = "findSensorsByPublicSensor",
-            query = "SELECT s FROM Sensor s WHERE s.visible = true"
     )
 })
 

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.*;
 import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 
 /**
  *
@@ -24,26 +25,34 @@ public class FactResource {
     @EJB
     FactManagerLocal factsManager;
 
+    @Context
+    private UriInfo context;
+
     public FactResource() {
     }
 
     @GET
     @Produces("application/json")
     public List<FactDTO> getAllFacts(
+            @QueryParam("type") String type,
+            @QueryParam("sensorId") long sensorId,
             @QueryParam("orgId") long orgId) {
+
+        MultivaluedMap<String, String> mapAllParam = context.getQueryParameters();
+
         List<Fact> facts = factsManager.read();
         List<FactDTO> result = new ArrayList<>();
 
-        if (orgId > 0L) {
-            List <Fact> factsByOrgId = factsManager.readByOrgId(orgId);
-            
-            for (Fact fact : factsByOrgId) {
-                System.out.println(fact.getId() + " - " + fact.getOrganization().getId());
+        if (mapAllParam.isEmpty()) {
+            for (Fact fact : facts) {
                 result.add(toDTO(fact));
             }
         }
-        else {
-            for (Fact fact : facts) {
+        else if (mapAllParam.containsKey("orgId")) {
+            List<Fact> factsByOrgId = factsManager.readByOrgId(orgId);
+
+            for (Fact fact : factsByOrgId) {
+                System.out.println(fact.getId() + " - " + fact.getOrganization().getId());
                 result.add(toDTO(fact));
             }
         }

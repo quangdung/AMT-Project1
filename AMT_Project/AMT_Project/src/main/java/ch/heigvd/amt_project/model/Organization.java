@@ -14,10 +14,6 @@ import javax.persistence.*;
     @NamedQuery(
         name="findOrganizationById",
         query="SELECT o FROM Organization o WHERE o.id = :id"
-    ),
-    @NamedQuery(
-        name="findOrganizationsByName",
-        query="SELECT o FROM Organization o WHERE o.name = :name"
     )
 })
 

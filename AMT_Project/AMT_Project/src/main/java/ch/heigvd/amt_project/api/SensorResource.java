@@ -8,8 +8,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 
 @Path("sensors")
 @Stateless
@@ -26,22 +25,23 @@ public class SensorResource {
 
     @GET
     @Produces("application/json")
-    public List<SensorDTO> getAllSensors(
-            @QueryParam("orgId") long orgId) {
+    public List<SensorDTO> getAllSensors(@QueryParam("orgId") long orgId) {
+        MultivaluedMap<String, String> mapAllParam = context.getQueryParameters();
+        
         List<Sensor> sensors = sensorsManager.read();
         List<SensorDTO> result = new ArrayList<>();
 
-        if (orgId > 0L) {
+        if (mapAllParam.isEmpty()) {
+            for (Sensor sensor : sensors) {
+                result.add(toDTO(sensor));
+            }
+        }
+        else if (mapAllParam.containsKey("orgId")) {
             List<Sensor> sensorsByOrgId = sensorsManager.readByOrgId(orgId);
             
            for (Sensor sensor : sensorsByOrgId) {
                result.add(toDTO(sensor));
            } 
-        }
-        else {
-            for (Sensor sensor : sensors) {
-                result.add(toDTO(sensor));
-            }
         }
 
         return result;
