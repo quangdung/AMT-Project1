@@ -135,8 +135,6 @@ public class ObservationResource {
         boolean found = false;
 
         for (FactTiedToDate f : factsDate) {
-            System.out.println(f.getDate());
-            System.out.println(date);
             if (f.getDate().toString().equals(date.toString())) {
                 if (dto.getObsValue() > f.getMaxVal()) {
                     f.setMaxVal(dto.getObsValue());
