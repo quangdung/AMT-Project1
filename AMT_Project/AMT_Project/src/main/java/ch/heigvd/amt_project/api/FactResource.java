@@ -6,7 +6,11 @@
 package ch.heigvd.amt_project.api;
 
 import ch.heigvd.amt_project.dto.FactDTO;
+import ch.heigvd.amt_project.dto.FactTiedToDateDTO;
+import ch.heigvd.amt_project.dto.FactTiedToSensorDTO;
 import ch.heigvd.amt_project.model.Fact;
+import ch.heigvd.amt_project.model.FactTiedToDate;
+import ch.heigvd.amt_project.model.FactTiedToSensor;
 import ch.heigvd.amt_project.services.fact.FactManagerLocal;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +49,18 @@ public class FactResource {
 
         if (mapAllParam.isEmpty()) {
             for (Fact fact : facts) {
-                result.add(toDTO(fact));
+                switch (fact.getType()) {
+                    case "sensor":
+                        result.add(toSensorDTO((FactTiedToSensor)fact));
+                        break;
+                    case "date":
+                        result.add(toDateDTO((FactTiedToDate)fact));
+                        break;
+                    default:
+                        result.add(toDTO(fact));
+                        break;
+                }
+                
             }
         }
         else if (mapAllParam.containsKey("orgId")) {
@@ -98,4 +113,33 @@ public class FactResource {
 
         return dto;
     }
+
+    private FactTiedToSensorDTO toSensorDTO(FactTiedToSensor fact) {
+        FactTiedToSensorDTO dto = new FactTiedToSensorDTO();
+        dto.setId(fact.getId());
+        dto.setOrganizationId(fact.getOrganization());
+        dto.setVisible(fact.isVisible());
+        dto.setSensor(fact.getSensor());
+        dto.setTotNbObs(fact.getNbObs());
+
+        return dto;
+    }
+
+    private FactTiedToDateDTO toDateDTO(FactTiedToDate fact) {
+        FactTiedToDateDTO dto = new FactTiedToDateDTO();
+        dto.setId(fact.getId());
+        dto.setOrganizationId(fact.getOrganization());
+        dto.setVisible(fact.isVisible());
+        dto.setSensor(fact.getSensor());
+        dto.setTotNbObs(fact.getNbObs());
+        dto.setDate(fact.getDate());
+        dto.setAvVal(fact.getAvVal());
+        dto.setMaxVal(fact.getMaxVal());
+        dto.setMinVal(fact.getMinVal());
+        dto.setNbVal(fact.getNbVal());
+        dto.setSumVal(fact.getSumVal());
+
+        return dto;
+    }
+
 }
