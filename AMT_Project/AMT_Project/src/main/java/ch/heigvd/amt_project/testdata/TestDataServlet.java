@@ -272,6 +272,7 @@ public class TestDataServlet extends HttpServlet {
             
             out.println("<br />");
             
+            final Random randomno = new Random();
 
             new Thread() {
 
@@ -279,19 +280,17 @@ public class TestDataServlet extends HttpServlet {
 
                 @Override
                 synchronized public void  run() {
-                    try {
-                        obs.setName ("observationTest");
-                        Random randomno = new Random();
-                        
+                    try {                        
                         while (true)
                         {
                             for (Sensor s : senStored)
                             {
+                                obs.setName ("observationTest");
                                 obs.setSensor(s);
                                 java.util.Date today = new java.util.Date();
                                 java.sql.Date date = new java.sql.Date(today.getTime());
                                 obs.setCreationDate(date);
-                                obs.setObsValue(randomno.nextFloat());
+                                obs.setObsValue(100 * randomno.nextFloat());
                                 
                                 try {
 
@@ -349,6 +348,7 @@ public class TestDataServlet extends HttpServlet {
                             }
                         }
                     } catch (Exception e) {
+                        throw new RuntimeException("Error : Running Thread");
                     }
                 }
             }.start();
