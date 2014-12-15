@@ -18,7 +18,6 @@ public class FactDTO {
 
     private Organization organization;
     private boolean visible;
-    private long nbObs;
     private Sensor sensor;
 
     public long getId() {
@@ -43,14 +42,6 @@ public class FactDTO {
 
     public void setVisible(boolean publicFact) {
         this.visible = publicFact;
-    }
-
-    public long getNbObs() {
-        return nbObs;
-    }
-
-    public void setNbObs(long nbObs) {
-        this.nbObs = nbObs;
     }
 
     public Sensor getSensor() {

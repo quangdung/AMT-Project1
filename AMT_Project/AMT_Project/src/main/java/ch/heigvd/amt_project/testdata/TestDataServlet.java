@@ -273,13 +273,80 @@ public class TestDataServlet extends HttpServlet {
             }
             
             out.println("<br />");
+
+            // create Observations (and Facts)
+            try {
+
+                URL obsUrl = new URL(baseUrl + obsURL);
+                
+                String input;
+                Random randomno = new Random();
+
+                for (Sensor s : senStored)
+                {
+                    for (int i = 1; i <= 3; ++i)
+                    {
+                        HttpURLConnection con = (HttpURLConnection) obsUrl.openConnection();
+                        con.setDoOutput(true);
+                        con.setRequestMethod("POST");
+                        con.setRequestProperty("Content-Type", "application/json");
+                        OutputStream outputStream = con.getOutputStream();
+
+                        Observation obs = new Observation();
+                        obs.setName ("observationTest");
+                        obs.setSensor(s);
+                        java.util.Date today = new java.util.Date();
+                        java.sql.Date date = new java.sql.Date(today.getTime());
+                        obs.setCreationDate(date);
+                        obs.setObsValue(100 * randomno.nextFloat());
+
+                        input = "{\"name\":\"" + obs.getName() + "\","
+                                + "\"obsValue\":" + obs.getObsValue() + ","
+                                + "\"creationDate\":\"" + obs.getCreationDate() + "\","
+                                + "\"sensor\":"
+                                + "{"
+                                + "\"description\":\"" + obs.getSensor().getDescription() + "\","
+                                + "\"id\":" + obs.getSensor().getId() + ","
+                                + "\"name\":\"" + obs.getSensor().getName() + "\","
+                                + "\"organization\":"
+                                + "{"
+                                + "\"id\":" + obs.getSensor().getOrganization().getId() + ","
+                                + "\"name\":\"" + obs.getSensor().getOrganization().getName() + "\"},"
+                                + "\"type\":\"" + obs.getSensor().getType() + "\","
+                                + "\"visible\":" + obs.getSensor().isVisible() + "}}";
+
+                        outputStream.write(input.getBytes());
+                        outputStream.flush();
+
+                        if (con.getResponseCode() != 200) {
+                                throw new RuntimeException("Failed : HTTP error code : "
+                                        + con.getResponseCode());
+                        }
+
+                        BufferedReader buffRep = new BufferedReader(new InputStreamReader(
+                                (con.getInputStream())));
+
+                        con.disconnect();
+                    }
+                }
+
+                out.println("Several Observations and Facts created<br />");
+            }
+            catch (MalformedURLException e) {
+                throw new RuntimeException("Error : Malformed url");
+            }
+            catch (IOException e) {
+                throw new RuntimeException("Error : IOException");
+            }
+            
+            out.println("<br />");
             
             
         }
-            
-        final Random randomno = new Random();
 
         new Thread() {
+            
+            Random randomno = new Random();
 
             Observation obs = new Observation();
 
