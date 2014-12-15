@@ -22,10 +22,12 @@ ch/heigvd/amt_project/services/fact/FactManagerLocal.class
 ch/heigvd/amt_project/dto/FactDTO.class
 ch/heigvd/amt_project/services/observation/ObservationManagerLocal.class
 ch/heigvd/amt_project/api/OrganizationResource.class
+ch/heigvd/amt_project/dto/FactTiedToDateDTO.class
 ch/heigvd/amt_project/model/FactTiedToDate_.class
 ch/heigvd/amt_project/services/fact/FactTiedToDateManager.class
 ch/heigvd/amt_project/services/sensor/SensorManagerLocal.class
 ch/heigvd/amt_project/services/user/UserManagerLocal.class
+ch/heigvd/amt_project/dto/FactTiedToSensorDTO.class
 ch/heigvd/amt_project/model/User_.class
 ch/heigvd/amt_project/testdata/TestDataServlet$1.class
 ch/heigvd/amt_project/services/fact/FactManager.class
