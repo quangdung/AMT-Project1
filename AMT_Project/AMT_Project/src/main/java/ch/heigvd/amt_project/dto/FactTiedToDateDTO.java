@@ -69,6 +69,4 @@ public class FactTiedToDateDTO extends FactTiedToSensorDTO {
     public void setAvVal(float avVal) {
         this.avVal = avVal;
     }
-    
-    
 }

@@ -109,6 +109,7 @@ public class FactResource {
         FactDTO dto = new FactDTO();
         dto.setId(fact.getId());
         dto.setOrganizationId(fact.getOrganization());
+        dto.setType(fact.getType());
         dto.setVisible(fact.isVisible());
 
         return dto;
@@ -118,6 +119,7 @@ public class FactResource {
         FactTiedToSensorDTO dto = new FactTiedToSensorDTO();
         dto.setId(fact.getId());
         dto.setOrganizationId(fact.getOrganization());
+        dto.setType(fact.getType());
         dto.setVisible(fact.isVisible());
         dto.setSensor(fact.getSensor());
         dto.setTotNbObs(fact.getNbObs());
@@ -129,6 +131,7 @@ public class FactResource {
         FactTiedToDateDTO dto = new FactTiedToDateDTO();
         dto.setId(fact.getId());
         dto.setOrganizationId(fact.getOrganization());
+        dto.setType(fact.getType());
         dto.setVisible(fact.isVisible());
         dto.setSensor(fact.getSensor());
         dto.setTotNbObs(fact.getNbObs());

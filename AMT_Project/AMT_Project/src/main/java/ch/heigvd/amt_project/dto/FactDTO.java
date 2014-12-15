@@ -17,8 +17,8 @@ public class FactDTO {
     private long id;
 
     private Organization organization;
+    private String type;
     private boolean visible;
-    private Sensor sensor;
 
     public long getId() {
         return id;
@@ -44,11 +44,13 @@ public class FactDTO {
         this.visible = publicFact;
     }
 
-    public Sensor getSensor() {
-        return sensor;
+    public String getType() {
+        return type;
     }
 
-    public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
+    public void setType(String type) {
+        this.type = type;
     }
+
+    
 }
