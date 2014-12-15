@@ -57,7 +57,7 @@ public class SensorDTO {
         return organization;
     }
 
-    public void setOrganizationId(Organization organization) {
+    public void setOrganization(Organization organization) {
         this.organization = organization;
     }
 }

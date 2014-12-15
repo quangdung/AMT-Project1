@@ -3,6 +3,7 @@ ch\heigvd\amt_project\model\User.class
 ch\heigvd\amt_project\services\sensor\SensorManager.class
 ch\heigvd\amt_project\api\ApplicationConfig.class
 ch\heigvd\amt_project\services\sensor\SensorManagerLocal.class
+ch\heigvd\amt_project\testdata\TestDataServlet.class
 ch\heigvd\amt_project\api\ObservationResource.class
 ch\heigvd\amt_project\dto\FactDTO.class
 ch\heigvd\amt_project\services\fact\FactTiedToDateManagerLocal.class

@@ -25,7 +25,6 @@ public class SensorManager implements SensorManagerLocal {
         em.persist(sensor);
         em.flush();
         
-//        return sensor;
         return sensor.getId();
     }
     
@@ -83,7 +82,7 @@ public class SensorManager implements SensorManagerLocal {
     @Override
     public List<Sensor> readByOrgId(long orgId) {
         return em.createNamedQuery("findSensorsByOrganizationId")
-                .setParameter("organizationId", orgId)
+                .setParameter("orgId", orgId)
                 .getResultList();
     }
 
