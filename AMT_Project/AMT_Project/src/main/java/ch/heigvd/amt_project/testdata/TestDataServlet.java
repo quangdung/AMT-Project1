@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -272,87 +274,79 @@ public class TestDataServlet extends HttpServlet {
             
             out.println("<br />");
             
-            final Random randomno = new Random();
+            
+        }
+            
+        final Random randomno = new Random();
 
-            new Thread() {
+        new Thread() {
 
-                Observation obs = new Observation();
+            Observation obs = new Observation();
 
-                @Override
-                synchronized public void  run() {
-                    try {                        
-                        while (true)
+            @Override
+            synchronized public void run() {     
+                while (true)
+                {
+                    try {
+                        for (Sensor s : senStored)
                         {
-                            for (Sensor s : senStored)
-                            {
-                                obs.setName ("observationTest");
-                                obs.setSensor(s);
-                                java.util.Date today = new java.util.Date();
-                                java.sql.Date date = new java.sql.Date(today.getTime());
-                                obs.setCreationDate(date);
-                                obs.setObsValue(100 * randomno.nextFloat());
-                                
-                                try {
+                            obs.setName ("observationTest");
+                            obs.setSensor(s);
+                            java.util.Date today = new java.util.Date();
+                            java.sql.Date date = new java.sql.Date(today.getTime());
+                            obs.setCreationDate(date);
+                            obs.setObsValue(100 * randomno.nextFloat());
 
-                                    URL obsUrl = new URL(baseUrl + obsURL);
+                            try {
 
-                                    String input;
+                                URL obsUrl = new URL(baseUrl + obsURL);
 
-                                    int obsId;
+                                String input;
 
-                                    HttpURLConnection con = (HttpURLConnection) obsUrl.openConnection();
-                                    con.setDoOutput(true);
-                                    con.setRequestMethod("POST");
-                                    con.setRequestProperty("Content-Type", "application/json");
-                                    OutputStream outputStream = con.getOutputStream();
+                                int obsId;
 
-                                    input = "{\"name\":\"" + obs.getName() + "\","
-                                            + "\"obsValue\":" + obs.getObsValue() + ","
-                                            + "\"creationDate\":\"" + obs.getCreationDate() + "\","
-                                            + "\"sensor\":"
-                                            + "{"
-                                            + "\"description\":\"" + obs.getSensor().getDescription() + "\","
-                                            + "\"id\":" + obs.getSensor().getId() + ","
-                                            + "\"name\":\"" + obs.getSensor().getName() + "\","
-                                            + "\"organization\":"
-                                            + "{"
-                                            + "\"id\":" + obs.getSensor().getOrganization().getId() + ","
-                                            + "\"name\":\"" + obs.getSensor().getOrganization().getName() + "\"},"
-                                            + "\"type\":\"" + obs.getSensor().getType() + "\","
-                                            + "\"visible\":" + obs.getSensor().isVisible() + "}}";
+                                HttpURLConnection con = (HttpURLConnection) obsUrl.openConnection();
+                                con.setDoOutput(true);
+                                con.setRequestMethod("POST");
+                                con.setRequestProperty("Content-Type", "application/json");
+                                OutputStream outputStream = con.getOutputStream();
 
-                                    outputStream.write(input.getBytes());
-                                    outputStream.flush();
+                                input = "{\"name\":\"" + obs.getName() + "\","
+                                        + "\"obsValue\":" + obs.getObsValue() + ","
+                                        + "\"creationDate\":\"" + obs.getCreationDate() + "\","
+                                        + "\"sensor\":"
+                                        + "{"
+                                        + "\"description\":\"" + obs.getSensor().getDescription() + "\","
+                                        + "\"id\":" + obs.getSensor().getId() + ","
+                                        + "\"name\":\"" + obs.getSensor().getName() + "\","
+                                        + "\"organization\":"
+                                        + "{"
+                                        + "\"id\":" + obs.getSensor().getOrganization().getId() + ","
+                                        + "\"name\":\"" + obs.getSensor().getOrganization().getName() + "\"},"
+                                        + "\"type\":\"" + obs.getSensor().getType() + "\","
+                                        + "\"visible\":" + obs.getSensor().isVisible() + "}}";
 
-                                    if (con.getResponseCode() != 200) {
-                                            throw new RuntimeException("Failed : HTTP error code : "
-                                                    + con.getResponseCode());
-                                    }
+                                outputStream.write(input.getBytes());
+                                outputStream.flush();
 
-                                    BufferedReader buffRep = new BufferedReader(new InputStreamReader(
-                                            (con.getInputStream())));
-
-                                    obsId = Integer.parseInt(buffRep.readLine());
-
-                                    out.println("new organization with id " + obsId + "created");
-                                    out.println("<br />");
-
-                                    con.disconnect();
-                                }
-                                catch (MalformedURLException e) {
-                                    throw new RuntimeException("Error : Malformed url");
-                                }
-                                catch (IOException e) {
-                                    throw new RuntimeException("Error : IOException");
-                                }
+                                con.disconnect();
+                            }
+                            catch (MalformedURLException e) {
+                                throw new RuntimeException("Error : Malformed url");
+                            }
+                            catch (IOException e) {
+                                throw new RuntimeException("Error : IOException");
                             }
                         }
-                    } catch (Exception e) {
-                        throw new RuntimeException("Error : Running Thread");
+                        
+                        Thread.sleep(4000);
+                    }
+                    catch (InterruptedException ex) {
+                        Logger.getLogger(TestDataServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            }.start();
-        }
+            }
+        }.start();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
