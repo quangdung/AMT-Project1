@@ -1,11 +1,36 @@
-AMT-Project1
+AMT Project
 ============
 
 Authors : Nguyen-Phuong Le & Quang-Dung Ngo
 
 ---
+# Introduction
 
+This project has been created in the context of the AMT course of the HEIG-VD, Yverdon-les-Bains, Switzerland.
+
+Its purpose is to create a Web API that can manage observations data coming from different sensors of all types (as in a web of things scenario, sensors coming from different devices) and deal with them to create facts that reflect some statistics out of the observations.
+
+![web_of_things](./images/web_of_things.png)
+
+The scenario we have chosen to illustrate in this project is as follow : 
+- Theres is different organizations, each one composed of users, that are tied with different sensors.
+- Those sensors can detect different observations (composed of a value and a time of observation) that arrive at different times and that are eventually stored into a database.
+- Once an observation has been detected by a sensor, different facts are created to reflect some statistics matching the totality of all observations.
+
+You can install this platform to test how all the generated observations are handled through it and see the generated facts.
+
+---
 # Domain modeling
+
+Every observation can be detected by only one sensor and every sensor can detect several observations.
+
+Each Sensor is associated with one organization and each organization can have several sensors associated with it.
+
+Each organization is composed of several users.
+
+Each fact can be tied to one organization and every organization can have several facts tied to it.
+
+There is 2 types of facts. One that only counts the total number of observations per sensor and another that contains all stats per day.
 
 ![Domain_model](./images/domain_model.png)
 
@@ -24,10 +49,12 @@ Go to adress [http://localhost:8080/AMT_Project/](http://localhost:8080/AMT_Proj
 
 ---
 
-# Implementation choices
-One of the implementation choices that we had to choose were the inheritance strategy.
+# Online testing
 
-We have chosen to go for the single table implementation because we don't have a lot of columns and it is practical to be able to work with only one table, especially when it comes to queries. 
+If you want to test an already functional version of our API, head over to 
+http://quangdung.github.io/amt-project1/
+
+---
 
 # Known issues
 
