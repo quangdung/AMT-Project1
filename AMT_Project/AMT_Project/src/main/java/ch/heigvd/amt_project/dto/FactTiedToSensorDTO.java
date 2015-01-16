@@ -12,17 +12,17 @@ import ch.heigvd.amt_project.model.Sensor;
  *
  * @author
  */
-public class FactTiedToSensorDTO extends FactDTO{
+public class FactTiedToSensorDTO extends FactDTO {
 
-    private Sensor sensor;
+    private long sensorId;
     private long totNbObs;
 
-    public Sensor getSensor() {
-        return sensor;
+    public long getSensorId() {
+        return sensorId;
     }
 
-    public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
+    public void setSensorId(long sensorId) {
+        this.sensorId = sensorId;
     }
 
     public long getTotNbObs() {
@@ -32,6 +32,4 @@ public class FactTiedToSensorDTO extends FactDTO{
     public void setTotNbObs(long totNbObs) {
         this.totNbObs = totNbObs;
     }
-    
-    
 }

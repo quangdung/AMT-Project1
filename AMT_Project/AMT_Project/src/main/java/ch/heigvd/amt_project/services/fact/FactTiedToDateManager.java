@@ -1,6 +1,7 @@
 package ch.heigvd.amt_project.services.fact;
 
 import ch.heigvd.amt_project.model.FactTiedToDate;
+import ch.heigvd.amt_project.model.FactType;
 import java.sql.Date;
 import java.util.*;
 import javax.ejb.Singleton;
@@ -25,11 +26,11 @@ public class FactTiedToDateManager implements FactTiedToDateManagerLocal {
         
         return fact.getId();
     }
-    
+
     @Override
     public List<FactTiedToDate> readAllTiedToDate() {
         return em.createNamedQuery("FactTiedToDate.findAll")
-                .setParameter("type", "date")
+                .setParameter("type", FactType.FACT_TIED_TO_SENSOR_BY_DATE)
                 .getResultList();
     }
 

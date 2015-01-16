@@ -2,6 +2,7 @@ package ch.heigvd.amt_project.api;
 
 import ch.heigvd.amt_project.dto.SensorDTO;
 import ch.heigvd.amt_project.model.Sensor;
+import ch.heigvd.amt_project.services.organization.OrganizationManagerLocal;
 import ch.heigvd.amt_project.services.sensor.SensorManagerLocal;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,9 @@ public class SensorResource {
 
     @EJB
     SensorManagerLocal sensorsManager;
+    
+    @EJB
+    OrganizationManagerLocal orgsManager;
 
     @Context
     private UriInfo context;
@@ -57,32 +61,32 @@ public class SensorResource {
 
     @POST
     @Consumes("application/json")
-    public long createSensor(SensorDTO dto) {
+    public SensorDTO createSensor(SensorDTO dto) {
         Sensor newSensor = new Sensor();
 
         long idSensor = sensorsManager.create(toSensor(dto, newSensor));
-        return idSensor;
+        
+        return toDTO(sensorsManager.read(idSensor));
     }
 
     @Path("/{id}")
     @PUT
     @Consumes("application/json")
-    public Sensor updateSensor(@PathParam("id") long id, SensorDTO dto) {
-        Sensor s = new Sensor(sensorsManager.read(id));
-        s.setId(id);
-        sensorsManager.update(toSensorUpdate(dto, s));
-
-        return s;
+    public void updateSensor(@PathParam("id") long id, SensorDTO dto) {
+        Sensor existing = sensorsManager.read(id);
+        sensorsManager.update(toSensor(dto, existing));
     }
 
     @Path("/{id}")
     @DELETE
     public void deleteSensor(@PathParam("id") long id) {
-        Sensor toDelete = sensorsManager.read(id);
-
-        if (toDelete != null) {
-            sensorsManager.delete(toDelete);
-        }
+        sensorsManager.read(id);
+        sensorsManager.delete(sensorsManager.read(id));
+        
+//        Sensor toDelete = sensorsManager.read(id);
+//        if (toDelete != null) {
+//            sensorsManager.delete(toDelete);
+//        }
     }
 
     private Sensor toSensorUpdate(SensorDTO sensorDto, Sensor sensor) {
@@ -95,8 +99,8 @@ public class SensorResource {
         if (sensorDto.getType() != null) {
             sensor.setType(sensorDto.getType());
         }
-        if (sensorDto.getOrganization() != null) {
-            sensor.setOrganization(sensorDto.getOrganization());
+        if (sensorDto.getOrgId() != 0L) {
+            sensor.setOrganization(orgsManager.read(sensorDto.getOrgId()));
         }
         sensor.setVisible(sensorDto.isVisible());
 
@@ -107,7 +111,7 @@ public class SensorResource {
         sensor.setName(sensorDto.getName());
         sensor.setDescription(sensorDto.getDescription());
         sensor.setType(sensorDto.getType());
-        sensor.setOrganization(sensorDto.getOrganization());
+        sensor.setOrganization(orgsManager.read(sensorDto.getOrgId()));
         sensor.setVisible(sensorDto.isVisible());
 
         return sensor;
@@ -119,7 +123,7 @@ public class SensorResource {
         dto.setName(sensor.getName());
         dto.setDescription(sensor.getDescription());
         dto.setType(sensor.getType());
-        dto.setOrganization(sensor.getOrganization());
+        dto.setOrgId(sensor.getOrganization().getId());
         dto.setVisible(sensor.isVisible());
         return dto;
     }

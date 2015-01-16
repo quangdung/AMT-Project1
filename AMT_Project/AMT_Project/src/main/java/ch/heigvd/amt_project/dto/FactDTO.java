@@ -16,7 +16,7 @@ public class FactDTO {
 
     private long id;
 
-    private Organization organization;
+    private long orgId;
     private String type;
     private boolean visible;
 
@@ -28,12 +28,12 @@ public class FactDTO {
         this.id = id;
     }
 
-    public Organization getOrganization() {
-        return organization;
+    public long getOrgId() {
+        return orgId;
     }
 
-    public void setOrganizationId(Organization organization) {
-        this.organization = organization;
+    public void setOrgId(long orgId) {
+        this.orgId = orgId;
     }
 
     public boolean isVisible() {
@@ -43,7 +43,7 @@ public class FactDTO {
     public void setVisible(boolean publicFact) {
         this.visible = publicFact;
     }
-
+    
     public String getType() {
         return type;
     }
@@ -51,6 +51,4 @@ public class FactDTO {
     public void setType(String type) {
         this.type = type;
     }
-
-    
 }

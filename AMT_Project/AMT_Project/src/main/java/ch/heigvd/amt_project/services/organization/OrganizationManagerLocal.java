@@ -13,7 +13,8 @@ public interface OrganizationManagerLocal {
     public List<Organization> read();
     public Organization read(long id);
     
-    public Organization update(Organization org);
+//    public Organization update(Organization org);
+    public void update(Organization org);
 
     public void delete(Organization org);
 }

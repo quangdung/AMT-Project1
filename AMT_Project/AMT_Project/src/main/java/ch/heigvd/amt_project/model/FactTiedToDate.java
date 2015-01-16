@@ -6,33 +6,35 @@ import javax.persistence.*;
 
 @NamedQueries({
     @NamedQuery(
-        name = "FactTiedToDate.findAll",
-        query = "SELECT f FROM Fact f WHERE f.type = :type"
+            name = "FactTiedToDate.findAll",
+            query = "SELECT f FROM Fact f WHERE f.type = :type"
+//            query = "SELECT f FROM FactTiedToDate f"
     ),
     @NamedQuery(
-        name = "FactTiedToDate.findByDate",
-        query = "SELECT f FROM FactTiedToDate f WHERE f.date = :date"
+            name = "FactTiedToDate.findByDate",
+            query = "SELECT f FROM FactTiedToDate f WHERE f.date = :date"
     ),
     @NamedQuery(
-        name = "FactTiedToDate.findByDateRange",
-        query = "SELECT f FROM FactTiedToDate f WHERE f.date BETWEEN :startDate AND :endDate"
-    )  
+            name = "FactTiedToDate.findByDateRange",
+            query = "SELECT f FROM FactTiedToDate f WHERE f.date BETWEEN :startDate AND :endDate"
+    )
 })
 
 @Entity
-@Table(name="factstiedtodate")
-@DiscriminatorValue("tiedToDate")
+@Table(name = "factstiedtodate")
+//@DiscriminatorValue("tiedToDate")
+@DiscriminatorValue(FactType.FACT_TIED_TO_SENSOR_BY_DATE)
 public class FactTiedToDate extends FactTiedToSensor implements Serializable {
 
     @Column(name = "dateConcerned")
     private Date date;
-    
+
     @Column(name = "nbOfValues")
     private long nbVal;
-    
+
     @Column(name = "sumOfValues")
     private double sumVal;
-    
+
     @Column(name = "minVal")
     private float minVal;
 
@@ -41,15 +43,18 @@ public class FactTiedToDate extends FactTiedToSensor implements Serializable {
 
     @Column(name = "averageValue")
     private float avVal;
-            
-    public FactTiedToDate() { 
+
+    public FactTiedToDate() {
     }
-    
-    public FactTiedToDate(Organization org, boolean visible, Sensor sensor,
-            long totNbObs, Date date, long nbVal, double sumVal, float minVal,
-            float maxVal, float avVal)
-    {
-        super(org, "date", visible, sensor, totNbObs);
+
+    public FactTiedToDate(Organization org,
+                          boolean visible,
+                          Sensor sensor,
+                          long totNbObs,
+                          Date date, long nbVal, double sumVal, float minVal,
+                          float maxVal, float avVal) {
+        super(org, visible, sensor, totNbObs);
+        this.type = FactType.FACT_TIED_TO_SENSOR_BY_DATE;
         this.date = date;
         this.nbVal = nbVal;
         this.sumVal = sumVal;
@@ -104,5 +109,10 @@ public class FactTiedToDate extends FactTiedToSensor implements Serializable {
 
     public void setAvVal(float avVal) {
         this.avVal = avVal;
+    }
+
+    @Override
+    public String getType() {
+        return FactType.FACT_TIED_TO_SENSOR_BY_DATE;
     }
 }

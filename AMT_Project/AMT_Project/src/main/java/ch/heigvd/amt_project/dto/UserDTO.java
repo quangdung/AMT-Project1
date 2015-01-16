@@ -18,7 +18,7 @@ public class UserDTO {
     private String lastName;
     private String email;
     private String password;
-    private Organization organization;
+    private long orgId;
     private boolean mainContact;
 
     public long getId() {
@@ -61,12 +61,12 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Organization getOrganization() {
-        return organization;
+    public long getOrgId() {
+        return orgId;
     }
 
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
+    public void setOrgId(long orgId) {
+        this.orgId = orgId;
     }
 
     public boolean isMainContact() {
@@ -76,6 +76,4 @@ public class UserDTO {
     public void setMainContact(boolean mainContact) {
         this.mainContact = mainContact;
     }
-
-    
 }

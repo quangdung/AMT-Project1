@@ -10,7 +10,7 @@ public class SensorDTO {
     private String description;
     private String type;
     private boolean visible;
-    private Organization organization;
+    private long orgId;
     
    
     public long getId() {
@@ -53,11 +53,13 @@ public class SensorDTO {
         this.visible = visibility;
     }
 
-    public Organization getOrganization() {
-        return organization;
+    public long getOrgId() {
+        return orgId;
     }
 
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
+    public void setOrgId(long orgId) {
+        this.orgId = orgId;
     }
+    
+    
 }

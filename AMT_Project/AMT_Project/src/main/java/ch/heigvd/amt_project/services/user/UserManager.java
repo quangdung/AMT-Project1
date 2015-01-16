@@ -33,9 +33,17 @@ public class UserManager implements UserManagerLocal {
 
     @Override
     public User read(long id) {
-        return (User) em.createNamedQuery("findUserById")
+        User u = null;
+        try {
+            u = (User) em.createNamedQuery("findUserById")
                 .setParameter("id", id)
                 .getSingleResult();
+        }
+        catch (NoResultException e) {
+            u = new User();
+        }
+        
+        return u;
     }
 
     @Override

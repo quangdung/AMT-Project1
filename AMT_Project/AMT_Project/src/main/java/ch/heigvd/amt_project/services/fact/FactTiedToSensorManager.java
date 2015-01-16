@@ -1,6 +1,7 @@
 package ch.heigvd.amt_project.services.fact;
 
 import ch.heigvd.amt_project.model.FactTiedToSensor;
+import ch.heigvd.amt_project.model.FactType;
 import java.util.*;
 import javax.ejb.Singleton;
 import javax.persistence.*;
@@ -24,11 +25,11 @@ public class FactTiedToSensorManager implements FactTiedToSensorManagerLocal {
         
         return fact.getId();
     }
-    
+
     @Override
     public List<FactTiedToSensor> readAllTiedToSensor() {
         return em.createNamedQuery("FactTiedToSensor.findAll")
-                .setParameter("type", "sensor")
+                .setParameter("type", FactType.FACT_TIED_TO_SENSOR)
                 .getResultList();
     }
 

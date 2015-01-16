@@ -1,6 +1,6 @@
 {
 	"name": "AMTProject1",
-	"version": "1.0.0",
+	"version": "0.0.2",
 	"description": "AMT Project 1's API documentation",
 	"author": "Lotaris SA",
 	"devDependencies": {		

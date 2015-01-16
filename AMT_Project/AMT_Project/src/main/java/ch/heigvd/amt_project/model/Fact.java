@@ -23,36 +23,36 @@ import javax.persistence.*;
 })
 
 @Entity
-@Table(name="facts")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@Table(name = "facts")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
-  name="typeOfFact", 
-  discriminatorType=DiscriminatorType.STRING
-  )
-public abstract class Fact implements Serializable {
-    
+        name = "typeOfFact",
+        discriminatorType = DiscriminatorType.STRING
+)
+public class Fact implements Serializable {
+
     @Id
-    @SequenceGenerator(name="fact_seq", allocationSize=10)
+    @SequenceGenerator(name = "fact_seq", allocationSize = 10)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-        
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "orgId")
     private Organization organization;
-    
+
     @Column(name = "type")
-    private String type;
-    
+    String type;
+
     @Column(name = "visible")
     private boolean visible;
-    
+
     public Fact() {
     }
 
-    public Fact(Organization organization, String type, boolean visible) {
+    public Fact(Organization organization, boolean visible) {
         this.organization = organization;
-        this.type = type;
         this.visible = visible;
+        this.type = "";
     }
 
     public long getId() {
@@ -74,7 +74,7 @@ public abstract class Fact implements Serializable {
     public String getType() {
         return type;
     }
-    
+
     public void setType(String type) {
         this.type = type;
     }

@@ -5,8 +5,9 @@ import javax.persistence.*;
 
 @NamedQueries({
     @NamedQuery(
-        name = "FactTiedToSensor.findAll",
-        query = "SELECT f FROM Fact f WHERE f.type = :type"
+            name = "FactTiedToSensor.findAll",
+            query = "SELECT f FROM Fact f WHERE f.type = :type"
+//            query = "SELECT f FROM FactTiedToSensor f"
     ),
     @NamedQuery(
             name = "FactTiedToSensor.findBySensorId",
@@ -31,23 +32,26 @@ import javax.persistence.*;
 })
 
 @Entity
-@Table(name="factstiedtosensor")
-@DiscriminatorValue("tiedToSensor")
+@Table(name = "factstiedtosensor")
+//@DiscriminatorValue("tiedToSensor")
+@DiscriminatorValue(FactType.FACT_TIED_TO_SENSOR)
 public class FactTiedToSensor extends Fact implements Serializable {
-    
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sensorId")
     private Sensor sensor;
 
     @Column(name = "totNbObs")
     private long totNbObs;
-    
-    public FactTiedToSensor() { 
+
+    public FactTiedToSensor() {
     }
-    
-    public FactTiedToSensor(Organization organization, String type, boolean visible, Sensor sensor, final long totNbObs)
-    {
-        super(organization, type, visible);
+
+    public FactTiedToSensor(Organization organization,
+                            boolean visible,
+                            Sensor sensor, final long totNbObs) {
+        super(organization, visible);
+        this.type = FactType.FACT_TIED_TO_SENSOR;
         this.sensor = sensor;
         this.totNbObs = totNbObs;
     }
@@ -67,4 +71,11 @@ public class FactTiedToSensor extends Fact implements Serializable {
     public void setNbObs(long totNbObs) {
         this.totNbObs = totNbObs;
     }
+
+    @Override
+    public String getType() {
+        return FactType.FACT_TIED_TO_SENSOR;
+    }
+    
+    
 }

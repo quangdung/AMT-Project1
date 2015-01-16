@@ -19,7 +19,7 @@ public class ObservationDTO {
     private String name;
     private float obsValue;
     private Date creationDate;
-    private Sensor sensor;
+    private long sensorId;
 
     public long getId() {
         return id;
@@ -53,12 +53,12 @@ public class ObservationDTO {
         this.creationDate = creationDate;
     }
 
-    public Sensor getSensor() {
-        return sensor;
+    public long getSensorId() {
+        return sensorId;
     }
 
-    public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
+    public void setSensorId(long sensorId) {
+        this.sensorId = sensorId;
     }
 
     
