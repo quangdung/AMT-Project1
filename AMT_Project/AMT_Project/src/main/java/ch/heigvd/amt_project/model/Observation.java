@@ -36,8 +36,7 @@ import javax.persistence.*;
 public class Observation implements Serializable {
 
     @Id
-    @SequenceGenerator(name="obs_seq", allocationSize=10)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;

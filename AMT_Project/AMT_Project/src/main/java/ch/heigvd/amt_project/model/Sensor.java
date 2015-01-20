@@ -41,8 +41,7 @@ import javax.persistence.*;
 public class Sensor implements Serializable {
 
     @Id
-    @SequenceGenerator(name="sens_seq", allocationSize=10)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "name")
@@ -63,6 +62,15 @@ public class Sensor implements Serializable {
 
     public Sensor() {
     }
+
+    public Sensor(String name, String description, String type, Organization organization, boolean visible) {
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.organization = organization;
+        this.visible = visible;
+    }
+    
     
     public Sensor(Sensor s)
     {

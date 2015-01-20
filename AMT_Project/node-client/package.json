@@ -1,0 +1,16 @@
+{
+  "name": "node-client",
+  "version": "0.0.0",
+  "description": "",
+  "main": "client.js",
+  "dependencies": {
+    "async": "^0.9.0",
+    "node-rest-client": "^1.4.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

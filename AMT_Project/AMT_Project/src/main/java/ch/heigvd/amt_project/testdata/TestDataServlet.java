@@ -9,10 +9,7 @@ import ch.heigvd.amt_project.model.Observation;
 import ch.heigvd.amt_project.model.Organization;
 import ch.heigvd.amt_project.model.Sensor;
 import ch.heigvd.amt_project.model.User;
-import ch.heigvd.amt_project.services.observation.ObservationManagerLocal;
-import ch.heigvd.amt_project.services.organization.OrganizationManagerLocal;
-import ch.heigvd.amt_project.services.sensor.SensorManagerLocal;
-import ch.heigvd.amt_project.services.user.UserManagerLocal;
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,10 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -64,29 +59,6 @@ public class TestDataServlet extends HttpServlet {
         final String obsURL = "/observations";
         final String usrURL = "/users";
         
-//        Organization org = new Organization();
-//        org.setName("organization 1");
-//        
-//        orgMan.create(org);
-//        
-//        Sensor sen = new Sensor();
-//        sen.setName("sensor 1");
-//        sen.setDescription("description sensor 1");
-//        sen.setOrganization(org);
-//        sen.setType("type sensor 1");
-//        sen.setVisible(true);
-//        
-//        senMan.create(sen);
-//        
-//        Observation obs = new Observation();
-//        java.util.Date today = new java.util.Date();
-//        java.sql.Date dateToday = new java.sql.Date(today.getTime());
-//        obs.setCreationDate(dateToday);
-//        obs.setName("observation 1");
-//        obs.setSensor(sen);
-//        obs.setObsValue(666);
-//        
-//        obsMan.create(obs);
         
         List<Organization> orgStored = new ArrayList<>();
         List<User> usrStored = new ArrayList<>();
@@ -101,7 +73,7 @@ public class TestDataServlet extends HttpServlet {
 
                 String input;
 
-                int orgId;
+                long orgId;
 
                 for (int i = 1; i <= 10; ++i)
                 {
@@ -123,7 +95,7 @@ public class TestDataServlet extends HttpServlet {
                     BufferedReader buffRep = new BufferedReader(new InputStreamReader(
                             (con.getInputStream())));
 
-                    orgId = Integer.parseInt(buffRep.readLine());
+                    orgId = (new Gson().fromJson(buffRep.readLine(), Organization.class)).getId();
 
                     orgStored.add(new Organization(orgId, "testGeneratedOrg" + i));
 
@@ -152,7 +124,7 @@ public class TestDataServlet extends HttpServlet {
                 
                 String input;
 
-                int senId;
+                long senId;
 
                 for (Organization o : orgStored)
                 {
@@ -164,13 +136,12 @@ public class TestDataServlet extends HttpServlet {
                         con.setRequestProperty("Content-Type", "application/json");
                         OutputStream outputStream = con.getOutputStream();
 
-                        input = "{\"name\":\"testGeneratedSen" + i + "org" + o.getId() + "\","
+                        input = "{\"name\":\"testGeneratedSen" + i + "\","
+                                + "\"orgId\":" + o.getId() + ","
                                 + "\"description\":\"Sensor nb " + i + " associated with the organization " + o.getName() + "\","
-                                + "\"organization\":{\"id\":" + o.getId() + ","
-                                + "\"name\":\"" + o.getName() + "\"},"
-                                + "\"type\":\"sensorType\","
+                                + "\"type\":\"sensorType" + i + "\","
                                 + "\"visible\":true}";
-
+                        
                         outputStream.write(input.getBytes());
                         outputStream.flush();
 
@@ -182,12 +153,12 @@ public class TestDataServlet extends HttpServlet {
                         BufferedReader buffRep = new BufferedReader(new InputStreamReader(
                                 (con.getInputStream())));
 
-                        senId = Integer.parseInt(buffRep.readLine());
+                        senId = (new Gson().fromJson(buffRep, Sensor.class)).getId();
 
                         senStored.add(new Sensor(senId, ("testGeneratedSen" + i + "org" + o.getId()),
                                 ("Sensor nb " + i + " associated with the organization " + o.getName()),
                                 "sensorType", o, true));
-
+                        
                         con.disconnect();
                     }
                 }
@@ -214,7 +185,7 @@ public class TestDataServlet extends HttpServlet {
                 
                 String input;
 
-                int usrId;
+                long usrId;
                 boolean isContact = false;
 
                 for (Organization o : orgStored)
@@ -231,11 +202,7 @@ public class TestDataServlet extends HttpServlet {
                                 + "\"firstName\":\"Firstnametest\","
                                 + "\"lastName\":\"Lastnametest" + i + "\","
                                 + "\"mainContact\":" + isContact + ","
-                                + "\"organization\":"
-                                + "{"
-                                + "\"id\":" + o.getId() + ","
-                                + "\"name\":\"" + o.getName() + "\""
-                                + "},"
+                                + "\"orgId\":" + o.getId() + ","
                                 + "\"password\":\"pass\"}";
 
                         outputStream.write(input.getBytes());
@@ -249,7 +216,9 @@ public class TestDataServlet extends HttpServlet {
                         BufferedReader buffRep = new BufferedReader(new InputStreamReader(
                                 (con.getInputStream())));
 
-                        usrId = Integer.parseInt(buffRep.readLine());
+//                        usrId = Integer.parseInt(buffRep.readLine());
+                        
+                        usrId = (new Gson().fromJson(buffRep, User.class)).getId();
                         
                         usrStored.add(new User(usrId, "Firstnametest", ("Lastnametest" + i), "user@test.com", "pass", o, isContact));
 
@@ -303,17 +272,7 @@ public class TestDataServlet extends HttpServlet {
                         input = "{\"name\":\"" + obs.getName() + "\","
                                 + "\"obsValue\":" + obs.getObsValue() + ","
                                 + "\"creationDate\":\"" + obs.getCreationDate() + "\","
-                                + "\"sensor\":"
-                                + "{"
-                                + "\"description\":\"" + obs.getSensor().getDescription() + "\","
-                                + "\"id\":" + obs.getSensor().getId() + ","
-                                + "\"name\":\"" + obs.getSensor().getName() + "\","
-                                + "\"organization\":"
-                                + "{"
-                                + "\"id\":" + obs.getSensor().getOrganization().getId() + ","
-                                + "\"name\":\"" + obs.getSensor().getOrganization().getName() + "\"},"
-                                + "\"type\":\"" + obs.getSensor().getType() + "\","
-                                + "\"visible\":" + obs.getSensor().isVisible() + "}}";
+                               + "\"sensorId\":" + obs.getSensor().getId() + "}";
 
                         outputStream.write(input.getBytes());
                         outputStream.flush();
@@ -381,17 +340,7 @@ public class TestDataServlet extends HttpServlet {
                                 input = "{\"name\":\"" + obs.getName() + "\","
                                         + "\"obsValue\":" + obs.getObsValue() + ","
                                         + "\"creationDate\":\"" + obs.getCreationDate() + "\","
-                                        + "\"sensor\":"
-                                        + "{"
-                                        + "\"description\":\"" + obs.getSensor().getDescription() + "\","
-                                        + "\"id\":" + obs.getSensor().getId() + ","
-                                        + "\"name\":\"" + obs.getSensor().getName() + "\","
-                                        + "\"organization\":"
-                                        + "{"
-                                        + "\"id\":" + obs.getSensor().getOrganization().getId() + ","
-                                        + "\"name\":\"" + obs.getSensor().getOrganization().getName() + "\"},"
-                                        + "\"type\":\"" + obs.getSensor().getType() + "\","
-                                        + "\"visible\":" + obs.getSensor().isVisible() + "}}";
+                                       + "\"sensorId\":" + obs.getSensor().getId() + "}";
 
                                 outputStream.write(input.getBytes());
                                 outputStream.flush();

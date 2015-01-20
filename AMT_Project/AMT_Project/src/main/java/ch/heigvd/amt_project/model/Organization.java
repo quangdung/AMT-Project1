@@ -22,13 +22,16 @@ import javax.persistence.*;
 public class Organization implements Serializable {
 
     @Id
-    @SequenceGenerator(name="org_seq", allocationSize=10)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
     
     public Organization() {
+    }
+
+    public Organization(String name) {
+        this.name = name;
     }
 
     public Organization(long id, String name) {

@@ -8,7 +8,6 @@ import javax.persistence.*;
     @NamedQuery(
             name = "FactTiedToDate.findAll",
             query = "SELECT f FROM Fact f WHERE f.type = :type"
-//            query = "SELECT f FROM FactTiedToDate f"
     ),
     @NamedQuery(
             name = "FactTiedToDate.findByDate",
@@ -22,7 +21,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "factstiedtodate")
-//@DiscriminatorValue("tiedToDate")
 @DiscriminatorValue(FactType.FACT_TIED_TO_SENSOR_BY_DATE)
 public class FactTiedToDate extends FactTiedToSensor implements Serializable {
 
