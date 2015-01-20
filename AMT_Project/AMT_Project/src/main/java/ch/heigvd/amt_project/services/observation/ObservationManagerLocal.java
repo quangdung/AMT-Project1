@@ -22,4 +22,5 @@ public interface ObservationManagerLocal {
     public Observation update(Observation observation);
 
     public void delete(Observation observation);
+    public void deleteAll();
 }

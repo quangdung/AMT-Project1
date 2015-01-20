@@ -32,6 +32,7 @@ ch\heigvd\amt_project\services\organization\OrganizationManagerLocal.class
 ch\heigvd\amt_project\dto\FactTiedToSensorDTO.class
 ch\heigvd\amt_project\dto\SensorDTO.class
 ch\heigvd\amt_project\model\Fact_.class
+ch\heigvd\amt_project\api\AdminOperationResource.class
 ch\heigvd\amt_project\dto\UserDTO.class
 ch\heigvd\amt_project\model\FactTiedToDate_.class
 ch\heigvd\amt_project\model\Fact.class

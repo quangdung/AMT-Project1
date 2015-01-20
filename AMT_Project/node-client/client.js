@@ -2,33 +2,48 @@ var Client = require('node-rest-client').Client;
 var client = new Client();
 var async = require('async');
 
-// This map keeps track of the transactions posted by the client, 
-// even if they result in an error (for instance if two parallel requests try to create a new account).
-// In this case, the client is informed that the transaction has failed and it would be his responsibility
-// to retry.
+/*
+	This map keeps track of the observations posted by the client, even if they result in an error (in which case ?)
+
+ */
+
+
+// This map keeps track of the transactions posted by the client, even if they result in an error (for instance if two parallel requests try to create a new account). In this case, the client is informed that the transaction has failed and it would be his responsibility to retry.
 var submittedStats = {}
+
+
+/*
+	This map keeps track of the observations posted by the client, but only if the server has confirmed their processing with a successful status code. In this case, the client can assume that the observations has been successfully processed.	
+ */
 
 // This map keeps track of the transactions posted by the client, but only if the server has confirmed
 // their processing with a successful status code. 
 // In this case, the client can assume that the transaction has been successfully processed.
 var processedStats = {};
 
-function logTransaction(stats, transaction) {
-	var accountStats = stats[transaction.accountId] || {
-		accountId: transaction.accountId,
-		numberOfTransactions: 0,
-		balance: 0
+/*
+
+ */
+function logObservation(stats, observation) {
+	
+	var factStats = stats[observation.sensorId] || {
+		sensorId: observation.sensorId,
+		totNbObs: 0,
 	};
-	accountStats.numberOfTransactions += 1;
-	accountStats.balance += transaction.amount;
-	stats[transaction.accountId] = accountStats;
+	factStats.totNbObs += 1;
+	stats[observation.sensorId] = factStats;
 }
 
 
 /*
  * This function returns a function that we can use with the async.js library. 
  */ 
-function getTransactionPOSTRequestFunction(accountId) {
+
+
+/*
+
+ */
+function getObservationPOSTRequestFunction(sensorId) {
 		
 	return function(callback) {
 		var requestData = {
@@ -36,15 +51,18 @@ function getTransactionPOSTRequestFunction(accountId) {
 				"Content-Type": "application/json"
 			},
 			data: {
-				'accountId': accountId,
-				'amount': 0 // we will generate a random value below
+				'creationDate' : new Date(2015, 1, 10),	
+				'name' : 'obs for sensor' + sensorId,			
+				'obsValue': 0, // we will generate a random value below
+				'sensorId': sensorId
 			}
 		};
 		
-		requestData.data.amount = Math.floor((Math.random() * 200) - 50);
-		logTransaction(submittedStats, requestData.data);
+		requestData.data.obsValue = Math.floor((Math.random() * 200) - 50);
+
+		logObservation(submittedStats, requestData.data);
 		
-		client.post("http://localhost:8080/ConcurrentUpdateDemo/api/transactions", requestData, function(data, response) {
+		client.post("http://localhost:8080/AMT_Project/api/observations", requestData, function(data, response) {
 			var error = null;
 			var result = {
 				requestData: requestData,
@@ -56,102 +74,181 @@ function getTransactionPOSTRequestFunction(accountId) {
 	}
 }
 
+
 /*
  * Prepare an array of HTTP request functions. We will pass these to async.parallel
  */
 var requests = [];
 
-for (var account=1; account<=20; account++) {
-	for (var transaction=0; transaction<60; transaction++) {
+/*
+	
+ */
+for (var sensor = 1; sensor <= 1; sensor++) {
+	for (var observation = 0; observation < 2; observation++) {
 		requests.push(
-			getTransactionPOSTRequestFunction(account)
+			getObservationPOSTRequestFunction(sensor)
 		);
 	}
-};
+}; 
 
 
 /*
- * Reset server side - this will delete all accounts
+	Reset server side - this will delete all facts 	
  */
+ 
 function resetServerState(callback) {
 	console.log("\n\n==========================================");
 	console.log("POSTing RESET command.");
 	console.log("------------------------------------------");
-	client.post("http://localhost:8080/ConcurrentUpdateDemo/api/operations/reset", function(data, response) {
+	client.post("http://localhost:8080/AMT_Project/api/operations/reset", function(data, response) {
 		console.log("RESET response status code: " + response.statusCode);
+
 		callback(null, "The RESET operation has been processed (status code: " + response.statusCode + ")");
 	});
 };
 
+
 /*
- * POST transaction requests in parallel
+var http = require('http');
+
+function performRequest(endpoint, method, data, success) {
+    "use strict";
+    var dataString = JSON.stringify(data);
+    var headers = {};
+    
+    headers = {
+        'Content-Type': 'application/json'
+    };
+    
+    var options = {
+        host: 'localhost',
+        port: '8080',
+        path: endpoint,
+        method: method,
+        headers: headers
+    };
+    
+    var req = http.request(options, function(res) {
+        res.setEncoding('utf-8');
+
+        var responseString = '';
+        
+        res.on('data', function(data) {
+            responseString += data;
+        });
+
+        res.on('end', function() {
+        success(responseString);
+        });
+    });
+    
+    req.write(dataString);
+    req.end();
+}
+
+
+function resetServerState(callback) {
+	performRequest('/AMT_Project/api/operations/reset', 'DELETE', '',
+	     function(data)
+	    {
+	    	console.log("\n\n==========================================");
+			console.log("Sending RESET command.");
+			console.log("------------------------------------------");
+	        console.log("Deleting facts in progress");
+	        console.log("Finish deleting");
+	    });
+};
+
+*/
+
+
+/*
+	POST observation requests in parallel
  */
-function postTransactionRequestsInParallel(callback) {
+function postObservationRequestsInParallel(callback) {
 	console.log("\n\n==========================================");
-	console.log("POSTing transaction requests in parallel");
+	console.log("POSTing observation requests in parallel");
 	console.log("------------------------------------------");
+
 	var numberOfUnsuccessfulResponses = 0;
+
 	async.parallel(requests, function(err, results) {
-		for (var i=0; i<results.length; i++) {
+		for (var i=0; i < results.length; i++) {
 			if (results[i].response.statusCode < 200 || results[i].response.statusCode >= 300) {
 				console.log("Result " + i + ": " + results[i].response.statusCode);
 				numberOfUnsuccessfulResponses++;
 			} else {
-				logTransaction(processedStats, results[i].requestData.data);
+				logObservation(processedStats, results[i].requestData.data);
 			}
 		}
-		callback(null, results.length + " transaction POSTs have been sent. " + numberOfUnsuccessfulResponses + " have failed.");
+
+		callback(null, results.length + " observation POSTs have been sent. " + numberOfUnsuccessfulResponses + " have failed.");
 	});
-}
+} 
+
 
 /*
- * Fetch server-side state (list of accounts). The list of accounts is passed to the callback function.
+	Fetch server-side state (list of facts). The list of facts is passed to the callback function.
  */
 function checkValues(callback) {
 	console.log("\n\n==========================================");
 	console.log("Comparing client-side and server-side stats");
 	console.log("------------------------------------------");
+
 	var requestData = {
 		headers:{
 			"Accept": "application/json"
 		}
 	};
-	client.get("http://localhost:8080/ConcurrentUpdateDemo/api/accounts", requestData, function(data, response) {
+
+	client.get("http://localhost:8080/AMT_Project/api/facts", requestData, function(data, response) {
 		var numberOfErrors = 0;
-		var clientSideAccounts = Object.keys(submittedStats).length;
-		var serverSideAccounts = data.length;
-		console.log("Number of accounts on the client side: " + clientSideAccounts);
-		console.log("Number of accounts on the server side: " + serverSideAccounts);
-		if (clientSideAccounts !== serverSideAccounts) {
+
+		var clientSideFacts = Object.keys(submittedStats).length;
+		var serverSideFacts = data.length;
+
+		console.log("Number of facts on the client side: " + clientSideFacts);
+		console.log("Number of facts on the server side: " + serverSideFacts);
+
+		if (clientSideFacts !== serverSideFacts) {
 			numberOfErrors++;
 		}
 		
-		for (var i=0; i<data.length; i++) {
-			var accountId = data[i].id;
-			var serverSideValue = data[i].balance;
-			var clientSideValue = processedStats[accountId].balance;
+		for (var i=0; i < data.length; i++) {
+			var factId = data[i].id;
+			var serverSideValue = data[i].totNbObs;
+			var clientSideValue = processedStats[factId].totNbObs;
+
 			if (clientSideValue !== serverSideValue) {
 				numberOfErrors++;
-				console.log("Account " + accountId + " --> Server/Client balance: " + serverSideValue + "/" + clientSideValue + "  X");
+				console.log("Fact " + factId + " --> Server/Client number of observations: " + serverSideValue + "/" + clientSideValue + "  X");
 			} else {
-				//console.log("Account " + accountId + " --> Server/Client balance: " + serverSideValue + "/" + clientSideValue);				
+				console.log("Fact " + factId + " --> Server/Client balance: " + serverSideValue + "/" + clientSideValue);				
 			}
 			
 		}
 		
-		callback(null, "The client side and server side values have been compared. Number of corrupted accounts: " + numberOfErrors);
+		callback(null, "The client side and server side values have been compared. Number of corrupted facts: " + numberOfErrors);
 	});
 }
 
+
+/*
+
+ */	
 async.series([
-	resetServerState,
-	postTransactionRequestsInParallel,
+	/*
+	resetServerState,	
+	*/
+	postObservationRequestsInParallel
+	/*,
 	checkValues
+	*/
 ], function(err, results) {
 	console.log("\n\n==========================================");
 	console.log("Summary");
 	console.log("------------------------------------------");
 	//console.log(err);
 	console.log(results);
-});
-	
+}); 
+

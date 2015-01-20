@@ -28,6 +28,10 @@ import javax.persistence.*;
     @NamedQuery(
             name = "findObservationsBySensorId",
             query = "SELECT o FROM Observation o WHERE o.sensor.id = :sensorId"
+    ),
+    @NamedQuery(
+            name="deleteAllObservations", 
+            query="DELETE FROM Observation"
     )
 })
 

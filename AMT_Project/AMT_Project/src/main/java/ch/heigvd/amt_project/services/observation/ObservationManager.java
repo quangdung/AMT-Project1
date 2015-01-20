@@ -73,4 +73,9 @@ public class ObservationManager implements ObservationManagerLocal {
         em.remove(observation);
         em.flush();
     }
+    
+    @Override
+    public void deleteAll() {
+        em.createNamedQuery("deleteAllObservations").executeUpdate();
+    }
 }

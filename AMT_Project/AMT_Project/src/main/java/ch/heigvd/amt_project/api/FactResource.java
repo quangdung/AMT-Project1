@@ -148,6 +148,7 @@ public class FactResource {
         return fact;
     }
 
+    
     private FactDTO toDTO(Fact fact) {
         FactDTO dto = new FactDTO();
 

@@ -69,4 +69,10 @@ public class FactManager implements FactManagerLocal {
             em.flush();
         }
     }
+
+    @Override
+    public void deleteAll() {
+        em.createNamedQuery("deleteAllFacts").executeUpdate();
+    }
+  
 }

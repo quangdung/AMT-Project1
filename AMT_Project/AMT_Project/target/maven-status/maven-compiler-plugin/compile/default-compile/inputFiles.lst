@@ -20,6 +20,7 @@ C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\api\ApplicationConfig.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\api\UserResource.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\observation\ObservationManagerLocal.java
+C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\api\AdminOperationResource.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\dto\OrganizationDTO.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\fact\FactTiedToSensorManager.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\dto\UserDTO.java

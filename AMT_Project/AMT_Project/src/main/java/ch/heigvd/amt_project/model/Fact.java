@@ -19,6 +19,10 @@ import javax.persistence.*;
     @NamedQuery(
             name = "findFactsByVisibility",
             query = "SELECT f FROM Fact f WHERE f.visible = :visible"
+    ),
+    @NamedQuery(
+            name="deleteAllFacts", 
+            query="DELETE FROM Fact"
     )
 })
 

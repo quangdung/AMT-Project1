@@ -75,7 +75,7 @@ public class TestDataServlet extends HttpServlet {
 
                 long orgId;
 
-                for (int i = 1; i <= 10; ++i)
+                for (int i = 1; i <= 4; ++i)
                 {
                     HttpURLConnection con = (HttpURLConnection) organizationUrl.openConnection();
                     con.setDoOutput(true);
@@ -128,7 +128,7 @@ public class TestDataServlet extends HttpServlet {
 
                 for (Organization o : orgStored)
                 {
-                    for (int i = 1; i <= 4; ++i)
+                    for (int i = 1; i <= 3; ++i)
                     {
                         HttpURLConnection con = (HttpURLConnection) sensorUrl.openConnection();
                         con.setDoOutput(true);
@@ -216,8 +216,6 @@ public class TestDataServlet extends HttpServlet {
                         BufferedReader buffRep = new BufferedReader(new InputStreamReader(
                                 (con.getInputStream())));
 
-//                        usrId = Integer.parseInt(buffRep.readLine());
-                        
                         usrId = (new Gson().fromJson(buffRep, User.class)).getId();
                         
                         usrStored.add(new User(usrId, "Firstnametest", ("Lastnametest" + i), "user@test.com", "pass", o, isContact));
@@ -243,6 +241,7 @@ public class TestDataServlet extends HttpServlet {
             
             out.println("<br />");
 
+            /*
             // create Observations (and Facts)
             try {
 
@@ -297,12 +296,12 @@ public class TestDataServlet extends HttpServlet {
             catch (IOException e) {
                 throw new RuntimeException("Error : IOException");
             }
+            */
             
-            out.println("<br />");
-            
-            
+            out.println("<br />");                        
         }
-
+        
+        /*
         new Thread() {
             
             Random randomno = new Random();
@@ -363,6 +362,7 @@ public class TestDataServlet extends HttpServlet {
                 }
             }
         }.start();
+        */
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
