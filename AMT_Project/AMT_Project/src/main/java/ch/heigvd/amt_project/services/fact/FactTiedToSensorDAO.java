@@ -11,33 +11,53 @@ import javax.persistence.*;
  * @author
  */
 @Singleton
-public class FactTiedToSensorManager implements FactTiedToSensorManagerLocal {
+public class FactTiedToSensorDAO implements FactTiedToSensorDAOLocal {
+
     @PersistenceContext
     public EntityManager em;
-    
-    public FactTiedToSensorManager() {
+
+    public FactTiedToSensorDAO() {
     }
 
     @Override
     public long create(FactTiedToSensor fact) {
         em.persist(fact);
         em.flush();
-        
+
         return fact.getId();
     }
 
     @Override
     public List<FactTiedToSensor> readAllTiedToSensor() {
-        return em.createNamedQuery("FactTiedToSensor.findAll")
-                .setParameter("type", FactType.FACT_TIED_TO_SENSOR)
-                .getResultList();
+        Query q = em.createNamedQuery("FactTiedToSensor.findAll")
+                .setParameter("type", FactType.FACT_TIED_TO_SENSOR);
+
+//        try {
+//            q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+//            q.setHint("javax.persistence.query.timeout", 500);
+//        }
+//        catch (LockTimeoutException e) {
+//
+//        }
+        return q.getResultList();
+
     }
 
     @Override
     public List<FactTiedToSensor> readBySensorId(long sensorId) {
-        return em.createNamedQuery("FactTiedToSensor.findBySensorId")
-                .setParameter("sensorId", sensorId)
-                .getResultList();
+        Query q = em.createNamedQuery("FactTiedToSensor.findBySensorId")
+                .setParameter("sensorId", sensorId);
+
+        try {
+            q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+            q.setHint("javax.persistence.query.timeout", 1000);
+        }
+        catch (LockTimeoutException e) {
+
+        }
+
+        return q.getResultList();
+
     }
 
     @Override
@@ -72,7 +92,7 @@ public class FactTiedToSensorManager implements FactTiedToSensorManagerLocal {
     public FactTiedToSensor update(FactTiedToSensor fact) {
         FactTiedToSensor f = em.merge(fact);
         em.flush();
-        
+
         return f;
     }
 }

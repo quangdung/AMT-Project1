@@ -12,26 +12,46 @@ import javax.persistence.*;
  * @author
  */
 @Singleton
-public class FactTiedToDateManager implements FactTiedToDateManagerLocal {
+public class FactTiedToDateDAO implements FactTiedToDateDAOLocal {
+
     @PersistenceContext
     public EntityManager em;
-    
-    public FactTiedToDateManager() {
+
+    public FactTiedToDateDAO() {
     }
 
     @Override
     public long create(FactTiedToDate fact) {
         em.persist(fact);
         em.flush();
-        
+
         return fact.getId();
     }
 
     @Override
     public List<FactTiedToDate> readAllTiedToDate() {
-        return em.createNamedQuery("FactTiedToDate.findAll")
-                .setParameter("type", FactType.FACT_TIED_TO_SENSOR_BY_DATE)
-                .getResultList();
+        Query q = em.createNamedQuery("FactTiedToDate.findAll")
+                .setParameter("type", FactType.FACT_TIED_TO_SENSOR_BY_DATE);
+//        q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+        return q.getResultList();
+
+    }
+
+    @Override
+    public List<FactTiedToDate> readBySensorId(long sensorId) {
+        Query q = em.createNamedQuery("FactTiedToDate.findBySensorId")
+                .setParameter("sensorId", sensorId);
+
+        try {
+            q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+            q.setHint("javax.persistence.query.timeout", 1000);
+        }
+        catch (LockTimeoutException e) {
+
+        }
+
+        return q.getResultList();
+
     }
 
     @Override
@@ -53,7 +73,7 @@ public class FactTiedToDateManager implements FactTiedToDateManagerLocal {
     public FactTiedToDate update(FactTiedToDate fact) {
         FactTiedToDate f = em.merge(fact);
         em.flush();
-        
+
         return f;
     }
 }

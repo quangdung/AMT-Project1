@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author drezaroth
  */
 @WebServlet(name = "TestDataServlet", urlPatterns = {"/TestDataServlet"})
-public class TestDataServlet extends HttpServlet {
+public class InitData extends HttpServlet {
     
     ConcurrentLinkedQueue<Sensor> senStored = new ConcurrentLinkedQueue<>();
     
@@ -357,7 +357,7 @@ public class TestDataServlet extends HttpServlet {
                         Thread.sleep(4000);
                     }
                     catch (InterruptedException ex) {
-                        Logger.getLogger(TestDataServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(InitData.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }

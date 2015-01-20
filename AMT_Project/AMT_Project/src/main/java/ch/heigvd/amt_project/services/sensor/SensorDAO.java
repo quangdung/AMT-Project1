@@ -12,13 +12,13 @@ import javax.persistence.*;
  * @author
  */
 @Singleton
-public class SensorManager implements SensorManagerLocal {
+public class SensorDAO implements SensorDAOLocal {
 
     @PersistenceContext
     public EntityManager em;
     
     // constructor
-    public SensorManager() {}
+    public SensorDAO() {}
 
     @Override
     public long create(Sensor sensor) {

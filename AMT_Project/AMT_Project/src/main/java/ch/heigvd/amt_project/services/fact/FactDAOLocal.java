@@ -9,7 +9,7 @@ import javax.ejb.Local;
  * @author
  */
 @Local
-public interface FactManagerLocal {
+public interface FactDAOLocal {
 
     public long create(Fact fact);
 

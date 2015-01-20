@@ -2,6 +2,9 @@ var Client = require('node-rest-client').Client;
 var client = new Client();
 var async = require('async');
 
+var nbSensor = 3;
+var nbObservation = 10;
+
 /*
 	This map keeps track of the observations posted by the client, even if they result in an error (in which case ?)
 
@@ -51,14 +54,14 @@ function getObservationPOSTRequestFunction(sensorId) {
 				"Content-Type": "application/json"
 			},
 			data: {
-				'creationDate' : new Date(2015, 1, 10),	
+				'creationDate' : new Date(2015, 1, 11),	
 				'name' : 'obs for sensor' + sensorId,			
 				'obsValue': 0, // we will generate a random value below
 				'sensorId': sensorId
 			}
 		};
 		
-		requestData.data.obsValue = Math.floor((Math.random() * 200) - 50);
+		requestData.data.obsValue = Math.floor((Math.random() * 100) - 0);
 
 		logObservation(submittedStats, requestData.data);
 		
@@ -83,8 +86,8 @@ var requests = [];
 /*
 	
  */
-for (var sensor = 1; sensor <= 1; sensor++) {
-	for (var observation = 0; observation < 2; observation++) {
+for (var sensor = 1; sensor <= nbSensor; sensor++) {
+	for (var observation = 0; observation < nbObservation; observation++) {
 		requests.push(
 			getObservationPOSTRequestFunction(sensor)
 		);
@@ -106,60 +109,6 @@ function resetServerState(callback) {
 		callback(null, "The RESET operation has been processed (status code: " + response.statusCode + ")");
 	});
 };
-
-
-/*
-var http = require('http');
-
-function performRequest(endpoint, method, data, success) {
-    "use strict";
-    var dataString = JSON.stringify(data);
-    var headers = {};
-    
-    headers = {
-        'Content-Type': 'application/json'
-    };
-    
-    var options = {
-        host: 'localhost',
-        port: '8080',
-        path: endpoint,
-        method: method,
-        headers: headers
-    };
-    
-    var req = http.request(options, function(res) {
-        res.setEncoding('utf-8');
-
-        var responseString = '';
-        
-        res.on('data', function(data) {
-            responseString += data;
-        });
-
-        res.on('end', function() {
-        success(responseString);
-        });
-    });
-    
-    req.write(dataString);
-    req.end();
-}
-
-
-function resetServerState(callback) {
-	performRequest('/AMT_Project/api/operations/reset', 'DELETE', '',
-	     function(data)
-	    {
-	    	console.log("\n\n==========================================");
-			console.log("Sending RESET command.");
-			console.log("------------------------------------------");
-	        console.log("Deleting facts in progress");
-	        console.log("Finish deleting");
-	    });
-};
-
-*/
 
 
 /*
@@ -237,9 +186,9 @@ function checkValues(callback) {
 
  */	
 async.series([
-	/*
-	resetServerState,	
-	*/
+	
+	resetServerState,
+	
 	postObservationRequestsInParallel
 	/*,
 	checkValues

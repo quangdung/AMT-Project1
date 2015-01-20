@@ -10,12 +10,12 @@ import javax.persistence.*;
  * @author
  */
 @Singleton
-public class OrganizationManager implements OrganizationManagerLocal {
+public class OrganizationDAO implements OrganizationDAOLocal {
 
     @PersistenceContext
     public EntityManager em;
     
-    public OrganizationManager() {}
+    public OrganizationDAO() {}
 
     @Override
     public long create(Organization org) {

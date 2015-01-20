@@ -10,12 +10,12 @@ import javax.persistence.*;
  * @author
  */
 @Singleton
-public class ObservationManager implements ObservationManagerLocal {
+public class ObservationDAO implements ObservationDAOLocal {
 
     @PersistenceContext
     public EntityManager em;
     
-    public ObservationManager() {
+    public ObservationDAO() {
     }
 
     @Override

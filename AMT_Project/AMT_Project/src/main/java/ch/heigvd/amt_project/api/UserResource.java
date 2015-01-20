@@ -7,8 +7,8 @@ package ch.heigvd.amt_project.api;
 
 import ch.heigvd.amt_project.dto.UserDTO;
 import ch.heigvd.amt_project.model.User;
-import ch.heigvd.amt_project.services.organization.OrganizationManagerLocal;
-import ch.heigvd.amt_project.services.user.UserManagerLocal;
+import ch.heigvd.amt_project.services.organization.OrganizationDAOLocal;
+import ch.heigvd.amt_project.services.user.UseDAOLocal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.*;
@@ -24,10 +24,10 @@ import javax.ws.rs.core.*;
 public class UserResource {
 
     @EJB
-    UserManagerLocal usersManager;
+    UseDAOLocal usersDAO;
     
     @EJB
-    OrganizationManagerLocal orgsManager;
+    OrganizationDAOLocal orgsDAO;
 
     @Context
     private UriInfo context;
@@ -40,7 +40,7 @@ public class UserResource {
     public List<UserDTO> getAllUsers(@QueryParam("orgId") long orgId) {
         MultivaluedMap<String, String> mapAllParam = context.getQueryParameters();
 
-        List<User> users = usersManager.read();
+        List<User> users = usersDAO.read();
         List<UserDTO> result = new ArrayList<>();
 
         if (mapAllParam.isEmpty()) {
@@ -49,7 +49,7 @@ public class UserResource {
             }
         }
         else if (mapAllParam.containsKey("orgId")) {
-            List<User> usersByOrgId = usersManager.readUserByOrgId(orgId);
+            List<User> usersByOrgId = usersDAO.readUserByOrgId(orgId);
 
             for (User user : usersByOrgId) {
                 result.add(toDTO(user));
@@ -64,7 +64,7 @@ public class UserResource {
     @Produces("application/json")
     public UserDTO getUserDetails(@PathParam("id") long id) {
 
-        User user = usersManager.read(id);
+        User user = usersDAO.read(id);
 
         return toDTO(user);
     }
@@ -74,24 +74,24 @@ public class UserResource {
     public UserDTO createUser(UserDTO dto) {
         User newUser = new User();
 
-        long idUser = usersManager.create(toUser(dto, newUser));
+        long idUser = usersDAO.create(toUser(dto, newUser));
 
-        return toDTO(usersManager.read(idUser));
+        return toDTO(usersDAO.read(idUser));
     }
 
     @Path("/{id}")
     @PUT
     @Consumes("application/json")
     public void updateUser(@PathParam("id") long id, UserDTO dto) {
-        User existing = usersManager.read(id);
-        usersManager.update(toUser(dto, existing));
+        User existing = usersDAO.read(id);
+        usersDAO.update(toUser(dto, existing));
     }
 
     @Path("/{id}")
     @DELETE
     public void deleteUser(@PathParam("id") long id) {
-        usersManager.read(id);
-        usersManager.delete(usersManager.read(id));
+        usersDAO.read(id);
+        usersDAO.delete(usersDAO.read(id));
     }
 
     private User toUser(UserDTO userDto, User user) {
@@ -100,7 +100,7 @@ public class UserResource {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
-        user.setOrganization(orgsManager.read(userDto.getOrgId()));
+        user.setOrganization(orgsDAO.read(userDto.getOrgId()));
         user.setMainContact(userDto.isMainContact());
 
         return user;

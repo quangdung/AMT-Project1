@@ -16,6 +16,10 @@ import javax.persistence.*;
     @NamedQuery(
             name = "FactTiedToDate.findByDateRange",
             query = "SELECT f FROM FactTiedToDate f WHERE f.date BETWEEN :startDate AND :endDate"
+    ),
+    @NamedQuery(
+            name = "FactTiedToDate.findBySensorId",
+            query = "SELECT f FROM FactTiedToDate f WHERE f.sensor.id = :sensorId"
     )
 })
 

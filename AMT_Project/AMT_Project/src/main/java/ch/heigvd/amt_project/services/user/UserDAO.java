@@ -10,12 +10,12 @@ import javax.persistence.*;
  * @author
  */
 @Singleton
-public class UserManager implements UserManagerLocal {
+public class UserDAO implements UseDAOLocal {
 
     @PersistenceContext
     public EntityManager em;
     
-    public UserManager() {}
+    public UserDAO() {}
 
     @Override
     public long create(User user) {
@@ -97,7 +97,7 @@ public class UserManager implements UserManagerLocal {
 
 }
 //
-//    public UserManager()
+//    public UserDAO()
 //    {
 //    }
 //    

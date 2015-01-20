@@ -9,7 +9,7 @@ import javax.ejb.Local;
  * @author
  */
 @Local
-public interface FactTiedToSensorManagerLocal {
+public interface FactTiedToSensorDAOLocal {
 
     public long create(FactTiedToSensor fact);
 

@@ -10,32 +10,47 @@ import javax.persistence.*;
  * @author
  */
 @Singleton
-public class FactManager implements FactManagerLocal {
+public class FactDAO implements FactDAOLocal {
+
     @PersistenceContext
     public EntityManager em;
-    
-    public FactManager() {
+
+    public FactDAO() {
     }
 
     @Override
     public long create(Fact fact) {
         em.persist(fact);
         em.flush();
-        
+
         return fact.getId();
     }
-    
+
     @Override
     public List<Fact> read() {
-        return em.createNamedQuery("findAllFacts")
-                .getResultList();
+        Query q = em.createNamedQuery("findAllFacts");
+//        try {
+//            q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+//            q.setHint("javax.persistence.query.timeout", 1000);
+//        }
+//        catch (LockTimeoutException e) {
+//
+//        }
+        return q.getResultList();
     }
-    
+
     @Override
     public Fact read(long factId) {
-        return (Fact) em.createNamedQuery("findFactById")
-                .setParameter("id", factId)
-                .getSingleResult();
+        Query q = em.createNamedQuery("findFactById").setParameter("id", factId);
+
+//        try {
+            q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+//            q.setHint("javax.persistence.query.timeout", 1000);
+//        }
+//        catch (LockTimeoutException e) {
+//            
+//        }
+        return (Fact) q.getSingleResult();
     }
 
     @Override
@@ -56,15 +71,14 @@ public class FactManager implements FactManagerLocal {
     public Fact update(Fact fact) {
         Fact s = em.merge(fact);
         em.flush();
-        
+
         return s;
     }
 
     @Override
     public void delete(long factId) {
         Fact f = read(factId);
-        if (f != null)
-        {
+        if (f != null) {
             em.remove(f);
             em.flush();
         }
@@ -74,5 +88,5 @@ public class FactManager implements FactManagerLocal {
     public void deleteAll() {
         em.createNamedQuery("deleteAllFacts").executeUpdate();
     }
-  
+
 }

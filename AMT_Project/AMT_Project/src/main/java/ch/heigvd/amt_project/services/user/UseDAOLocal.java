@@ -6,7 +6,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 @Local
-public interface UserManagerLocal {
+public interface UseDAOLocal {
 
     public long create(User user);
 

@@ -6,7 +6,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 @Local
-public interface OrganizationManagerLocal {
+public interface OrganizationDAOLocal {
 
     public long create(Organization org);
 

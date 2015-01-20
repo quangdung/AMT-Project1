@@ -7,7 +7,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 @Local
-public interface SensorManagerLocal {
+public interface SensorDAOLocal {
 
     public long create(Sensor sensor);
 

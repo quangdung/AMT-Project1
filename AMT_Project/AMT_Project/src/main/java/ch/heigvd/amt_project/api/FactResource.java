@@ -12,11 +12,11 @@ import ch.heigvd.amt_project.model.Fact;
 import ch.heigvd.amt_project.model.FactTiedToDate;
 import ch.heigvd.amt_project.model.FactTiedToSensor;
 import ch.heigvd.amt_project.model.FactType;
-import ch.heigvd.amt_project.services.fact.FactManagerLocal;
-import ch.heigvd.amt_project.services.fact.FactTiedToDateManagerLocal;
-import ch.heigvd.amt_project.services.fact.FactTiedToSensorManagerLocal;
-import ch.heigvd.amt_project.services.organization.OrganizationManagerLocal;
-import ch.heigvd.amt_project.services.sensor.SensorManagerLocal;
+import ch.heigvd.amt_project.services.fact.FactDAOLocal;
+import ch.heigvd.amt_project.services.fact.FactTiedToDateDAOLocal;
+import ch.heigvd.amt_project.services.fact.FactTiedToSensorDAOLocal;
+import ch.heigvd.amt_project.services.organization.OrganizationDAOLocal;
+import ch.heigvd.amt_project.services.sensor.SensorDAOLocal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.*;
@@ -32,19 +32,19 @@ import javax.ws.rs.core.*;
 public class FactResource {
 
     @EJB
-    FactManagerLocal factsManager;
+    FactDAOLocal factsDAO;
 
     @EJB
-    FactTiedToSensorManagerLocal factsBySensorManager;
+    FactTiedToSensorDAOLocal factsBySensorDAO;
 
     @EJB
-    FactTiedToDateManagerLocal factsBySensorByDateManager;
+    FactTiedToDateDAOLocal factsBySensorByDateDAO;
 
     @EJB
-    OrganizationManagerLocal orgsManager;
+    OrganizationDAOLocal orgsDAO;
 
     @EJB
-    SensorManagerLocal sensorsManager;
+    SensorDAOLocal sensorsDAO;
 
     @Context
     private UriInfo context;
@@ -65,13 +65,13 @@ public class FactResource {
         List<FactDTO> result = new ArrayList<>();
 
         if (mapAllParam.isEmpty()) {
-            facts = factsManager.read();
+            facts = factsDAO.read();
         }
         else if (mapAllParam.containsKey("orgId") && !mapAllParam.containsKey("sensorId")) {
-            facts = factsManager.readByOrgId(orgId);
+            facts = factsDAO.readByOrgId(orgId);
         }
         else if (mapAllParam.containsKey("sensorId") && !mapAllParam.containsKey("orgId")) {
-            List<FactTiedToSensor> factsSensor = factsBySensorManager.readBySensorId(sensorId);
+            List<FactTiedToSensor> factsSensor = factsBySensorDAO.readBySensorId(sensorId);
 
             for (FactTiedToSensor f : factsSensor) {
                 if (f.getType().equals(FactType.FACT_TIED_TO_SENSOR)) {
@@ -107,7 +107,7 @@ public class FactResource {
     @Produces("application/json")
     public List<FactTiedToSensorDTO> getAllFactsBySensor() {
         List<FactTiedToSensorDTO> result = new ArrayList<>();
-        List<FactTiedToSensor> factsBySensor = factsBySensorManager.readAllTiedToSensor();
+        List<FactTiedToSensor> factsBySensor = factsBySensorDAO.readAllTiedToSensor();
 
         for (FactTiedToSensor f : factsBySensor) {
             result.add(toBySensorDTO(f));
@@ -121,7 +121,7 @@ public class FactResource {
     @Produces("application/json")
     public List<FactTiedToDateDTO> getAllFactsBySensorByDateDTOs() {
         List<FactTiedToDateDTO> result = new ArrayList<>();
-        List<FactTiedToDate> factsBySensorByDate = factsBySensorByDateManager.readAllTiedToDate();
+        List<FactTiedToDate> factsBySensorByDate = factsBySensorByDateDAO.readAllTiedToDate();
 
         for (FactTiedToDate f : factsBySensorByDate) {
             result.add(toBySensorByDateDTO(f));
@@ -134,13 +134,13 @@ public class FactResource {
     @GET
     @Produces("application/json")
     public FactDTO getFactDetails(@PathParam("id") long id) {
-        Fact fact = factsManager.read(id);
+        Fact fact = factsDAO.read(id);
         return toDTO(fact);
     }
 
     private Fact toFact(FactDTO factDto, Fact fact) {
         fact.setId(factDto.getId());
-        fact.setOrganization(orgsManager.read(factDto.getOrgId()));
+        fact.setOrganization(orgsDAO.read(factDto.getOrgId()));
         fact.setVisible(factDto.isVisible());
 
         fact.setType(factDto.getType());
@@ -162,10 +162,10 @@ public class FactResource {
 
     private FactTiedToSensor toFactTiedToSensor(FactTiedToSensorDTO factDto, FactTiedToSensor fact) {
         fact.setId(factDto.getId());
-        fact.setOrganization(orgsManager.read(factDto.getOrgId()));
+        fact.setOrganization(orgsDAO.read(factDto.getOrgId()));
         fact.setType(factDto.getType());
         fact.setVisible(factDto.isVisible());
-        fact.setSensor(sensorsManager.read(factDto.getSensorId()));
+        fact.setSensor(sensorsDAO.read(factDto.getSensorId()));
         fact.setNbObs(factDto.getTotNbObs());
 
         return fact;
@@ -186,10 +186,10 @@ public class FactResource {
 
     private FactTiedToDate toFactTiedToDate(FactTiedToDateDTO factDto, FactTiedToDate fact) {
         fact.setId(factDto.getId());
-        fact.setOrganization(orgsManager.read(factDto.getOrgId()));
+        fact.setOrganization(orgsDAO.read(factDto.getOrgId()));
         fact.setType(FactType.FACT_TIED_TO_SENSOR_BY_DATE);
         fact.setVisible(factDto.isVisible());
-        fact.setSensor(sensorsManager.read(factDto.getSensorId()));
+        fact.setSensor(sensorsDAO.read(factDto.getSensorId()));
         fact.setNbObs(factDto.getTotNbObs());
         fact.setDate(factDto.getDate());
         fact.setAvVal(factDto.getAvVal());

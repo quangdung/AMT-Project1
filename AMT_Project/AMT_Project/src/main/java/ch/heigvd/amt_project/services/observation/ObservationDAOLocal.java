@@ -9,7 +9,7 @@ import javax.ejb.Local;
  * @author
  */
 @Local
-public interface ObservationManagerLocal {
+public interface ObservationDAOLocal {
     
     public long create(Observation observation);
 

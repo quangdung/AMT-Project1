@@ -1,7 +1,7 @@
 package ch.heigvd.amt_project.api;
 
-import ch.heigvd.amt_project.services.fact.FactManagerLocal;
-import ch.heigvd.amt_project.services.observation.ObservationManagerLocal;
+import ch.heigvd.amt_project.services.fact.FactDAOLocal;
+import ch.heigvd.amt_project.services.observation.ObservationDAOLocal;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -14,29 +14,30 @@ import javax.ws.rs.Path;
 public class AdminOperationResource {
  
     @EJB
-    FactManagerLocal factManager;
+    FactDAOLocal factDAO;
     
     @EJB
-    ObservationManagerLocal obsManager;
+    ObservationDAOLocal obsDAO;
     
     public AdminOperationResource() {}
     
-//    @Path("/reset")
-//    @POST
-//    @Consumes("application/json")
-//    public void postResetOperation(Object operation) {
-//        factManager.deleteAll();
-//    }
+    @Path("/reset")
+    @POST
+    @Consumes("application/json")
+    public void postResetOperation(Object operation) {
+        factDAO.deleteAll();
+        obsDAO.deleteAll();
+    }
     
     @Path("/resetFact")
     @DELETE
     public void postResetFactOperation() {
-        factManager.deleteAll();
+        factDAO.deleteAll();
     }
     
     @Path("/resetObservation")
     @DELETE
     public void postResetObservationOperation() {
-        obsManager.deleteAll();
+        obsDAO.deleteAll();
     }
 }
