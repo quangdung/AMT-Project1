@@ -1,9 +1,11 @@
 var Client = require('node-rest-client').Client;
 var client = new Client();
 var async = require('async');
+var sleep = require('sleep');
 
-var nbSensor = 5;
-var nbObservation = 100;
+var nbSensor = 3;
+var nbObservation = 5;
+var timer = 10;
 
 /*
 	This map keeps track of the observations posted by the client, even if they result in an error (in which case ?)
@@ -107,6 +109,7 @@ function postObservationRequestsInParallel(callback) {
 
 	async.parallel(requests, function(err, results) {
 		for (var i=0; i < results.length; i++) {
+			//sleep.sleep(timer);
 			if (results[i].response.statusCode < 200 || results[i].response.statusCode >= 300) {
 				console.log("Result " + i + ": " + results[i].response.statusCode);
 				numberOfUnsuccessfulResponses++;
@@ -134,23 +137,24 @@ function checkValues(callback) {
 		}
 	};
 
-	client.get("http://localhost:8080/AMT_Project/api/facts", requestData, function(data, response) {
+	client.get("http://localhost:8080/AMT_Project/api/facts/counter/", requestData, function(data, response) {
 		var numberOfErrors = 0;
 
 		var clientSideFacts = Object.keys(submittedStats).length;
 		var serverSideFacts = data.length;
 
-		console.log("Number of facts on the client side: " + clientSideFacts);
-		console.log("Number of facts on the server side: " + serverSideFacts);
+		console.log("Number of counter facts on the client side: " + clientSideFacts);
+		console.log("Number of counter facts on the server side: " + serverSideFacts);
 
 		if (clientSideFacts !== serverSideFacts) {
 			numberOfErrors++;
 		}
 		
+		/*
 		for (var i=0; i < data.length; i++) {
 			var factId = data[i].id;
 			var serverSideValue = data[i].totNbObs;
-			var clientSideValue = processedStats[factId].totNbObs;
+			var clientSideValue = processedStats[i].totNbObs;
 
 			if (clientSideValue !== serverSideValue) {
 				numberOfErrors++;
@@ -160,7 +164,7 @@ function checkValues(callback) {
 			}
 			
 		}
-		
+		*/
 		callback(null, "The client side and server side values have been compared. Number of corrupted facts: " + numberOfErrors);
 	});
 }
@@ -169,14 +173,10 @@ function checkValues(callback) {
 /*
 
  */	
-async.series([
-	
-	resetServerState,
-	
-	postObservationRequestsInParallel
-	/*,
-	checkValues
-	*/
+async.series([	
+	resetServerState,	
+	postObservationRequestsInParallel,	
+	checkValues	
 ], function(err, results) {
 	console.log("\n\n==========================================");
 	console.log("Summary");

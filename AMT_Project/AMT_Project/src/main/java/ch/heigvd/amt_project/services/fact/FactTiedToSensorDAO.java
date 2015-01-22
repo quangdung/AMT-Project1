@@ -61,7 +61,7 @@ public class FactTiedToSensorDAO implements FactTiedToSensorDAOLocal {
 
         try {
             q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-            q.setHint("javax.persistence.query.timeout", 100);
+            q.setHint("javax.persistence.query.timeout", 1000);
         }
         catch (PessimisticLockException e) {
         }

@@ -4,7 +4,22 @@ AMT Project
 Authors : Nguyen-Phuong Le & Quang-Dung Ngo
 
 ---
-# Introduction
+
+# Summary
+
+- [Introduction](#Introduction) <a id="Introduction_s"></a>
+	- [Details](#Details) <a id="Details_s"></a>
+- [Domain modeling](#Domain_modeling) <a id="Domain_modeling_s"></a>
+- [REST API Documentation](#REST_API_Documentation) <a id="REST_API_Documentation_s"></a>
+- [Use the application](#Use_the_application) <a id="Use_the_application_s"></a>
+	- [Installing](#Installing) <a id="Installing_s"></a>
+	- [Testing application](#Testing_application) <a id="Testing_application_s"></a>
+- [Known issues](#Known_issues) <a id="Known_issues_s"></a>
+- [Version](#Version) <a id="Version_s"></a>
+
+
+---
+# Introduction <a id="Introduction"></a>
 
 This project has been created in the context of the AMT course of the HEIG-VD, Yverdon-les-Bains, Switzerland.
 
@@ -19,7 +34,9 @@ The scenario we have chosen to illustrate in this project is as follow :
 
 You can install this platform to test how all the generated observations are handled through it and see the generated facts.
 
-## Details
+[up](#Introduction_s)
+
+## Details <a id="Details"></a>
 
 This project has been created for the AMT course of the HEIG-VD, under the supervision of Mr. Olivier Liechti.
 It's purpose is to create an API which will manage differents sensors (which could, for example, measure the temperature of a room or detect the variations taking place in a particular area), and in turn, manage the observations captured on these sensors and turn them into facts which summarize the amount of informations given by those observations. 
@@ -38,8 +55,10 @@ The database is composed of :
     - Facts tied to a particular sensor
     - Facts tied to a particular sensor, as well as a particular date
 
+[up](#Details_s)
+
 ---
-# Domain modeling
+# Domain modeling <a id="Domain_modeling"></a>
 
 Every observation can be detected by only one sensor and every sensor can detect several observations.
 
@@ -53,9 +72,11 @@ There is 2 types of facts. One that only counts the total number of observations
 
 ![Domain_model](./images/domain_model.png)
 
+[up](#Domain_modeling_s)
+
 ---
 
-# REST API Documentation
+# REST API Documentation <a id="REST_API_Documentation"></a>
 
 For more details of our API, head over to [http://quangdung.github.io/amt-project1/](http://quangdung.github.io/amt-project1/)
 
@@ -65,11 +86,13 @@ After cloning the repo, if it's the first time, in the folder `Documentation`, r
 
 For more informations about the API used to generate the documentation : [apidoc-sed](https://github.com/lotaris/apidoc-seed)
 
+[up](#REST_API_Documentation_s)
+
 ---
 
-# Use the application
+# Use the application <a id="Use_the_application"></a>
 
-## Installing
+## Installing <a id="Installing"></a>
 
 1. Prerequisites : 
 	1. Node.js, with `node` in your `PATH`
@@ -104,26 +127,25 @@ For more informations about the API used to generate the documentation : [apidoc
 	deploy AMT_Project/AMT_Project/target/AMT_Project-1.0-SNAPSHOT
 	```
 
-## Testing application
+[up](#Installing_s)
+
+## Testing application <a id="Testing_application"></a>
 
 1. After deploying, at the address [http://localhost:8080/AMT_Project/](http://localhost:8080/AMT_Project/), click on the link `Click here to get to the generating page.` to generate a couple samples of `organizations`, `sensors`, `users`.
 
 2. Open the script `AMT_Project/node-client/client.js`, change the number of `nbSensor` and `nbObservation`. Run the script : `node client.js`. Existing `facts` and `observations` will be deleted at the beginning of the script.
 
-
+[up](#Testing_application_s)
 
 ---
 
 
-# Known issues
+# Known issues <a id="Known_issues"></a>
 
-1. We have a long time waiting when posting `observations` in parallel, due to control of concurrency. Posting 500 observations (5 sensors * 100 observations) could take 3 minutes to finish.
-
-2. We were not able to send observations with a continuous thread at given intervals.
-
-	It is currently possible to send a number of predefined observations and see that they are correctly created, as well as the facts tied to them. It is however not yet possible to send an observation on a regular basis. This problem does not concern the implementation of the API itself but rather a misunderstanding of the mechanism of Threads. This will be investigated and a solution will be found for the next version.
+1. We have a long time waiting when posting `observations` in parallel, due to control of concurrency. Posting 50 observations (5 sensors * 10 observations) could take 15 minutes to finish.
 
 
-### Version
+# Version <a id="Version"></a>
 0.0.2
 
+[up](#Version_s)

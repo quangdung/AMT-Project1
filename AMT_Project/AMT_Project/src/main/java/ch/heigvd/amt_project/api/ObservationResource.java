@@ -68,20 +68,11 @@ public class ObservationResource {
         Sensor sensor = sensorsDAO.read(dto.getSensorId());
 
         long factId;
-//        int attempt = 3;
-//        long timeout = 500;
 
         List<FactTiedToSensor> factsTiedToSensor = null;
 
         factsTiedToSensor = factsTiedToSensorDAO.readBySensorId(sensor.getId());
 
-//        while (attempt > 0 && factsTiedToSensor == null) {
-////            this.wait(timeout);
-//            factsTiedToSensor = factsTiedToSensorDAO.readBySensorId(sensor.getId());
-//            attempt--;
-//        }
-
-        
         
         factId = (factsTiedToSensor.size() > 0
                   ? factsTiedToSensor.get(0).getId() : 0L);
@@ -105,14 +96,6 @@ public class ObservationResource {
 
         List<FactTiedToDate> factsTiedToDate = null;
         factsTiedToDate = factsTiedToDateDAO.readBySensorId(sensor.getId());
-        
-//        attempt = 3;
-//        
-//        while (attempt > 0 && factsTiedToDate == null) {
-//            this.wait(timeout);
-//            factsTiedToDate = factsTiedToDateDAO.readBySensorId(sensor.getId());
-//            attempt--;
-//        }
         
         factId = (factsTiedToDate.size() > 0
                   ? factsTiedToDate.get(0).getId() : 0L);
