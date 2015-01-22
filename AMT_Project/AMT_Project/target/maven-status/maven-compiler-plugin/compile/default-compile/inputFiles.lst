@@ -4,12 +4,14 @@ C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\dto\FactDTO.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\model\Observation.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\fact\FactTiedToSensorDAOLocal.java
+C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\observation\ObservationFlowProcessor.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\model\FactType.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\model\FactTiedToDate.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\api\FactResource.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\api\OrganizationResource.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\dto\ObservationDTO.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\observation\ObservationDAOLocal.java
+C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\observation\ObservationFlowProcessorLocal.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\dto\FactTiedToSensorDTO.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\model\Organization.java
 C:\Data\myGithub\AMT-Project1\AMT-Project1\AMT_Project\AMT_Project\src\main\java\ch\heigvd\amt_project\services\observation\ObservationDAO.java

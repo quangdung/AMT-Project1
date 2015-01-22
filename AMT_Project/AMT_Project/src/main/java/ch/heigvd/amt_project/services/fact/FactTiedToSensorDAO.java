@@ -22,7 +22,6 @@ public class FactTiedToSensorDAO implements FactTiedToSensorDAOLocal {
     }
 
     @Override
-//    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public long create(FactTiedToSensor fact) {
         em.persist(fact);
         em.flush();
@@ -34,14 +33,6 @@ public class FactTiedToSensorDAO implements FactTiedToSensorDAOLocal {
     public List<FactTiedToSensor> readAllTiedToSensor() {
         Query q = em.createNamedQuery("FactTiedToSensor.findAll")
                 .setParameter("type", FactType.FACT_TIED_TO_SENSOR);
-
-//        try {
-//            q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-//            q.setHint("javax.persistence.query.timeout", 500);
-//        }
-//        catch (LockTimeoutException e) {
-//
-//        }
         return q.getResultList();
 
     }
@@ -57,15 +48,16 @@ public class FactTiedToSensorDAO implements FactTiedToSensorDAOLocal {
     @Override
     public List<FactTiedToSensor> readBySensorId(long sensorId) {
         Query q = em.createNamedQuery("FactTiedToSensor.findBySensorId")
-                .setParameter("sensorId", sensorId);
+                .setParameter("sensorId", sensorId)
+                .setParameter("type", FactType.FACT_TIED_TO_SENSOR)
+//                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                ;
 
         try {
             q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-            q.setHint("javax.persistence.query.timeout", 1000);
         }
-        catch (PessimisticLockException e) {
-        }
-        catch (LockTimeoutException e) {
+        catch (Exception e) {
+            System.out.println("\nFactTiedToSensor.readBySensorId problem : \n" + e.getMessage());
         }
 
         return q.getResultList();

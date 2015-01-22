@@ -1,6 +1,7 @@
 ch\heigvd\amt_project\model\FactType.class
 ch\heigvd\amt_project\services\observation\ObservationDAOLocal.class
 ch\heigvd\amt_project\model\User.class
+ch\heigvd\amt_project\services\observation\ObservationFlowProcessorLocal.class
 ch\heigvd\amt_project\services\organization\OrganizationDAO.class
 ch\heigvd\amt_project\services\fact\FactDAOLocal.class
 ch\heigvd\amt_project\services\observation\ObservationDAO.class
@@ -25,6 +26,7 @@ ch\heigvd\amt_project\api\SensorResource.class
 ch\heigvd\amt_project\dto\FactTiedToDateDTO.class
 ch\heigvd\amt_project\model\FactTiedToSensor.class
 ch\heigvd\amt_project\model\User_.class
+ch\heigvd\amt_project\services\observation\ObservationFlowProcessor.class
 ch\heigvd\amt_project\model\Organization_.class
 ch\heigvd\amt_project\services\organization\OrganizationDAOLocal.class
 ch\heigvd\amt_project\services\fact\FactTiedToSensorDAO.class

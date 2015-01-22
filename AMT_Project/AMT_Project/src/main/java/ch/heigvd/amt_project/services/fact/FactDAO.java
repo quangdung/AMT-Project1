@@ -29,27 +29,13 @@ public class FactDAO implements FactDAOLocal {
     @Override
     public List<Fact> read() {
         Query q = em.createNamedQuery("findAllFacts");
-//        try {
-//            q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-//            q.setHint("javax.persistence.query.timeout", 1000);
-//        }
-//        catch (LockTimeoutException e) {
-//
-//        }
         return q.getResultList();
     }
 
     @Override
     public Fact read(long factId) {
         Query q = em.createNamedQuery("findFactById").setParameter("id", factId);
-
-//        try {
-            q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-            q.setHint("javax.persistence.query.timeout", 1000);
-//        }
-//        catch (LockTimeoutException e) {
-//            
-//        }
+        
         return (Fact) q.getSingleResult();
     }
 

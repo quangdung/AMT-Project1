@@ -5,8 +5,6 @@ import ch.heigvd.amt_project.model.FactType;
 import java.sql.Date;
 import java.util.*;
 import javax.ejb.Singleton;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
 
 /**
@@ -23,7 +21,6 @@ public class FactTiedToDateDAO implements FactTiedToDateDAOLocal {
     }
 
     @Override
-//    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public long create(FactTiedToDate fact) {
         em.persist(fact);
         em.flush();
@@ -35,7 +32,6 @@ public class FactTiedToDateDAO implements FactTiedToDateDAOLocal {
     public List<FactTiedToDate> readAllTiedToDate() {
         Query q = em.createNamedQuery("FactTiedToDate.findAll")
                 .setParameter("type", FactType.FACT_TIED_TO_SENSOR_BY_DATE);
-//        q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
         return q.getResultList();
 
     }
@@ -47,21 +43,20 @@ public class FactTiedToDateDAO implements FactTiedToDateDAOLocal {
 
         return (FactTiedToDate) q.getSingleResult();
     }
-    
-    
 
     @Override
     public List<FactTiedToDate> readBySensorId(long sensorId) {
         Query q = em.createNamedQuery("FactTiedToDate.findBySensorId")
-                .setParameter("sensorId", sensorId);
+                .setParameter("sensorId", sensorId)
+                .setParameter("type", FactType.FACT_TIED_TO_SENSOR_BY_DATE)
+//                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                ;
 
         try {
             q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-            q.setHint("javax.persistence.query.timeout", 1000);
         }
-        catch (PessimisticLockException e) {
-        }
-        catch (LockTimeoutException e) {
+        catch (Exception e) {
+            System.out.println("\nFactTiedToDate.readBySensorId problem : \n" + e.getMessage());
         }
 
         return q.getResultList();

@@ -3,8 +3,8 @@ var client = new Client();
 var async = require('async');
 var sleep = require('sleep');
 
-var nbSensor = 3;
-var nbObservation = 5;
+var nbSensor = 5;
+var nbObservation = 10;
 var timer = 10;
 
 /*
@@ -54,6 +54,8 @@ function getObservationPOSTRequestFunction(sensorId) {
 
 		logObservation(submittedStats, requestData.data);
 		
+		//console.log("POSTing observation");
+
 		client.post("http://localhost:8080/AMT_Project/api/observations", requestData, function(data, response) {
 			var error = null;
 			var result = {
@@ -109,7 +111,9 @@ function postObservationRequestsInParallel(callback) {
 
 	async.parallel(requests, function(err, results) {
 		for (var i=0; i < results.length; i++) {
+
 			//sleep.sleep(timer);
+			
 			if (results[i].response.statusCode < 200 || results[i].response.statusCode >= 300) {
 				console.log("Result " + i + ": " + results[i].response.statusCode);
 				numberOfUnsuccessfulResponses++;
@@ -118,7 +122,7 @@ function postObservationRequestsInParallel(callback) {
 			}
 		}
 
-		callback(null, results.length + " observation POSTs have been sent. " + numberOfUnsuccessfulResponses + " have failed.");
+		callback(null, results.length + " observations POSTs have been sent. " + numberOfUnsuccessfulResponses + " have failed.");
 	});
 } 
 
@@ -150,21 +154,27 @@ function checkValues(callback) {
 			numberOfErrors++;
 		}
 		
-		/*
+		
 		for (var i=0; i < data.length; i++) {
-			var factId = data[i].id;
+			var idTemps = data[i].sensorId;
+			//console.log("idTemps = data[i].sensorId: " + idTemps);
+			//console.log("data[i]: " + data[i]);
+
 			var serverSideValue = data[i].totNbObs;
-			var clientSideValue = processedStats[i].totNbObs;
+			//console.log("serverSideValue: " + serverSideValue);
+			
+			var clientSideValue = processedStats[idTemps].totNbObs;
+			//console.log("clientSideValue: " + clientSideValue);
 
 			if (clientSideValue !== serverSideValue) {
 				numberOfErrors++;
-				console.log("Fact " + factId + " --> Server/Client number of observations: " + serverSideValue + "/" + clientSideValue + "  X");
+				console.log("counter fact of sensor " + idTemps + " --> Server/Client number of observations: " + serverSideValue + "/" + clientSideValue + "  X");
 			} else {
-				console.log("Fact " + factId + " --> Server/Client balance: " + serverSideValue + "/" + clientSideValue);				
+				console.log("counter fact of sensor " + idTemps + " --> Server/Client number of observations: " + serverSideValue + "/" + clientSideValue);				
 			}
 			
 		}
-		*/
+		
 		callback(null, "The client side and server side values have been compared. Number of corrupted counter facts: " + numberOfErrors);
 	});
 }

@@ -6,26 +6,17 @@
 package ch.heigvd.amt_project.api;
 
 import ch.heigvd.amt_project.dto.ObservationDTO;
-import ch.heigvd.amt_project.model.Fact;
-import ch.heigvd.amt_project.model.FactTiedToDate;
-import ch.heigvd.amt_project.model.FactTiedToSensor;
-import ch.heigvd.amt_project.model.FactType;
 import ch.heigvd.amt_project.model.Observation;
-import ch.heigvd.amt_project.model.Sensor;
 import ch.heigvd.amt_project.services.fact.FactDAOLocal;
 import ch.heigvd.amt_project.services.fact.FactTiedToDateDAOLocal;
 import ch.heigvd.amt_project.services.fact.FactTiedToSensorDAOLocal;
 import ch.heigvd.amt_project.services.observation.ObservationDAOLocal;
+import ch.heigvd.amt_project.services.observation.ObservationFlowProcessor;
+import ch.heigvd.amt_project.services.observation.ObservationFlowProcessorLocal;
 import ch.heigvd.amt_project.services.sensor.SensorDAOLocal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Logger;
 import javax.ejb.*;
 import javax.ws.rs.*;
-import java.sql.Date;
-import static java.sql.Types.NULL;
-import javax.persistence.LockTimeoutException;
 import javax.ws.rs.core.*;
 
 /**
@@ -51,8 +42,13 @@ public class ObservationResource {
     @EJB
     SensorDAOLocal sensorsDAO;
 
+    @EJB
+    ObservationFlowProcessorLocal obsFlowProcessor;
+
     @Context
     private UriInfo context;
+    
+    private static final Logger LOG = Logger.getLogger(ObservationFlowProcessor.class.getName());
 
     public ObservationResource() {
     }
@@ -64,65 +60,14 @@ public class ObservationResource {
 
         long idObservation = obsDAO.create(toObservation(dto, newObservation));
 
-        // update or create fact tied to sensor
-        Sensor sensor = sensorsDAO.read(dto.getSensorId());
+        try {
+            obsFlowProcessor.UpdateFactBySensor(dto);
 
-        long factId;
-
-        List<FactTiedToSensor> factsTiedToSensor = null;
-
-        factsTiedToSensor = factsTiedToSensorDAO.readBySensorId(sensor.getId());
-
-        
-        factId = (factsTiedToSensor.size() > 0
-                  ? factsTiedToSensor.get(0).getId() : 0L);
-
-        if (factId == 0L) {
-            FactTiedToSensor newFact = new FactTiedToSensor(
-                    sensor.getOrganization(),
-                    true,
-                    sensor,
-                    1);
-
-            factsTiedToSensorDAO.create(newFact);
+            obsFlowProcessor.UpdateFactByDate(dto);
         }
-        else {
-            FactTiedToSensor f = (FactTiedToSensor) factsDAO.read(factId);
-            f.setNbObs(f.getNbObs() + 1);
-        }
-
-        // update or create fact tied to date
-        java.sql.Date date = dto.getCreationDate();
-
-        List<FactTiedToDate> factsTiedToDate = null;
-        factsTiedToDate = factsTiedToDateDAO.readBySensorId(sensor.getId());
-        
-        factId = (factsTiedToDate.size() > 0
-                  ? factsTiedToDate.get(0).getId() : 0L);
-
-        if (factId == 0L) {
-            FactTiedToDate newFactDate = new FactTiedToDate(sensor.getOrganization(),
-                                                            true, sensor, NULL, date, 1, dto.getObsValue(),
-                                                            dto.getObsValue(), dto.getObsValue(), dto.getObsValue());
-
-            factsTiedToDateDAO.create(newFactDate);
-        }
-        else {
-            FactTiedToDate f = (FactTiedToDate) factsDAO.read(factId);
-
-            if (f.getDate().toString().equals(date.toString())) {
-                if (dto.getObsValue() > f.getMaxVal()) {
-                    f.setMaxVal(dto.getObsValue());
-                }
-
-                if (dto.getObsValue() < f.getMinVal()) {
-                    f.setMinVal(dto.getObsValue());
-                }
-
-                f.setSumVal(f.getSumVal() + dto.getObsValue());
-                f.setNbVal(f.getNbVal() + 1);
-                f.setAvVal((float) (f.getSumVal() / f.getNbVal()));
-            }
+        catch(Exception e) {
+            LOG.info("\nProblem adding observation\n");
+            throw e;
         }
 
         return toDTO(obsDAO.read(idObservation));
