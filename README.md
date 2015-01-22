@@ -142,7 +142,7 @@ For more informations about the API used to generate the documentation : [`apido
 
 # Known issues <a id="Known_issues"></a>
 
-1. We have a long time waiting when posting `observations` in parallel, due to control of concurrency. Posting 50 observations (5 sensors * 10 observations) could take 15 minutes to finish.
+1. We have a long time waiting when posting `observations` in parallel, due to control of concurrency. Posting 50 observations (5 sensors * 10 observations) could take 15 minutes to finish, 15 observations (3 sensors * 5 observatons) could take 5 minutes.
 
 
 # Version <a id="Version"></a>

@@ -165,7 +165,7 @@ function checkValues(callback) {
 			
 		}
 		*/
-		callback(null, "The client side and server side values have been compared. Number of corrupted facts: " + numberOfErrors);
+		callback(null, "The client side and server side values have been compared. Number of corrupted counter facts: " + numberOfErrors);
 	});
 }
 
