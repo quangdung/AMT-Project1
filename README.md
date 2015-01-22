@@ -78,13 +78,13 @@ There is 2 types of facts. One that only counts the total number of observations
 
 # REST API Documentation <a id="REST_API_Documentation"></a>
 
-For more details of our API, head over to [http://quangdung.github.io/amt-project1/](http://quangdung.github.io/amt-project1/)
+For more details of our API, head over to [`http://quangdung.github.io/amt-project1/`](http://quangdung.github.io/amt-project1/).
 
-The folder [Documentation](https://github.com/quangdung/AMT-Project1/tree/master/Documentation) allow to modify this API documentation.
+The folder [`Documentation`](https://github.com/quangdung/AMT-Project1/tree/master/Documentation) allow to modify this API documentation.
 
-After cloning the repo, if it's the first time, in the folder `Documentation`, run `npm install`. After editing the files in the folder `Documentation/src/`, run `grunt dev` to test the API documentation locally at the address [http://localhost:7000/](http://localhost:7000/).
+After cloning the repo, if it's the first time, in the folder `Documentation`, run `npm install`. After editing the files in the folder `Documentation/src/`, run `grunt dev` to test the API documentation locally at the address [`http://localhost:7000/`](http://localhost:7000/).
 
-For more informations about the API used to generate the documentation : [apidoc-sed](https://github.com/lotaris/apidoc-seed)
+For more informations about the API used to generate the documentation : [`apidoc-seed`](https://github.com/lotaris/apidoc-seed)
 
 [up](#REST_API_Documentation_s)
 
@@ -131,7 +131,7 @@ For more informations about the API used to generate the documentation : [apidoc
 
 ## Testing application <a id="Testing_application"></a>
 
-1. After deploying, at the address [http://localhost:8080/AMT_Project/](http://localhost:8080/AMT_Project/), click on the link `Click here to get to the generating page.` to generate a couple samples of `organizations`, `sensors`, `users`.
+1. After deploying, at the address [`http://localhost:8080/AMT_Project/`](http://localhost:8080/AMT_Project/), click on the link `Click here to get to the generating page.` to generate a couple samples of `organizations`, `sensors`, `users`.
 
 2. Open the script `AMT_Project/node-client/client.js`, change the number of `nbSensor` and `nbObservation`. Run the script : `node client.js`. Existing `facts` and `observations` will be deleted at the beginning of the script.
 
