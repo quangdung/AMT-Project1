@@ -2,31 +2,23 @@ var Client = require('node-rest-client').Client;
 var client = new Client();
 var async = require('async');
 
-var nbSensor = 3;
-var nbObservation = 10;
+var nbSensor = 5;
+var nbObservation = 100;
 
 /*
 	This map keeps track of the observations posted by the client, even if they result in an error (in which case ?)
 
  */
 
-
-// This map keeps track of the transactions posted by the client, even if they result in an error (for instance if two parallel requests try to create a new account). In this case, the client is informed that the transaction has failed and it would be his responsibility to retry.
 var submittedStats = {}
 
 
 /*
 	This map keeps track of the observations posted by the client, but only if the server has confirmed their processing with a successful status code. In this case, the client can assume that the observations has been successfully processed.	
  */
-
-// This map keeps track of the transactions posted by the client, but only if the server has confirmed
-// their processing with a successful status code. 
-// In this case, the client can assume that the transaction has been successfully processed.
 var processedStats = {};
 
-/*
 
- */
 function logObservation(stats, observation) {
 	
 	var factStats = stats[observation.sensorId] || {
@@ -41,11 +33,6 @@ function logObservation(stats, observation) {
 /*
  * This function returns a function that we can use with the async.js library. 
  */ 
-
-
-/*
-
- */
 function getObservationPOSTRequestFunction(sensorId) {
 		
 	return function(callback) {
@@ -83,9 +70,6 @@ function getObservationPOSTRequestFunction(sensorId) {
  */
 var requests = [];
 
-/*
-	
- */
 for (var sensor = 1; sensor <= nbSensor; sensor++) {
 	for (var observation = 0; observation < nbObservation; observation++) {
 		requests.push(

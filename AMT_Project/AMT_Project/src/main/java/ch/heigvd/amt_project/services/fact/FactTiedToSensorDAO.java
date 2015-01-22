@@ -22,7 +22,7 @@ public class FactTiedToSensorDAO implements FactTiedToSensorDAOLocal {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+//    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public long create(FactTiedToSensor fact) {
         em.persist(fact);
         em.flush();
@@ -59,16 +59,14 @@ public class FactTiedToSensorDAO implements FactTiedToSensorDAOLocal {
         Query q = em.createNamedQuery("FactTiedToSensor.findBySensorId")
                 .setParameter("sensorId", sensorId);
 
-//        try {
+        try {
             q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-//            q.setHint("javax.persistence.query.timeout", 100);
-//        }
-//        catch (PessimisticLockException e) {
-//            em.getTransaction().rollback();            
-//        }
-//        catch (LockTimeoutException e) {
-//            
-//        }
+            q.setHint("javax.persistence.query.timeout", 100);
+        }
+        catch (PessimisticLockException e) {
+        }
+        catch (LockTimeoutException e) {
+        }
 
         return q.getResultList();
 

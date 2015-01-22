@@ -69,7 +69,7 @@ public class ObservationResource {
 
         long factId;
 //        int attempt = 3;
-        long timeout = 500;
+//        long timeout = 500;
 
         List<FactTiedToSensor> factsTiedToSensor = null;
 

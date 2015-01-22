@@ -78,7 +78,10 @@ For more informations about the API used to generate the documentation : [apidoc
 	4. mysql-connector-java-5.1.33.jar
 2. Clone this repository :
 
+	```
 	git clone git@github.com:quangdung/AMT-Project1.git
+
+	```
 
 3. Open the file `AMT_Project/createDbAmt1.sh`, adjust the paths:
 
@@ -95,23 +98,31 @@ For more informations about the API used to generate the documentation : [apidoc
 
 4. Launch the server GlassFish and the application :
 
+	```
 	asadmin start-domain amtdatabaserest  
 	
 	deploy AMT_Project/AMT_Project/target/AMT_Project-1.0-SNAPSHOT
+	```
 
 ## Testing application
 
 1. After deploying, at the address [http://localhost:8080/AMT_Project/](http://localhost:8080/AMT_Project/), click on the link `Click here to get to the generating page.` to generate a couple samples of `organizations`, `sensors`, `users`.
 
-2. Open the script `AMT_Project/node-client/client.js`, change the number of `nbSensor` and `nbObservation`. Run the script.
+2. Open the script `AMT_Project/node-client/client.js`, change the number of `nbSensor` and `nbObservation`. Run the script : `node client.js`. Existing `facts` and `observations` will be deleted at the beginning of the script.
+
+
 
 ---
 
 
 # Known issues
 
-We were not able to send observations with a continuous thread at given intervals.
-It is currently possible to send a number of predefined observations and see that they are correctly created, as well as the facts tied to them. It is however not yet possible to send an observation on a regular basis. This problem does not concern the implementation of the API itself but rather a misunderstanding of the mechanism of Threads. This will be investigated and a solution will be found for the next version.
+1. We have a long time waiting when posting `observations` in parallel, due to control of concurrency. Posting 500 observations (5 sensors * 100 observations) could take 3 minutes to finish.
+
+2. We were not able to send observations with a continuous thread at given intervals.
+
+	It is currently possible to send a number of predefined observations and see that they are correctly created, as well as the facts tied to them. It is however not yet possible to send an observation on a regular basis. This problem does not concern the implementation of the API itself but rather a misunderstanding of the mechanism of Threads. This will be investigated and a solution will be found for the next version.
+
 
 ### Version
 0.0.2
