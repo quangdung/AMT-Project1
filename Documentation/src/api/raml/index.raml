@@ -16,30 +16,22 @@ mediaType: application/json
            application/json:
              example: |
               [
-                { 
-                  "description": "measure indoor", 
-                  "id" : 1,
-                  "name": "Sensor1", 
-                  "organization" : 
-                  {
-                    "id":104,
-                    "name":"org1"
-                  },
-                  "type": "temperature", 
-                  "visible" : true,                   
+                {
+                  "description":"Sensor nb 1 associated with the organization testGeneratedOrg1",
+                  "id":1,
+                  "name":"testGeneratedSen1",
+                  "orgId":1,
+                  "type":"sensorType1",
+                  "visible":true
                 },
-                { 
-                  "description": "measure outdoor", 
-                  "id" : 2,
-                  "name": "Sensor2", 
-                  "organization" : 
-                  {
-                    "id":112,
-                    "name":"firstorg"
-                  },
-                  "type": "temperature", 
-                  "visible" : true,                   
-                }              
+                {
+                  "description":"Sensor nb 2 associated with the organization testGeneratedOrg1",
+                  "id":2,
+                  "name":"testGeneratedSen2",
+                  "orgId":1,
+                  "type":"sensorType2",
+                  "visible":true
+                } 
               ]
     queryParameters:
       organizationId:
@@ -54,23 +46,26 @@ mediaType: application/json
       application/json:
         example: |
           {
-            "description": "Measure indoor",
-            "name": "Sensor 3",
-            "organization":
-            {
-              "id": 104,
-              "name": "organization 1"
-            }
-            "type": "temperature",
-            "visible": true,
+            "description":"Sensor associated with the orgId 251",
+            "name":"sensor 1",
+            "orgId":30,
+            "type":"sensorType",
+            "visible":true
           }
+
     responses:
       201:
         body:
           application/json:
             example: |
-              5
-              (the id of the new sensor)
+              {
+                "id": 130,
+                "description":"Sensor associated with the orgId 251",
+                "name":"sensor 1",
+                "orgId":30,
+                "type":"sensorType",
+                "visible":true
+              }
 
   /{sensorsId}:
     description: The sensor with its ID
@@ -81,18 +76,14 @@ mediaType: application/json
           body:
             application/json:
               example: |
-                { 
-                  "description": "measure outdoor", 
-                  "id" : 2,
-                  "name": "Sensor2", 
-                  "organization" : 
-                  {
-                    "id":112,
-                    "name":"first organization"
-                  },
-                  "type": "temperature", 
-                  "visible" : true,                   
-                }            
+                {
+                  "description":"Sensor nb 3 associated with the organization testGeneratedOrg4",
+                  "id":12,
+                  "name":"testGeneratedSen3",
+                  "orgId":4,
+                  "type":"sensorType3",
+                  "visible":true
+                }         
         404:
           description: The sensor was not found.
     put:
@@ -102,12 +93,9 @@ mediaType: application/json
           example: |
             { 
               "description": "measure outdoor", 
+              "id":12,
               "name": "Sensor2", 
-              "organization" : 
-              {
-                "id":115,
-                "name":"second organization"
-              },
+              "orgId":4,
               "type": "temperature", 
               "visible" : false,                   
             }           
@@ -171,6 +159,26 @@ mediaType: application/json
     delete:
       description: Delete an organization
 
+  /{organizationsId}/contact:
+    description: An organization's contact
+    get:
+      description: Retrieve the organization's contact
+      responses:
+        200:
+          body:
+            application/json:     
+              example: |
+                {
+                  "email":"user@test.com",
+                  "firstName":"Firstnametest",
+                  "id":2,
+                  "lastName":"Lastnametest2",
+                  "mainContact":true,
+                  "orgId":1
+                }                   
+        404:
+          description: The organization was not found. 
+
 
 /users:
   description: |
@@ -184,33 +192,23 @@ mediaType: application/json
           application/json:      
             example: |
               [
-                {                  
-                  "id":201,
-                  "email":"jw@email.com",
-                  "firstName":"John",
-                  "lastName":"White",
-                  "mainContact":true,
-                  "organization":
-                  {
-                    "id":108,
-                    "name":"org5"
-                  },
-                  "password":"pass1"
-                },
-                {                  
-                  "id":202,
-                  "email":"sb@email.com",
-                  "firstName":"Smith",
-                  "lastName":"Brown",
+                {
+                  "email":"user@test.com",
+                  "firstName":"Firstnametest",
+                  "id":1,
+                  "lastName":"Lastnametest1",
                   "mainContact":false,
-                  "organization":
-                  {
-                    "id":108,
-                    "name":"org5"
-                  },
-                  "password":"pass1"
-                  }
-                ]
+                  "orgId":1
+                },
+                {
+                  "email":"user@test.com",
+                  "firstName":"Firstnametest",
+                  "id":2,
+                  "lastName":"Lastnametest2",
+                  "mainContact":true,
+                  "orgId":1
+                }
+              ]
     queryParameters:
       organizationId:
         displayName: ordId
@@ -223,15 +221,12 @@ mediaType: application/json
       application/json:
         example: |
             {
+              "id":2,
               "firstName": "Smith",
               "lastName": "Brown",
               "email": "sb@email.com",
               "password": "pass1",
-              "organization": 
-              {
-                "id": 108,
-                "name": "org5"
-              },
+              "orgId":1
               "mainContact": false
             }
     responses:
@@ -239,8 +234,15 @@ mediaType: application/json
         body:
           application/json:
             example: |
-              203
-              (the id of the new user)
+              {
+                "id":203,
+                "firstName": "Smith",
+                "lastName": "Brown",
+                "email": "sb@email.com",
+                "password": "pass1",
+                "orgId":1
+                "mainContact": false
+              }
   /{usersId}:
     description: An user with its ID
     get:
@@ -251,15 +253,12 @@ mediaType: application/json
             application/json:
               example: |
                 {
+                  "id":23,
                   "firstName": "Smith",
                   "lastName": "Brown",
                   "email": "sb@email.com",
                   "password": "pass1",
-                  "organization": 
-                  {
-                    "id": 108,
-                    "name": "org5"
-                  },
+                  "orgId":1
                   "mainContact": false
                 }
         404:
@@ -270,15 +269,12 @@ mediaType: application/json
         application/json:
           example: |
             {
+              "id":2,
               "firstName": "new firstName",
               "lastName": "new lastName",
               "email": "sb@email.com",
               "password": "pass1",
-              "organization": 
-              {
-                "id": 108,
-                "name": "org5"
-              },
+              "orgId":1
               "mainContact": false
             }
     delete:
@@ -286,65 +282,9 @@ mediaType: application/json
 
 
 /observations:
-  description: The observation pushed by the sensor, using a (write-only) REST API. An observation reports a sensor value at a given time.
-  get:
-    description: Retrieve a collection of observations
-    responses:
-      200:
-        body:
-          application/json:
-            example: |
-              [
-                {
-                  "creationDate":"2014-12-16",
-                  "id":251,
-                  "name":"Observation 1",
-                  "obsValue":25.4,
-                  "sensor :
-                  {
-                    "description":"firstsensor",
-                    "id":118,
-                    "name":"firstsensor",
-                    "organization":
-                    {
-                      "id":112,
-                      "name":"firstorg
-                    },
-                      "type":"firstsensor",
-                      "visible":true
-                  }
-                },
-                {
-                  "creationDate":"2014-12-18",
-                  "id":254,
-                  "name":"Observation 2",
-                  "obsValue":23.6,
-                  "sensor":
-                  {
-                    "description":"d1",
-                    "id":151,
-                    "name":"n1",
-                    "organization":
-                    {
-                      "id":104,
-                      "name":"org1"
-                    },
-                    "type":"t1",
-                    "visible":true
-                  }
-                }
-              ]
-    queryParameters:
-      sensorId:
-        displayName: sensorId
-        type: integer
-        description: The observation's place
-        required: false
-      date:
-        displayName: date
-        type: date
-        description: The day of creation of the observation
-        required: false
+  description: |
+    The observation pushed by the sensor, using a (write-only) REST API. 
+    An observation reports a sensor value at a given time.
   post:
     description: Create an observation
     body:
@@ -353,19 +293,7 @@ mediaType: application/json
           {
             "name":"Observation 1",
             "obsValue":25.4,
-            "sensor":
-            {
-              "description":"firstsensor",
-              "id":118,
-              "name":"firstsensor",
-              "organization":
-                {
-                "id":112,
-                "name":"firstorg"
-                },
-              "type":"firstsensor",
-              "visible":true
-            },
+            "sensorId":3,
             "creationDate": "2014-12-16"
           }
     responses:
@@ -373,23 +301,8 @@ mediaType: application/json
         body:
           application/json:
 
-    headers:
-      Authorization:
-        description: |
-          A description
-          <private>
-          Private information
-          </private>
   /{observationId}:
     description: An observation with its ID
-    get:
-      description: Retrieve an observation
-      responses:
-        200:
-          body:
-            application/json:
-        404:
-          description: The observation was not found.
     put:
       description: Update the observation's informations
       queryParameters:
@@ -402,9 +315,22 @@ mediaType: application/json
       description: Delete an observation
 
 /facts:
-  description: The fact
+  description: |
+    The fact represents the values of the sensors observations received. 
+    Actually, there are two types : counter and dailyStats.
+      
+    A "counter" fact counts the number of a sensor's observations received. 
+    So for each sensor, there is at mots one "counter" fact.
+    
+    A "dailyStats" fact counts the number of a sensor's observations received 
+    in one day. Also, it calculates the maximum value, the minimum value and 
+    the average value of all the observations' value in that day. So, 
+    for each sensor and for each day, there is at most one "dailyStats" fact.
   get:
-    description: Retrieve a collection of facts
+    description: |
+      Retrieve a collection of all type of facts
+
+      For more information of a fact (calculated values), you have to do a GET "facts/[type]/{id}"
     responses:
       200:
         body:
@@ -412,13 +338,15 @@ mediaType: application/json
             example: |
               [
                 {
-                  "id":252,
-                  "nbObs":3,
+                  "id":167,
+                  "orgId":1,
+                  "type":"counter",
                   "visible":true
                 },
                 {
-                  "id":253,
-                  "nbObs":5,
+                  "id":168,
+                  "orgId":1,
+                  "type":"dailyStats",
                   "visible":true
                 }
               ]
@@ -428,6 +356,7 @@ mediaType: application/json
         type: integer
         description: The organizations's id of the fact
         required: false
+
   /{factsId}:
     description: A fact with its ID
     get:
@@ -438,11 +367,136 @@ mediaType: application/json
             application/json:
               example: |
                 {
-                  "id":256,
-                  "nbObs":4,
+                  "id":172,
+                  "orgId":1,
+                  "type":"dailyStats",
                   "visible":true
                 }
         404:
           description: The fact was not found.
-    delete:
-      description: Delete a fact
+
+  /counter:
+    description: |
+      A "counter" fact counts the number of a sensor's observations received. 
+      So for each sensor, there is at mots one "counter" fact.
+    get:
+      description: Retrieve a collection of "counter" facts
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                [
+                  {
+                    "type":"factTiedToSensorDTO",
+                    "id":167,
+                    "orgId":1,
+                    "type":"counter",
+                    "visible":true,
+                    "sensorId":1,
+                    "totNbObs":6
+                  },
+                  {
+                    "type":"factTiedToSensorDTO",
+                    "id":171,
+                    "orgId":1,
+                    "type":"counter",
+                    "visible":true,
+                    "sensorId":2,
+                    "totNbObs":8
+                  }
+                ]
+
+  /counter/{factsId}:
+    description: A "counter" fact with its ID
+    get:
+      description: Retrieve a "counter" fact with calculated values
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "type":"factTiedToSensorDTO",
+                  "id":167,
+                  "orgId":1,
+                  "type":"counter",
+                  "visible":true,
+                  "sensorId":1,
+                  "totNbObs":6
+                }
+        404:
+          description: The fact was not found.                
+
+  /dailyStats:
+    description: |
+      A "dailyStats" fact counts the number of a sensor's observations received 
+      in one day. Also, it calculates the maximum value, the minimum value and 
+      the average value of all the observations' value in that day. So, 
+      for each sensor and for each day, there is at most one "dailyStats" fact.
+    get:
+      description: Retrieve a collection of "dailyStats" facts
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                [
+                  {
+                    "type":"factTiedToDateDTO",
+                    "id":168,
+                    "orgId":1,
+                    "type":"dailyStats",
+                    "visible":true,
+                    "sensorId":1,
+                    "totNbObs":0,
+                    "avVal":36.0,
+                    "date":"2015-02-10",
+                    "maxVal":69.0,
+                    "minVal":3.0,
+                    "nbVal":6,
+                    "sumVal":216.0
+                  },
+                  {
+                    "type":"factTiedToDateDTO",
+                    "id":172,
+                    "orgId":1,
+                    "type":"dailyStats",
+                    "visible":true,
+                    "sensorId":2,
+                    "totNbObs":0,
+                    "avVal":57.125,
+                    "date":"2015-02-10",
+                    "maxVal":85.0,
+                    "minVal":13.0,
+                    "nbVal":8,
+                    "sumVal":457.0
+                  }
+                ]
+
+  /dailyStats/{factsId}:
+    description: A "dailyStats" fact with its ID
+    get:
+      description: Retrieve a "dailyStats" fact with calculated values
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "type":"factTiedToDateDTO",
+                  "id":168,
+                  "orgId":1,
+                  "type":"dailyStats",
+                  "visible":true,
+                  "sensorId":1,
+                  "totNbObs":0,
+                  "avVal":36.0,
+                  "date":"2015-02-10",
+                  "maxVal":69.0,
+                  "minVal":3.0,
+                  "nbVal":6,
+                  "sumVal":216.0
+                }
+        404:
+          description: The fact was not found.

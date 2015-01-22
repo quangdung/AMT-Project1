@@ -25,6 +25,7 @@ import javax.ejb.*;
 import javax.ws.rs.*;
 import java.sql.Date;
 import static java.sql.Types.NULL;
+import javax.persistence.LockTimeoutException;
 import javax.ws.rs.core.*;
 
 /**
@@ -67,8 +68,21 @@ public class ObservationResource {
         Sensor sensor = sensorsDAO.read(dto.getSensorId());
 
         long factId;
+//        int attempt = 3;
+        long timeout = 500;
 
-        List<FactTiedToSensor> factsTiedToSensor = factsTiedToSensorDAO.readBySensorId(sensor.getId());
+        List<FactTiedToSensor> factsTiedToSensor = null;
+
+        factsTiedToSensor = factsTiedToSensorDAO.readBySensorId(sensor.getId());
+
+//        while (attempt > 0 && factsTiedToSensor == null) {
+////            this.wait(timeout);
+//            factsTiedToSensor = factsTiedToSensorDAO.readBySensorId(sensor.getId());
+//            attempt--;
+//        }
+
+        
+        
         factId = (factsTiedToSensor.size() > 0
                   ? factsTiedToSensor.get(0).getId() : 0L);
 
@@ -89,7 +103,17 @@ public class ObservationResource {
         // update or create fact tied to date
         java.sql.Date date = dto.getCreationDate();
 
-        List<FactTiedToDate> factsTiedToDate = factsTiedToDateDAO.readBySensorId(sensor.getId());
+        List<FactTiedToDate> factsTiedToDate = null;
+        factsTiedToDate = factsTiedToDateDAO.readBySensorId(sensor.getId());
+        
+//        attempt = 3;
+//        
+//        while (attempt > 0 && factsTiedToDate == null) {
+//            this.wait(timeout);
+//            factsTiedToDate = factsTiedToDateDAO.readBySensorId(sensor.getId());
+//            attempt--;
+//        }
+        
         factId = (factsTiedToDate.size() > 0
                   ? factsTiedToDate.get(0).getId() : 0L);
 

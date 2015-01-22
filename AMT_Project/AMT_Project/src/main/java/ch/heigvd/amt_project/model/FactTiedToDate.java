@@ -10,6 +10,10 @@ import javax.persistence.*;
             query = "SELECT f FROM Fact f WHERE f.type = :type"
     ),
     @NamedQuery(
+            name = "FactTiedToDate.findById",
+            query = "SELECT f FROM FactTiedToDate f WHERE f.id = :id"
+    ),
+    @NamedQuery(
             name = "FactTiedToDate.findByDate",
             query = "SELECT f FROM FactTiedToDate f WHERE f.date = :date"
     ),

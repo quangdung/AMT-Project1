@@ -19,6 +19,25 @@ The scenario we have chosen to illustrate in this project is as follow :
 
 You can install this platform to test how all the generated observations are handled through it and see the generated facts.
 
+## Details
+
+This project has been created for the AMT course of the HEIG-VD, under the supervision of Mr. Olivier Liechti.
+It's purpose is to create an API which will manage differents sensors (which could, for example, measure the temperature of a room or detect the variations taking place in a particular area), and in turn, manage the observations captured on these sensors and turn them into facts which summarize the amount of informations given by those observations. 
+
+The project is using JPA and a REST architecture to achieve its goals and will ultimately allow the following functionnalities:
+  - Create, Read, Update and Delete organizations, sensors, users and observations
+  - Display the different entries from the database in a convenient manner.
+  - Allow for different users to use the API and store their informations and tie them to an organization, in order to sort them more easily
+
+The database is composed of :
+  - Organizations, defined by their id number and their names
+  - Sensors, defined by their id number, name, description, type, visibility and the organization to which they are tied to.
+  - Users, defined by their id number, first name, last name, email, password, the organization to which they are tied to and if they are the main contact of that organization
+  - Observations, defined by their id number, name, value, creation date and the sensor to which they are tied to.
+  - Facts, which come in two forms:
+    - Facts tied to a particular sensor
+    - Facts tied to a particular sensor, as well as a particular date
+
 ---
 # Domain modeling
 
@@ -37,24 +56,57 @@ There is 2 types of facts. One that only counts the total number of observations
 ---
 
 # REST API Documentation
-If it's the first time, run : `npm install`
 
-Run :
+For more details of our API, head over to [http://quangdung.github.io/amt-project1/](http://quangdung.github.io/amt-project1/)
 
-- `grunt dev`
-or
-- `grunt dev --private=true`  to show private blocks
+The folder [Documentation](https://github.com/quangdung/AMT-Project1/tree/master/Documentation) allow to modify this API documentation.
 
-Go to adress [http://localhost:8080/AMT_Project/](http://localhost:8080/AMT_Project/ "Go to the page")
+After cloning the repo, if it's the first time, in the folder `Documentation`, run `npm install`. After editing the files in the folder `Documentation/src/`, run `grunt dev` to test the API documentation locally at the address [http://localhost:7000/](http://localhost:7000/).
+
+For more informations about the API used to generate the documentation : [apidoc-sed](https://github.com/lotaris/apidoc-seed)
+
+---
+
+# Use the application
+
+## Installing
+
+1. Prerequisites : 
+	1. Node.js, with `node` in your `PATH`
+	2. MySQL, with `mysql` in your `PATH`
+	3. JavaEE with GlassFish, with `asadmin` in your `PATH`
+	4. mysql-connector-java-5.1.33.jar
+2. Clone this repository :
+
+	git clone git@github.com:quangdung/AMT-Project1.git
+
+3. Open the file `AMT_Project/createDbAmt1.sh`, adjust the paths:
+
+	```
+	cd '/cygdrive/c/wamp/bin/mysql/mysql5.6.12/bin'
+
+	cd '/cygdrive/c/Program Files/glassfish-4.1/glassfish/bin'
+
+	cp 'mysql-connector-java-5.1.33.jar' ../domains/$DOMAIN_NAME/lib
+
+	```
+
+	and run the script (`sh createDbAmt1.sh` in Cygwin for Windows)
+
+4. Launch the server GlassFish and the application :
+
+	asadmin start-domain amtdatabaserest  
+	
+	deploy AMT_Project/AMT_Project/target/AMT_Project-1.0-SNAPSHOT
+
+## Testing application
+
+1. After deploying, at the address [http://localhost:8080/AMT_Project/](http://localhost:8080/AMT_Project/), click on the link `Click here to get to the generating page.` to generate a couple samples of `organizations`, `sensors`, `users`.
+
+2. Open the script `AMT_Project/node-client/client.js`, change the number of `nbSensor` and `nbObservation`. Run the script.
 
 ---
 
-# Online testing
-
-If you want to test an already functional version of our API, head over to 
-http://quangdung.github.io/amt-project1/
-
----
 
 # Known issues
 

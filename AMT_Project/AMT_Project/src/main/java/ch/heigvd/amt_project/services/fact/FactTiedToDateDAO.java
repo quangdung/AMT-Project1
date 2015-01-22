@@ -5,6 +5,8 @@ import ch.heigvd.amt_project.model.FactType;
 import java.sql.Date;
 import java.util.*;
 import javax.ejb.Singleton;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
 
 /**
@@ -21,6 +23,7 @@ public class FactTiedToDateDAO implements FactTiedToDateDAOLocal {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public long create(FactTiedToDate fact) {
         em.persist(fact);
         em.flush();
@@ -38,17 +41,30 @@ public class FactTiedToDateDAO implements FactTiedToDateDAOLocal {
     }
 
     @Override
+    public FactTiedToDate readFactBySensorByDate(long id) {
+        Query q = em.createNamedQuery("FactTiedToDate.findById")
+                .setParameter("id", id);
+
+        return (FactTiedToDate) q.getSingleResult();
+    }
+    
+    
+
+    @Override
     public List<FactTiedToDate> readBySensorId(long sensorId) {
         Query q = em.createNamedQuery("FactTiedToDate.findBySensorId")
                 .setParameter("sensorId", sensorId);
 
-        try {
+//        try {
             q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-            q.setHint("javax.persistence.query.timeout", 1000);
-        }
-        catch (LockTimeoutException e) {
-
-        }
+//            q.setHint("javax.persistence.query.timeout", 100);
+//        }
+//        catch (PessimisticLockException e) {
+//            em.getTransaction().rollback();
+//        }
+//        catch (LockTimeoutException e) {
+//
+//        }
 
         return q.getResultList();
 

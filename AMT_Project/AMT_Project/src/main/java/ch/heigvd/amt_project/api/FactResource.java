@@ -102,7 +102,7 @@ public class FactResource {
         return result;
     }
 
-    @Path("/bySensor")
+    @Path("/counter")
     @GET
     @Produces("application/json")
     public List<FactTiedToSensorDTO> getAllFactsBySensor() {
@@ -116,7 +116,7 @@ public class FactResource {
         return result;
     }
 
-    @Path("/bySensorByDate")
+    @Path("/dailyStats")
     @GET
     @Produces("application/json")
     public List<FactTiedToDateDTO> getAllFactsBySensorByDateDTOs() {
@@ -147,7 +147,24 @@ public class FactResource {
 
         return fact;
     }
+    
+    @Path("/counter/{id}")
+    @GET
+    @Produces("application/json")
+    public FactTiedToSensorDTO getFactBySensor(@PathParam("id") long id) {
+        FactTiedToSensor f = factsBySensorDAO.readFactBySensor(id);
 
+        return toBySensorDTO(f);
+    }
+    
+    @Path("/dailyStats/{id}")
+    @GET
+    @Produces("application/json")
+    public FactTiedToDateDTO getFactBySensorByDate(@PathParam("id") long id) {
+        FactTiedToDate f = factsBySensorByDateDAO.readFactBySensorByDate(id);
+
+        return toBySensorByDateDTO(f);
+    }
     
     private FactDTO toDTO(Fact fact) {
         FactDTO dto = new FactDTO();

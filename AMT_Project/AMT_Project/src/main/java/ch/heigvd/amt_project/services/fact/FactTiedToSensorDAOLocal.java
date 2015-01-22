@@ -14,6 +14,7 @@ public interface FactTiedToSensorDAOLocal {
     public long create(FactTiedToSensor fact);
 
     public List<FactTiedToSensor> readAllTiedToSensor();
+    public FactTiedToSensor readFactBySensor(long id);
     public List<FactTiedToSensor> readBySensorId(long sensorId);
     public List<FactTiedToSensor> readBySensorName(String sensorName);
     public List<FactTiedToSensor> readBySensorType(String sensorType);

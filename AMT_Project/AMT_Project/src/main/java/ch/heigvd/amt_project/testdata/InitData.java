@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author drezaroth
  */
-@WebServlet(name = "TestDataServlet", urlPatterns = {"/TestDataServlet"})
+@WebServlet(name = "InitData", urlPatterns = {"/InitData"})
 public class InitData extends HttpServlet {
     
     ConcurrentLinkedQueue<Sensor> senStored = new ConcurrentLinkedQueue<>();

@@ -4,6 +4,8 @@ import ch.heigvd.amt_project.model.FactTiedToSensor;
 import ch.heigvd.amt_project.model.FactType;
 import java.util.*;
 import javax.ejb.Singleton;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
 
 /**
@@ -20,6 +22,7 @@ public class FactTiedToSensorDAO implements FactTiedToSensorDAOLocal {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public long create(FactTiedToSensor fact) {
         em.persist(fact);
         em.flush();
@@ -44,17 +47,28 @@ public class FactTiedToSensorDAO implements FactTiedToSensorDAOLocal {
     }
 
     @Override
+    public FactTiedToSensor readFactBySensor(long id) {
+        Query q = em.createNamedQuery("FactTiedToSensor.findById")
+                .setParameter("id", id);
+
+        return (FactTiedToSensor) q.getSingleResult();
+    }
+    
+    @Override
     public List<FactTiedToSensor> readBySensorId(long sensorId) {
         Query q = em.createNamedQuery("FactTiedToSensor.findBySensorId")
                 .setParameter("sensorId", sensorId);
 
-        try {
+//        try {
             q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-            q.setHint("javax.persistence.query.timeout", 1000);
-        }
-        catch (LockTimeoutException e) {
-
-        }
+//            q.setHint("javax.persistence.query.timeout", 100);
+//        }
+//        catch (PessimisticLockException e) {
+//            em.getTransaction().rollback();            
+//        }
+//        catch (LockTimeoutException e) {
+//            
+//        }
 
         return q.getResultList();
 

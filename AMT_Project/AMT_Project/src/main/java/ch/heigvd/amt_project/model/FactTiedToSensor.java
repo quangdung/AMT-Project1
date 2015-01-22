@@ -13,6 +13,10 @@ import javax.persistence.*;
             query = "SELECT f FROM FactTiedToSensor f WHERE f.sensor.id = :sensorId"
     ),
     @NamedQuery(
+            name = "FactTiedToSensor.findById",
+            query = "SELECT f FROM FactTiedToSensor f WHERE f.id = :id"
+    ),
+    @NamedQuery(
             name = "FactTiedToSensor.findBySensorName",
             query = "SELECT f FROM FactTiedToSensor f WHERE f.sensor.name = :sensorName"
     ),

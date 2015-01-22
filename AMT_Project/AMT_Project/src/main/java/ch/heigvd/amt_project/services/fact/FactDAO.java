@@ -45,7 +45,7 @@ public class FactDAO implements FactDAOLocal {
 
 //        try {
             q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-//            q.setHint("javax.persistence.query.timeout", 1000);
+            q.setHint("javax.persistence.query.timeout", 1000);
 //        }
 //        catch (LockTimeoutException e) {
 //            
