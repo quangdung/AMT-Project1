@@ -72,21 +72,18 @@ public class SensorResource {
     @Path("/{id}")
     @PUT
     @Consumes("application/json")
-    public void updateSensor(@PathParam("id") long id, SensorDTO dto) {
+    public Response updateSensor(@PathParam("id") long id, SensorDTO dto) {
         Sensor existing = sensorsDAO.read(id);
         sensorsDAO.update(toSensor(dto, existing));
+        return Response.status(Response.Status.OK).entity("PUT").build();
     }
 
     @Path("/{id}")
     @DELETE
-    public void deleteSensor(@PathParam("id") long id) {
+    public Response deleteSensor(@PathParam("id") long id) {
         sensorsDAO.read(id);
         sensorsDAO.delete(sensorsDAO.read(id));
-        
-//        Sensor toDelete = sensorsDAO.read(id);
-//        if (toDelete != null) {
-//            sensorsDAO.delete(toDelete);
-//        }
+        return Response.status(Response.Status.OK).entity("DELETED").build();
     }
 
     private Sensor toSensorUpdate(SensorDTO sensorDto, Sensor sensor) {

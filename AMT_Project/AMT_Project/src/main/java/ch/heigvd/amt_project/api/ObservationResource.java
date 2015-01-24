@@ -76,16 +76,18 @@ public class ObservationResource {
     @Path("/{id}")
     @PUT
     @Consumes("application/json")
-    public void updateObservation(@PathParam("id") long id, ObservationDTO dto) {
+    public Response updateObservation(@PathParam("id") long id, ObservationDTO dto) {
         Observation existing = obsDAO.read(id);
         obsDAO.update(toObservation(dto, existing));
+        return Response.status(Response.Status.OK).entity("PUT").build();
     }
 
     @Path("/{id}")
     @DELETE
-    public void deleteObservation(@PathParam("id") long id) {
+    public Response deleteObservation(@PathParam("id") long id) {
         obsDAO.read(id);
         obsDAO.delete(obsDAO.read(id));
+        return Response.status(Response.Status.OK).entity("DELETED").build();
     }
 
     private Observation toObservation(ObservationDTO obsDto, Observation obs) {

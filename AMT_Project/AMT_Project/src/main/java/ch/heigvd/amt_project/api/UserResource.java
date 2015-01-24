@@ -82,16 +82,18 @@ public class UserResource {
     @Path("/{id}")
     @PUT
     @Consumes("application/json")
-    public void updateUser(@PathParam("id") long id, UserDTO dto) {
+    public Response updateUser(@PathParam("id") long id, UserDTO dto) {
         User existing = usersDAO.read(id);
         usersDAO.update(toUser(dto, existing));
+        return Response.status(Response.Status.OK).entity("PUT").build();
     }
 
     @Path("/{id}")
     @DELETE
-    public void deleteUser(@PathParam("id") long id) {
+    public Response deleteUser(@PathParam("id") long id) {
         usersDAO.read(id);
         usersDAO.delete(usersDAO.read(id));
+        return Response.status(Response.Status.OK).entity("DELETED").build();
     }
 
     private User toUser(UserDTO userDto, User user) {

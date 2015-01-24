@@ -5,7 +5,6 @@
  */
 package ch.heigvd.amt_project.api;
 
-import static ch.heigvd.amt_project.api.UserResource.toDTO;
 import ch.heigvd.amt_project.dto.OrganizationDTO;
 import ch.heigvd.amt_project.model.Organization;
 import ch.heigvd.amt_project.services.organization.OrganizationDAOLocal;
@@ -17,6 +16,9 @@ import javax.ws.rs.*;
 import ch.heigvd.amt_project.services.user.UseDAOLocal;
 import ch.heigvd.amt_project.dto.UserDTO;
 import ch.heigvd.amt_project.model.User;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -31,6 +33,9 @@ public class OrganizationResource {
 
     @EJB
     UseDAOLocal usersDAO;
+    
+    @Context
+    private UriInfo context;
 
     public OrganizationResource() {
     }
@@ -87,22 +92,25 @@ public class OrganizationResource {
 
         long idOrganization = orgsDAO.create(toOrganization(dto, newOrganization));
 
-        return toDTO(orgsDAO.read(idOrganization));
+        return toDTO(orgsDAO.read(idOrganization));        
     }
 
     @Path("/{id}")
     @PUT
     @Consumes("application/json")
-    public void updateOrganization(@PathParam("id") long id, OrganizationDTO dto) {
+    public Response updateOrganization(@PathParam("id") long id, OrganizationDTO dto) {
         Organization existing = orgsDAO.read(id);
         orgsDAO.update(toOrganization(dto, existing));
+        
+        return Response.status(Response.Status.OK).entity("PUT").build();
     }
 
     @Path("/{id}")
     @DELETE
-    public void deleteOrganization(@PathParam("id") long id) {
+    public Response deleteOrganization(@PathParam("id") long id) {
         orgsDAO.read(id);
         orgsDAO.delete(orgsDAO.read(id));
+        return Response.status(Response.Status.OK).entity("DELETED").build();
     }
 
     private Organization toOrganization(OrganizationDTO orgDto, Organization org) {
