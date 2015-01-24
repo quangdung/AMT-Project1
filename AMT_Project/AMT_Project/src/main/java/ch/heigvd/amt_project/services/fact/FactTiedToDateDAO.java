@@ -48,9 +48,7 @@ public class FactTiedToDateDAO implements FactTiedToDateDAOLocal {
     public List<FactTiedToDate> readBySensorId(long sensorId) {
         Query q = em.createNamedQuery("FactTiedToDate.findBySensorId")
                 .setParameter("sensorId", sensorId)
-                .setParameter("type", FactType.FACT_TIED_TO_SENSOR_BY_DATE)
-//                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
-                ;
+                .setParameter("type", FactType.FACT_TIED_TO_SENSOR_BY_DATE);
 
         try {
             q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
@@ -60,12 +58,28 @@ public class FactTiedToDateDAO implements FactTiedToDateDAOLocal {
         }
 
         return q.getResultList();
+    }
 
+    @Override
+    public List<FactTiedToDate> readBySensorIdByDate(long sensorId, Date date) {
+        Query q = em.createNamedQuery("FactTiedToDate.findBySensorIdByDate")
+                .setParameter("sensorId", sensorId)
+                .setParameter("type", FactType.FACT_TIED_TO_SENSOR_BY_DATE)
+                .setParameter("date", date);
+
+        try {
+            q.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+        }
+        catch (Exception e) {
+            System.out.println("\nFactTiedToDate.readBySensorIdByDate problem : \n" + e.getMessage());
+        }
+
+        return q.getResultList();
     }
 
     @Override
     public List<FactTiedToDate> readByDate(Date date) {
-        return em.createNamedQuery("FactTiedToDate.findByDateRange")
+        return em.createNamedQuery("FactTiedToDate.findByDate")
                 .setParameter("date", date)
                 .getResultList();
     }
@@ -85,4 +99,5 @@ public class FactTiedToDateDAO implements FactTiedToDateDAOLocal {
 
         return f;
     }
+
 }

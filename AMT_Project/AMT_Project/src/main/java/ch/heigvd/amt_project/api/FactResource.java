@@ -17,6 +17,7 @@ import ch.heigvd.amt_project.services.fact.FactTiedToDateDAOLocal;
 import ch.heigvd.amt_project.services.fact.FactTiedToSensorDAOLocal;
 import ch.heigvd.amt_project.services.organization.OrganizationDAOLocal;
 import ch.heigvd.amt_project.services.sensor.SensorDAOLocal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.*;
@@ -164,6 +165,20 @@ public class FactResource {
         FactTiedToDate f = factsBySensorByDateDAO.readFactBySensorByDate(id);
 
         return toBySensorByDateDTO(f);
+    }
+    
+    @Path("/date/{date}")
+    @GET
+    @Produces("application/json")
+    public List<FactTiedToDateDTO> getFactByDate(@PathParam("date") Date date) {
+        List<FactTiedToDateDTO> result = new ArrayList<>();
+        List<FactTiedToDate> factsByDate = factsBySensorByDateDAO.readByDate(date);
+
+        for (FactTiedToDate f : factsByDate) {
+            result.add(toBySensorByDateDTO(f));
+        }
+
+        return result;
     }
     
     private FactDTO toDTO(Fact fact) {

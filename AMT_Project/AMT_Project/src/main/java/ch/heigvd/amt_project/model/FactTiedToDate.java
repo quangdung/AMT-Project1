@@ -24,6 +24,10 @@ import javax.persistence.*;
     @NamedQuery(
             name = "FactTiedToDate.findBySensorId",
             query = "SELECT f FROM FactTiedToDate f WHERE f.sensor.id = :sensorId AND f.type = :type"
+    ),
+    @NamedQuery(
+            name = "FactTiedToDate.findBySensorIdByDate",
+            query = "SELECT f FROM FactTiedToDate f WHERE f.sensor.id = :sensorId AND f.type = :type AND f.date = :date"
     )
 })
 

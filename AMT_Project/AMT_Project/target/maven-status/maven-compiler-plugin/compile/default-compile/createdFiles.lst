@@ -12,6 +12,7 @@ ch\heigvd\amt_project\services\sensor\SensorDAO.class
 ch\heigvd\amt_project\api\ObservationResource.class
 ch\heigvd\amt_project\dto\FactDTO.class
 ch\heigvd\amt_project\services\fact\FactDAO.class
+.netbeans_automatic_build
 ch\heigvd\amt_project\model\Observation_.class
 ch\heigvd\amt_project\services\fact\FactTiedToSensorDAOLocal.class
 ch\heigvd\amt_project\dto\ObservationDTO.class
