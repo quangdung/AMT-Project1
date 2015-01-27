@@ -5,8 +5,8 @@ var sleep = require('sleep');
 
 
 // Number of observations to be sent = NB_SENSOR * NB_OBSERVATION
-var NB_SENSOR = 3; 
-var NB_OBSERVATION = 5;
+var NB_SENSOR = 4; 
+var NB_OBSERVATION = 10;
 
 // Range of observations' value
 var MAX_OBSREVATION_VALUE = 100;
@@ -14,7 +14,7 @@ var MIN_OBSERVATION_VALUE = 0;
 
 // Range of observations' day
 var START_DATE = new Date(2015, 1, 10);
-var AFTER_END_DATE = new Date(2015, 1, 30);
+var AFTER_END_DATE = new Date(2015, 1, 20);
 
 // Error tolerated due to decimal value
 var ERROR_TOLERATED = 0.03;
@@ -77,8 +77,11 @@ function logCounter(stats, observation) {
 
 function logDaily(stats, observation) {
 
+	// Apply the format to calculate the facts locally
 	var index = observation.sensorId + "." 
 		+ observation.creationDate.formatYYYYMMDD();
+
+	console.log("logDaily: " + index);
 
 	var factStats = stats[index] || {
 		sensorId: observation.sensorId,
@@ -128,10 +131,13 @@ function getObservationPOSTRequestFunction(sensorId) {
 		requestData.data.creationDate = new Date(START_DATE.getTime() 
 			+ Math.random() * (AFTER_END_DATE.getTime() - START_DATE.getTime()));
 		
+		console.log("\nrandom creationDate: " + requestData.data.creationDate);
+
 		requestData.data.obsValue = (MIN_OBSERVATION_VALUE 
 			+ Math.random() * (MAX_OBSREVATION_VALUE - MIN_OBSERVATION_VALUE)).toFixedDown(2);
 
 		logCounter(submittedCounter, requestData.data);
+		
 		logDaily(submittedDaily, requestData.data);
 		
 		client.post("http://localhost:8080/AMT_Project/api/observations", requestData, function(data, response) {
@@ -156,9 +162,7 @@ var requests = [];
 
 for (var sensor = 1; sensor <= NB_SENSOR; sensor++) {
 	for (var observation = 0; observation < NB_OBSERVATION; observation++) {
-		requests.push(
-			getObservationPOSTRequestFunction(sensor)
-		);
+		requests.push(getObservationPOSTRequestFunction(sensor));		
 	}
 }; 
 
@@ -203,6 +207,10 @@ function postObservationRequestsInParallel(callback) {
 	var numberOfUnsuccessfulResponses = 0;
 
 	async.parallel(requests, function(err, results) {
+
+		console.log("\nprocessedDaily");
+		console.log("sensorId.creationDate")
+
 		for (var i=0; i < results.length; i++) {
 
 			// To send after a lap of time
@@ -227,7 +235,7 @@ function postObservationRequestsInParallel(callback) {
 	Fetch server-side state (list of facts). The list of facts is passed to 
 	the callback function.
  */
-function checkValues(callback) {	
+function checkValues(callback) {
 	console.log("\n\n==========================================");
 	console.log("Comparing client-side and server-side stats");
 	console.log("------------------------------------------");
@@ -308,7 +316,9 @@ function checkValues(callback) {
 		for (var i=0; i < data.length; i++) {
 
 			var sensorIdTemps = data[i].sensorId;
-			var factDate = data[i].date;
+
+			// Extract the format "YYYY-MM-DD"
+			var factDate = data[i].date.substring(0, 10);
 
 			var index = sensorIdTemps + "." + factDate;
 

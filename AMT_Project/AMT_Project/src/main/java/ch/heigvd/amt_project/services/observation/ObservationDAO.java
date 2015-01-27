@@ -47,7 +47,8 @@ public class ObservationDAO implements ObservationDAOLocal {
     }
 
     @Override
-    public List<Observation> readByCreationDate(java.sql.Date date) {
+//    public List<Observation> readByCreationDate(java.sql.Date date) {
+    public List<Observation> readByCreationDate(java.util.Date date) {
         return em.createNamedQuery("findObservationsByCreationDate")
                 .setParameter("date", date)
                 .getResultList();

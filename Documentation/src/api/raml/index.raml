@@ -99,8 +99,18 @@ mediaType: application/json
               "type": "temperature", 
               "visible" : false,                   
             }           
+      responses:
+        200:
+          body:
+            application/json:
+              example: PUT
     delete:
       description: Delete a sensor
+      responses:
+        200:
+          body:
+            application/json:
+              example: DELETE
 
 
 /organizations:
@@ -134,7 +144,7 @@ mediaType: application/json
           application/json:
             example: |
               119
-              (the id of the new organization)
+              (the id of the new organization)  
   /{organizationsId}:
     description: An organization with its ID
     get:
@@ -151,13 +161,25 @@ mediaType: application/json
         404:
           description: The organization was not found.
     put:
-      description: Update the organization's informations
+      description: Update the organization's informations      
       body:
         application/json:
           example: |
-            { "name":"new name"}
+            { 
+              "id" : 1,
+              "name":"new name"}
+      responses:
+        200:
+          body:
+            application/json:
+              example: PUT
     delete:
       description: Delete an organization
+      responses:
+        200:
+          body:
+            application/json:
+              example: DELETE
 
   /{organizationsId}/contact:
     description: An organization's contact
@@ -277,8 +299,18 @@ mediaType: application/json
               "orgId":1
               "mainContact": false
             }
+      responses:
+        200:
+          body:
+            application/json:
+              example: PUT
     delete:
       description: Delete an user
+      responses:
+        200:
+          body:
+            application/json:
+              example: DELETE
 
 
 /observations:
@@ -303,16 +335,36 @@ mediaType: application/json
 
   /{observationId}:
     description: An observation with its ID
-    put:
+    put:    
       description: Update the observation's informations
+      body:
+        application/json:
+          example: |
+            {
+              "id": 3,
+              "name":"Observation 1",
+              "obsValue":25.4,
+              "sensorId":3,
+              "creationDate": "2014-12-16"
+            }
       queryParameters:
         access_token:
           displayName: Access Token
           type:  string
           description: Token giving you permission to update observation's informations
           required: true
+      responses:
+        200:
+          body:
+            application/json:
+              example: PUT
     delete:
       description: Delete an observation
+      responses:
+        200:
+          body:
+            application/json:
+              example: DELETE
 
 /facts:
   description: |

@@ -5,9 +5,9 @@
  */
 package ch.heigvd.amt_project.dto;
 
-import ch.heigvd.amt_project.model.Organization;
-import ch.heigvd.amt_project.model.Sensor;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
@@ -22,6 +22,7 @@ public class FactTiedToDateDTO extends FactTiedToSensorDTO {
     private float maxVal;
     private float avVal;
 
+    @XmlJavaTypeAdapter(DateAdapter.class)    
     public Date getDate() {
         return date;
     }

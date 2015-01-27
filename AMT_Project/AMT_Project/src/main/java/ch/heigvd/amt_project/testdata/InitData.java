@@ -264,7 +264,8 @@ public class InitData extends HttpServlet {
                         obs.setName ("observationTest");
                         obs.setSensor(s);
                         java.util.Date today = new java.util.Date();
-                        java.sql.Date date = new java.sql.Date(today.getTime());
+//                        java.sql.Date date = new java.sql.Date(today.getTime());
+                        java.util.Date date = new java.util.Date(today.getTime());
                         obs.setCreationDate(date);
                         obs.setObsValue(100 * randomno.nextFloat());
 
@@ -318,7 +319,8 @@ public class InitData extends HttpServlet {
                             obs.setName ("observationTest");
                             obs.setSensor(s);
                             java.util.Date today = new java.util.Date();
-                            java.sql.Date date = new java.sql.Date(today.getTime());
+//                            java.sql.Date date = new java.sql.Date(today.getTime());
+                            java.util.Date date = new java.util.Date(today.getTime());
                             obs.setCreationDate(date);
                             obs.setObsValue(100 * randomno.nextFloat());
 

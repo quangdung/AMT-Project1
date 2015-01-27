@@ -1,6 +1,7 @@
 package ch.heigvd.amt_project.services.observation;
 import ch.heigvd.amt_project.model.Observation;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 

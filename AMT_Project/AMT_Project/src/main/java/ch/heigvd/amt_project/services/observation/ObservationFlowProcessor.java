@@ -18,7 +18,6 @@ import java.util.List;
 import javax.ejb.Singleton;
 import java.util.logging.*;
 import javax.ejb.EJB;
-import java.sql.SQLException;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
@@ -89,7 +88,7 @@ public class ObservationFlowProcessor implements ObservationFlowProcessorLocal {
 
         long factId;
 
-        java.sql.Date date = observationDto.getCreationDate();
+        java.util.Date date = observationDto.getCreationDate();
 
         List<FactTiedToDate> factsTiedToDate = null;
 

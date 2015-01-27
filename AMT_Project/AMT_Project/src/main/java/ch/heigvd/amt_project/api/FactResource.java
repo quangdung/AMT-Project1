@@ -17,12 +17,19 @@ import ch.heigvd.amt_project.services.fact.FactTiedToDateDAOLocal;
 import ch.heigvd.amt_project.services.fact.FactTiedToSensorDAOLocal;
 import ch.heigvd.amt_project.services.organization.OrganizationDAOLocal;
 import ch.heigvd.amt_project.services.sensor.SensorDAOLocal;
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import javax.ejb.*;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -148,7 +155,7 @@ public class FactResource {
 
         return fact;
     }
-    
+
     @Path("/counter/{id}")
     @GET
     @Produces("application/json")
@@ -157,7 +164,7 @@ public class FactResource {
 
         return toBySensorDTO(f);
     }
-    
+
     @Path("/dailyStats/{id}")
     @GET
     @Produces("application/json")
@@ -166,7 +173,7 @@ public class FactResource {
 
         return toBySensorByDateDTO(f);
     }
-    
+
     @Path("/date/{date}")
     @GET
     @Produces("application/json")
@@ -180,7 +187,7 @@ public class FactResource {
 
         return result;
     }
-    
+
     private FactDTO toDTO(Fact fact) {
         FactDTO dto = new FactDTO();
 
@@ -241,7 +248,9 @@ public class FactResource {
         dto.setVisible(fact.isVisible());
         dto.setSensorId(fact.getSensor().getId());
         dto.setTotNbObs(fact.getNbObs());
+
         dto.setDate(fact.getDate());
+        
         dto.setAvVal(fact.getAvVal());
         dto.setMaxVal(fact.getMaxVal());
         dto.setMinVal(fact.getMinVal());

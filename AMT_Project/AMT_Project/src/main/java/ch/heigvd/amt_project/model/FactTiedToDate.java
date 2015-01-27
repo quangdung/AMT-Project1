@@ -1,8 +1,11 @@
 package ch.heigvd.amt_project.model;
 
+import ch.heigvd.amt_project.dto.DateAdapter;
 import java.io.Serializable;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import javax.persistence.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @NamedQueries({
     @NamedQuery(
@@ -37,6 +40,7 @@ import javax.persistence.*;
 public class FactTiedToDate extends FactTiedToSensor implements Serializable {
 
     @Column(name = "dateConcerned")
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     @Column(name = "nbOfValues")
@@ -73,6 +77,7 @@ public class FactTiedToDate extends FactTiedToSensor implements Serializable {
         this.avVal = avVal;
     }
 
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getDate() {
         return date;
     }

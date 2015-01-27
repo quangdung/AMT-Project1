@@ -5,9 +5,6 @@
  */
 package ch.heigvd.amt_project.dto;
 
-import ch.heigvd.amt_project.model.Organization;
-import ch.heigvd.amt_project.model.Sensor;
-
 /**
  *
  * @author

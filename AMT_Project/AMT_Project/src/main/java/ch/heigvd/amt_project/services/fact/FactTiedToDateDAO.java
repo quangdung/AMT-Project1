@@ -2,7 +2,8 @@ package ch.heigvd.amt_project.services.fact;
 
 import ch.heigvd.amt_project.model.FactTiedToDate;
 import ch.heigvd.amt_project.model.FactType;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import java.util.*;
 import javax.ejb.Singleton;
 import javax.persistence.*;

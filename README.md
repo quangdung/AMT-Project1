@@ -7,15 +7,15 @@ Authors : Nguyen-Phuong Le & Quang-Dung Ngo
 
 # Summary
 
-- [Introduction](#Introduction) <a id="Introduction_s"></a>
+- [**Introduction**](#Introduction) <a id="Introduction_s"></a>
 	- [Details](#Details) <a id="Details_s"></a>
-- [Domain modeling](#Domain_modeling) <a id="Domain_modeling_s"></a>
-- [REST API Documentation](#REST_API_Documentation) <a id="REST_API_Documentation_s"></a>
-- [Use the application](#Use_the_application) <a id="Use_the_application_s"></a>
+- [**Domain modeling**](#Domain_modeling) <a id="Domain_modeling_s"></a>
+- [**REST API Documentation**](#REST_API_Documentation) <a id="REST_API_Documentation_s"></a>
+- [**Use the application**](#Use_the_application) <a id="Use_the_application_s"></a>
 	- [Installing](#Installing) <a id="Installing_s"></a>
 	- [Testing application](#Testing_application) <a id="Testing_application_s"></a>
-- [Known issues](#Known_issues) <a id="Known_issues_s"></a>
-- [Version](#Version) <a id="Version_s"></a>
+- [**Known issues**](#Known_issues) <a id="Known_issues_s"></a>
+- [**Version**](#Version) <a id="Version_s"></a>
 
 
 ---
@@ -131,9 +131,18 @@ For more informations about the API used to generate the documentation : [`apido
 
 ## Testing application <a id="Testing_application"></a>
 
-1. After deploying, at the address [`http://localhost:8080/AMT_Project/`](http://localhost:8080/AMT_Project/), click on the link `Click here to get to the generating page.` to generate a couple samples of `organizations`, `sensors`, `users`.
+1. After deploying, at the address [`http://localhost:8080/AMT_Project/`](http://localhost:8080/AMT_Project/), click on the link [`Click here to get to the generating page.`](http://localhost:8080/AMT_Project/InitData) to generate a couple samples of `organizations`, `sensors`, `users`.
 
-2. Open the script `AMT_Project/node-client/client.js`, change the number of `nbSensor` and `nbObservation`. Run the script : `node client.js`. Existing `facts` and `observations` will be deleted at the beginning of the script.
+2. Open the script `AMT_Project/node-client/client.js`, change the value of :
+	- `NB_SENSOR`
+	- `NB_OBSERVATION`
+	- `MAX_OBSREVATION_VALUE`
+	- `MIN_OBSERVATION_VALUE`
+	- `START_DATE`
+	- `AFTER_END_DATE`
+
+3. Run the script : `node client.js`. Existing `facts` and `observations` will be deleted at the beginning of the script.
+4. At the end of the script, the line `375: initData,` could be used to create informations (the same at step 1) at each run.
 
 [up](#Testing_application_s)
 
@@ -142,10 +151,12 @@ For more informations about the API used to generate the documentation : [`apido
 
 # Known issues <a id="Known_issues"></a>
 
-1. We have a long time waiting when posting `observations` in parallel, due to control of concurrency. Posting 50 observations (5 sensors * 10 observations) could take 15 minutes to finish, 15 observations (3 sensors * 5 observatons) could take 5 minutes.
+1. Sometime, the date of some observations received by the server are `NULL`, probably because the server does not recognized the format of date.
 
 
 # Version <a id="Version"></a>
 0.0.2
+
+Improvements since the last version of the project : [Amelioration(in french)](./Amelioration.md)
 
 [up](#Version_s)

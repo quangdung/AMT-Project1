@@ -5,8 +5,9 @@
  */
 package ch.heigvd.amt_project.dto;
 
-import ch.heigvd.amt_project.model.Sensor;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
@@ -20,6 +21,15 @@ public class ObservationDTO {
     private float obsValue;
     private Date creationDate;
     private long sensorId;
+    
+    @XmlJavaTypeAdapter(DateAdapter.class)
+    public Date getCreationDate() {
+        return creationDate;
+    }
+    
+//    public Date getCreationDate() {
+//        return creationDate;
+//    }
 
     public long getId() {
         return id;
@@ -45,9 +55,7 @@ public class ObservationDTO {
         this.obsValue = obsValue;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
+    
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;

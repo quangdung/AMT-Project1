@@ -1,7 +1,8 @@
 package ch.heigvd.amt_project.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import javax.persistence.*;
 
 /**
@@ -49,6 +50,7 @@ public class Observation implements Serializable {
     private float obsValue;
     
     @Column(name = "creation_date")
+    @Temporal(TemporalType.DATE)
     private Date creationDate;
     
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

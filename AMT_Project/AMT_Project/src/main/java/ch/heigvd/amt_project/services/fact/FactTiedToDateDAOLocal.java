@@ -1,7 +1,8 @@
 package ch.heigvd.amt_project.services.fact;
 
 import ch.heigvd.amt_project.model.FactTiedToDate;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
