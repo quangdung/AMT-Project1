@@ -1,11 +1,19 @@
 Amélioration par rapport à l'étape 1 du projet en AMT
 ============
 
-Authors : Nguyen-Phuong Le & Quang-Dung Ngo
+Auteurs : Nguyen-Phuong Le & Quang-Dung Ngo
 
 ---
 
-# Repo GitHub
+# Summary
+
+- [Repo GitHub](#Repo_GitHub) <a id="Repo_GitHub_s"></a>
+- [API REST](#API_REST) <a id="API_REST"></a>
+- [Installation / premiers pas et Code](#autre_correction) <a id="autre_correction_s"></a>
+
+---
+
+# Repo GitHub <a id="Repo_GitHub"></a>
 
 >- Il y a de la matière, mais ça mérite d'être restructuré et mis en contexte. Un développeur qui arrive sur le repo et n'a pas le contexte du projet va être perdu et ne va probablement pas avoir envie d'essayer votre service. Vous devez ajouter une introduction pour expliquer ce que fait votre plate-forme et DONNER ENVIE au visiteur d'aller plus loin (i.e. d'installer la plate-forme et de la tester).
 
@@ -19,9 +27,11 @@ Authors : Nguyen-Phuong Le & Quang-Dung Ngo
 
 Corrigé, dans `Readme.md`
 
+[(en haut)](#Repo_GitHub_s)
+
 ---
 
-# API REST
+# API REST <a id="API_REST"></a>
 
 >- Bien d'avoir mis le contenu sur la page "Home" - cela répond en partie à mes questions sur le point "Repo GitHub". Bien également d'avoir adapté le contenu des autres pages par rapport à votre implémentation.
 
@@ -109,7 +119,7 @@ Corrigé
 
 ---
 
-- DELETE /facts. Est-ce que vous voulez vraiment autoriser la suppression de facts? Je serais partisan de l'approche où les facts sont disponibles en lecture seule (ils sont créés et modifiés par le serveur).
+>- DELETE /facts. Est-ce que vous voulez vraiment autoriser la suppression de facts? Je serais partisan de l'approche où les facts sont disponibles en lecture seule (ils sont créés et modifiés par le serveur).
 
 Corrigé
 
@@ -162,8 +172,11 @@ Mieux gérér le type de date `java.util.Date` :
 	
 	4. Dans vos entités JPA, il faut rajouter l'annoation @Temporal sur tous les champs de type date
 	
+[(en haut)](#API_REST_s)
 
 ---
+
+# Installation / premiers pas et Code <a id="autre_correction"></a>
 
 Faute de temps, les parties 3 et 4 des remarques sont partiellement corrigées
 
@@ -184,6 +197,7 @@ Faute de temps, les parties 3 et 4 des remarques sont partiellement corrigées
 	
 	- Je fais un POST sur /observations, en faisant un copier-coller de votre example. Boum! Une erreur 500 sur "During synchronization a new object was found through a relationship that was not marked cascade PERSIST: Sensor #118, firstsensor, firstsensor, firstsensor, , firstorg, public." Non seulement cette partie de l'API n'est pas du tout pratique à utiliser, mais en plus l'implémentation n'est pas correcte. Simplifiez!
 	
+
 	4. Code
 	-------
 	
@@ -244,5 +258,5 @@ Faute de temps, les parties 3 et 4 des remarques sont partiellement corrigées
 	
 	- Il y a des entêtes (commentaires) générés par l'IDE qui traînent...
 
-
+[(en haut)](#autre_correction_s)
 

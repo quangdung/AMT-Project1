@@ -155,7 +155,8 @@ For more informations about the API used to generate the documentation : [`apido
 
 
 # Version <a id="Version"></a>
-0.0.2
+
+0.0.2 (last modified : 27.01.2015)
 
 Improvements since the last version of the project : [Amelioration(in french)](./Amelioration.md)
 
